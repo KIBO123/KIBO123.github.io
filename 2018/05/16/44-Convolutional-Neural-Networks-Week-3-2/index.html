@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文是课程4第3周的第2部分，继续讲解目标检测的相关算法，欢迎大家关注！">
+<meta name="keywords" content="Deep Learning,Neural Networks,学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Convolutional Neural Networks - Week 3 - (2)">
+<meta property="og:url" content="http://kibo.tech/2018/05/16/44-Convolutional-Neural-Networks-Week-3-2/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="本文是课程4第3周的第2部分，继续讲解目标检测的相关算法，欢迎大家关注！">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051601.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051602.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051603.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051604.png">
+<meta property="og:updated_time" content="2018-05-16T13:46:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Convolutional Neural Networks - Week 3 - (2)">
+<meta name="twitter:description" content="本文是课程4第3周的第2部分，继续讲解目标检测的相关算法，欢迎大家关注！">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051601.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2018/05/16/44-Convolutional-Neural-Networks-Week-3-2/">
+
+
+
+
+
+  <title>Convolutional Neural Networks - Week 3 - (2) | Foresee</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2018/05/16/44-Convolutional-Neural-Networks-Week-3-2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Convolutional Neural Networks - Week 3 - (2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-16T14:42:52+08:00">
+                2018-05-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Course/" itemprop="url" rel="index">
+                    <span itemprop="name">Course</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文是课程4第3周的第2部分，继续讲解目标检测的相关算法，欢迎大家关注！</p>
+<a id="more"></a>
+<h1 id="Detection-algorithms"><a href="#Detection-algorithms" class="headerlink" title="Detection algorithms"></a>Detection algorithms</h1><h2 id="Intersection-Over-Union"><a href="#Intersection-Over-Union" class="headerlink" title="Intersection Over Union"></a>Intersection Over Union</h2><p>我们如何评价一个目标检测算法是否有效？这节要介绍一个评价指标：Intersection Over Union. 下面我们具体看看这个指标怎么计算。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051601.png" alt=""></p>
+<p>在左图中，目标的边界框应为红色框，而我们的检测算法得到的边界框为紫色框。在中间的图中，我们把紫色框和红色框所有的部分都用绿色条纹涂满，表示总的目标检测面积；在右图中，我们把紫色框和红色框交叉的部分用橙色条纹涂满，表示交叉目标检测面积。</p>
+<p>那么，Intersection Over Union 这个指标就是用交叉面积除以总的面积，即橙色面积除以绿色面积：<br>$$<br>Intersection \ Over \ Union=\frac{size \ of \ Intersection}{size \ of \ Union}<br>$$<br>IoU值越大越好，若等于1 说明检测算法的边界框和实际完全重叠。通常，我们以 0.5 作为判断的阈值，IoU大于0.5，说明检测算法的边界框预测结果和实际能够很好的重叠；IoU小于0.5，说明检测算法精确度较差。</p>
+<p>当然，0.5 只是一个经验值。如果你对算法的要求更严格，那么可以选择更大的阈值，比如说0.6或0.7。但很少人会把阈值定于0.5以下。</p>
+<h2 id="Non-max-Suppression"><a href="#Non-max-Suppression" class="headerlink" title="Non-max Suppression"></a>Non-max Suppression</h2><p>我们知道通常目标检测有一个问题，那就是当我们按网格划分图像时，若目标太大占据多个网格，那么算法可能会对同一个目标检测到多次，而非一次。Non-max supression 就是解决这个问题的方法之一。</p>
+<h3 id="Non-max-Suppression-example"><a href="#Non-max-Suppression-example" class="headerlink" title="Non-max Suppression example"></a>Non-max Suppression example</h3><p>例如，我们想要对下面这张图片的左图进行目标检测，识别出行人、车和摩托车，那么我们添加 $19 \times 19$ 的网格。显然，图中的两辆车会被多个网格检测出来。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051602.png" alt=""></p>
+<p>那么我们看看 Non-max suppression 如何解决这个问题。实际上，non-max suppression 做的就是将对同一个目标的多个检测进行清除，只留下一个可能性最大的检测结果。</p>
+<p>具体来说，我们知道预测结果的第一个输出为 $p_c$ ，也就是出现目标的可能性。那么我们看到上图中间的那张图，左边的车被检测出两次，概率分别为0.7和0.8，且得到两个蓝色边界框；而右边的车被检测出三次，概率分别为0.6，0.7和0.9，其中中间浅蓝色框的概率最大。</p>
+<p>其次，我们看 IoU，可以发现 $p_c$ 最大的结果，其边界框与实际的重叠最大。那么我们即可把其它检测结果删去，得到上图的右边图。这就是 non-max suppression。它字面上的意思其实就是选取目标检测最大可能性的一个预测结果，然后对其它非最大的预测进行屏蔽和清除。</p>
+<h3 id="Non-max-Suppression-algorithm"><a href="#Non-max-Suppression-algorithm" class="headerlink" title="Non-max Suppression algorithm"></a>Non-max Suppression algorithm</h3><p>我们继续看 non-max suppression 算法的一些细节，假设我们只检测车，那么预测的标签为：<br>$$<br>Each \  output \  prediction \  is :<br>\begin{bmatrix}<br>p_c \<br>b_x \<br>b_y \<br>b_h \<br>b_w<br>\end{bmatrix}<br>$$<br>首先，我们确定 $p_c$ 的阈值为0.6 ，将 $p_c&lt;0.6$ 的预测结果丢弃。选择 $p_c$ 最大的预测结果，并计算其他所有留下结果与最大 $p_c$ 结果的IoU。确定 IoU 的阈值为0.5，将 $IoU \geq 0.5$ 的结果丢弃。IoU越大，重叠的部分越大，说明检测到同一目标的可能性越大，因此对于越大IoU的结果，应当丢弃。</p>
+<blockquote>
+<p>Discard all boxes with $p_c \leq 0.6$</p>
+<p>While there are any remaining boxes:</p>
+<ul>
+<li>Pick the box with the largest $p_c$ output that as a prediction.</li>
+<li>Discard any remaining box with $IoU\geq 0.5$ with the box output in the previous step.</li>
+</ul>
+</blockquote>
+<p>我们刚讲的例子只针对车的检测，如果想要检测行人、摩托车等其他目标，应当对每种目标分别独立地进行 non-max suppression，即进行多次 non-max suppression. </p>
+<h2 id="Anchor-boxes"><a href="#Anchor-boxes" class="headerlink" title="Anchor boxes"></a>Anchor boxes</h2><h3 id="Overlapping-objects"><a href="#Overlapping-objects" class="headerlink" title="Overlapping objects"></a>Overlapping objects</h3><p>目标检测还有一个问题就是一个网格中只能检测一个目标，如果多个目标出现在一个网格中，应该怎么办？Anchor boxes 就是解决这个问题的方法之一。</p>
+<p>我们举个例子，比如说下面这张图，我们添加 $3\times 3$ 的网格，可以发现人的中心点和车的中心点都几乎在同一个网格中。那么对于这个网格，它的预测结果只能是行人、车和摩托车的任意一种，不可能输出两个目标。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051603.png" alt=""></p>
+<p>我们可以采用 Anchor boxes 的思想，那就是预先定义两种候选框 (anchor boxes)，如图中的 anchor box 1 和 anchor box 2. 在这里我们为了方便例子的讲解，因此定义两个 anchor box，通常也可以使用更多的 anchor boxes.</p>
+<p>其次确定输出标签，之前我们的标签存在8个输出，现在我们将8个输出添加一倍用于分别表示两个 anchor box：<br>$$<br>y=<br>\begin{bmatrix}<br>p_c \<br>b_x \<br>b_y \<br>b_h \<br>b_w \<br>c_1 \<br>c_2 \<br>c_3 \<br>p_c \<br>b_x \<br>b_y \<br>b_h \<br>b_w \<br>c_1 \<br>c_2 \<br>c_3<br>\end{bmatrix}<br>$$<br>标签中上面的8个输出与 anchor box 1 绑定，下面的8个输出与 anchor box 2 绑定，我们看图中行人的形状与 anchor box 1 更相近，那么标签中上面的8个输出用于预测行人，图中车的形状与 anchor box 2 更相近，那么下面的8个输出用于预测车的检测。</p>
+<h3 id="Anchor-box-algorithm"><a href="#Anchor-box-algorithm" class="headerlink" title="Anchor box algorithm"></a>Anchor box algorithm</h3><p>总结一下，在之前我们是对包含目标中心点的网格去预测目标结果，但有了两个 anchor boxes，我们对预测的网格，不仅要求包含目标中心点，还要求 anchor box 与目标形状有很高的IoU。</p>
+<blockquote>
+<p>Previously:</p>
+<ul>
+<li>Each object in training image is assigned to grid cell that contains that object’s midpoint.</li>
+</ul>
+<p>With two anchor boxes:</p>
+<ul>
+<li>Each object in training image is assigned to grid cell that contains object’s midpoint and anchor box for the grid cell with highest IoU.</li>
+</ul>
+</blockquote>
+<p>那么预测结果的维度为 $3\times 3 \times 16$，当然你也可以看成是 $3\times 3 \times 2 \times 8$。</p>
+<h3 id="Anchor-box-example"><a href="#Anchor-box-example" class="headerlink" title="Anchor box example"></a>Anchor box example</h3><p>我们再回到上面那个例子，对第8个网格，显然人和车的中心点都在该网格中，那么我们对它的预测应为：<br>$$<br>y=<br>\begin{bmatrix}<br>1 \<br>b_x \<br>b_y \<br>b_h \<br>b_w \<br>1 \<br>0 \<br>0 \<br>1 \<br>b_x \<br>b_y \<br>b_h \<br>b_w \<br>0 \<br>1 \<br>0<br>\end{bmatrix}<br>$$</p>
+<p>如果有一个网格，在这个网格上只有车没有行人，那么预测结果应为第1个输出为0，随后7个输出任意，我们不给予考虑，第9个输出为1，其余输出分别为边界框和目标类型。</p>
+<p>Anchor box 算法也不是万能，还可能出现一个网格中存在3个目标，或者一个网格中两个目标的 anchor box 相同等意外情况，这些情况对于 Anchor box 算法来说，也是不能给出很好的方案。但这些情况并不经常发生，对于训练效果或许影响不大。</p>
+<h2 id="YOLO-Algorithm"><a href="#YOLO-Algorithm" class="headerlink" title="YOLO Algorithm"></a>YOLO Algorithm</h2><p>我们之前讲了目标检测的大部分算法，在这里我们将之前学的所有部分结合起来，理清整个YOLO目标检测算法的思路。</p>
+<h3 id="Train"><a href="#Train" class="headerlink" title="Train"></a>Train</h3><p>首先我们要建立训练集，训练集要给样本进行数据标注，也就是贴标签，我们还是分为行人、车和摩托车3类。同时，使用两种 anchor box，那么标签的维度为 $3\times 3 \times 16$，也可写成 $3\times 3 \times 2 \times 8$。当然，在实际情况下，我们更可能将图片分割为 $19\times 19$，同时使用五种 anchor box，那么标签的维度就为 $19\times 19 \times 40$，或 $19\times 19 \times 5 \times 8$ 。</p>
+<h3 id="Making-predictions"><a href="#Making-predictions" class="headerlink" title="Making predictions"></a>Making predictions</h3><p>预测，我们之前都说过了，在这里不再多讲。要注意的就是，当预测结果的第1个输出 $p_c=0$ 时，不必考虑 $p_c$ 后面的7个输出，不管那7个输出是边界框的形状还是车或人都不再给予考虑，因为 $p_c$ 已经告诉你网格中不存在目标。</p>
+<h3 id="Outputting-the-non-max-suppressed-outputs"><a href="#Outputting-the-non-max-suppressed-outputs" class="headerlink" title="Outputting the non-max suppressed outputs"></a>Outputting the non-max suppressed outputs</h3><p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051604.png" alt=""> </p>
+<p>我们看一个例子，假设我们使用两种 anchor box，那么对于每个网格，我们都预测出两个边界框，尽管有些网格的边界框的 $p_c$ 可能性很低，但都存在两个边界框，见上图第二幅。</p>
+<p>其次，丢弃 $p_c$ 小的预测结果，得到上图第3幅。最后我们对还剩的预测结果进行 non-max suppression. 由于我们的类别有3个，因此需要分别独立地对3个类别进行 non-max suppression，从而得到最终的预测结果。</p>
+<p>这就是完整的YOLO目标检测算法，也是当前最有效的目标检测算法之一。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://www.coursera.org/learn/convolutional-neural-networks/home/week/3" target="_blank" rel="noopener">Convolutional Neural Networks - Week 3</a></li>
+<li><a href="">Redmon et al,. 2015. You Only Look Once: Unified real-time object detection</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2018/05/16/44-Convolutional-Neural-Networks-Week-3-2/">Convolutional Neural Networks - Week 3 - (2)</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2018年05月16日 - 14:05</p>
+
+  <p><span>最后更新:</span>2018年05月16日 - 21:05</p>
+
+  <p><span>原始链接:</span><a href="/2018/05/16/44-Convolutional-Neural-Networks-Week-3-2/" title="Convolutional Neural Networks - Week 3 - (2)">http://kibo.tech/2018/05/16/44-Convolutional-Neural-Networks-Week-3-2/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2018/05/16/44-Convolutional-Neural-Networks-Week-3-2/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"><i class="fa fa-tag"></i> Deep Learning</a>
+          
+            <a href="/tags/Neural-Networks/" rel="tag"><i class="fa fa-tag"></i> Neural Networks</a>
+          
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/14/43-Convolutional-Neural-Networks-Week-3-1/" rel="next" title="Convolutional Neural Networks - Week 3 - (1)">
+                <i class="fa fa-chevron-left"></i> Convolutional Neural Networks - Week 3 - (1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/17/45-Convolutional-Neural-Networks-Week-4-1/" rel="prev" title="Convolutional Neural Networks - Week 4 - (1)">
+                Convolutional Neural Networks - Week 4 - (1) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Detection-algorithms"><span class="nav-number">1.</span> <span class="nav-text">Detection algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Intersection-Over-Union"><span class="nav-number">1.1.</span> <span class="nav-text">Intersection Over Union</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Non-max-Suppression"><span class="nav-number">1.2.</span> <span class="nav-text">Non-max Suppression</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Non-max-Suppression-example"><span class="nav-number">1.2.1.</span> <span class="nav-text">Non-max Suppression example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Non-max-Suppression-algorithm"><span class="nav-number">1.2.2.</span> <span class="nav-text">Non-max Suppression algorithm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Anchor-boxes"><span class="nav-number">1.3.</span> <span class="nav-text">Anchor boxes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overlapping-objects"><span class="nav-number">1.3.1.</span> <span class="nav-text">Overlapping objects</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Anchor-box-algorithm"><span class="nav-number">1.3.2.</span> <span class="nav-text">Anchor box algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Anchor-box-example"><span class="nav-number">1.3.3.</span> <span class="nav-text">Anchor box example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLO-Algorithm"><span class="nav-number">1.4.</span> <span class="nav-text">YOLO Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Train"><span class="nav-number">1.4.1.</span> <span class="nav-text">Train</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Making-predictions"><span class="nav-number">1.4.2.</span> <span class="nav-text">Making predictions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Outputting-the-non-max-suppressed-outputs"><span class="nav-number">1.4.3.</span> <span class="nav-text">Outputting the non-max suppressed outputs</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- ҳ����С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

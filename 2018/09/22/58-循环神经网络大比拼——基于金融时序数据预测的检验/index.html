@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="RNN,Recurrent Neural Networks,GRU,LSTM,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在之前的深度学习课程中，我们已经详细介绍过循环神经网络 (Recurrent neural network)。 RNN的应用相当之多，主要是用于时序数据的处理，如语音识别、机器翻译等。因为它具备长时记忆性，能够记住上一个时段的输入特征对下一时段的影响。RNN层 主要有三种形式，SimpleRNN，GRU 以及 LSTM 层。在这里我们以预测时序金融价格数据为例，分别比较哪种一下哪种类型的RNN层效">
+<meta name="keywords" content="RNN,Recurrent Neural Networks,GRU,LSTM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="循环神经网络大比拼——基于金融时序数据预测的检验">
+<meta property="og:url" content="http://kibo.tech/2018/09/22/58-循环神经网络大比拼——基于金融时序数据预测的检验/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="在之前的深度学习课程中，我们已经详细介绍过循环神经网络 (Recurrent neural network)。 RNN的应用相当之多，主要是用于时序数据的处理，如语音识别、机器翻译等。因为它具备长时记忆性，能够记住上一个时段的输入特征对下一时段的影响。RNN层 主要有三种形式，SimpleRNN，GRU 以及 LSTM 层。在这里我们以预测时序金融价格数据为例，分别比较哪种一下哪种类型的RNN层效">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1810/18092402.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1810/18092401.png">
+<meta property="og:updated_time" content="2018-09-24T14:52:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="循环神经网络大比拼——基于金融时序数据预测的检验">
+<meta name="twitter:description" content="在之前的深度学习课程中，我们已经详细介绍过循环神经网络 (Recurrent neural network)。 RNN的应用相当之多，主要是用于时序数据的处理，如语音识别、机器翻译等。因为它具备长时记忆性，能够记住上一个时段的输入特征对下一时段的影响。RNN层 主要有三种形式，SimpleRNN，GRU 以及 LSTM 层。在这里我们以预测时序金融价格数据为例，分别比较哪种一下哪种类型的RNN层效">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1810/18092402.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2018/09/22/58-循环神经网络大比拼——基于金融时序数据预测的检验/">
+
+
+
+
+
+  <title>循环神经网络大比拼——基于金融时序数据预测的检验 | Foresee</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2018/09/22/58-循环神经网络大比拼——基于金融时序数据预测的检验/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">循环神经网络大比拼——基于金融时序数据预测的检验</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-22T15:57:23+08:00">
+                2018-09-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Work/" itemprop="url" rel="index">
+                    <span itemprop="name">Work</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在之前的深度学习课程中，我们已经详细介绍过<a href="http://kibo.tech/2018/06/06/47-Sequence-Models-Week-1-1/">循环神经网络 (Recurrent neural network)</a>。 RNN的应用相当之多，主要是用于时序数据的处理，如语音识别、机器翻译等。因为它具备长时记忆性，能够记住上一个时段的输入特征对下一时段的影响。RNN层 主要有三种形式，SimpleRNN，GRU 以及 LSTM 层。在这里我们以预测时序金融价格数据为例，分别比较哪种一下哪种类型的RNN层效果更优！</p>
+<a id="more"></a>
+<h1 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h1><p>沪深300股票指数一直以来都是我进行金融研究的主要对象，因为它基本上代表了整个大盘的波动情况，也是A股市场盈亏的晴雨表。在这里也不例外，我挺喜欢直接从 <a href="https://www.joinquant.com/" target="_blank" rel="noopener">聚宽</a> 上获取数据，因为方便快捷，做个小研究的话也不大需要数据的严谨性。当然，如果需要更加可靠的数据，可以去Wind数据库获取。</p>
+<p>首先，聚宽提供了很方便的数据接口，我们简单提取沪深300指数5分钟级数据，并将其导出到本地进行研究。事实上，也可以在聚宽平台上直接进行实验，但我更习惯在本地上操作。获取数据代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line"># 沪深300股票指数代码：000300</span><br><span class="line">index = &apos;000300.XSHG&apos;</span><br><span class="line"># 获取5分钟级数据</span><br><span class="line">df = get_price(index,start_date=&apos;2013-01-1&apos;,end_date=&apos;2017-12-31&apos;,frequency=&apos;5m&apos;,fields=&apos;close&apos;,skip_paused=True)</span><br><span class="line"># 将行名另设为一列</span><br><span class="line">df.index.name=&apos;time&apos;</span><br><span class="line">df.reset_index(inplace=True)</span><br><span class="line"># 导出到本地</span><br><span class="line">df.to_csv(&apos;000300.csv&apos;)</span><br></pre></td></tr></table></figure>
+<h1 id="Data-preprocessing"><a href="#Data-preprocessing" class="headerlink" title="Data preprocessing"></a>Data preprocessing</h1><p>首先，我们对数据进行标准化处理，标准化在神经网络训练中是十分重要的，它通常能大大加快梯度下降的速度。Z-score 是最常用的标准化方法之一：<br>$$<br>x_{standardize} = \frac{x-\mu}{\sigma}<br>$$<br>其中，$\mu$ 和 $\sigma$ 分别为沪深300价格序列的均值和标准差。</p>
+<p>其次，由于我们输入的是时序数据，并预测下一步的价格。因此，我们需要定义一个窗宽，根据窗宽将数据集切割成一段段具有时序性的输入，简单来说代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"># 首先导入各个步骤会使用到的模块</span><br><span class="line">import numpy as np</span><br><span class="line">import pandas as pd</span><br><span class="line">from keras.models import Sequential</span><br><span class="line">from keras.layers import Dense</span><br><span class="line">from keras.layers import SimpleRNN, GRU, LSTM</span><br><span class="line">from matplotlib import pyplot as plt</span><br><span class="line"></span><br><span class="line"># 加载第一步中下载得到的数据集</span><br><span class="line">index = np.loadtxt(&apos;D:/.../000300.csv&apos;, delimiter=&apos;,&apos;, skiprows=1, usecols=2)</span><br><span class="line"></span><br><span class="line">x = []</span><br><span class="line"></span><br><span class="line"># 数据标准化</span><br><span class="line">x_mean = np.mean(index)</span><br><span class="line">x_std = np.std(index)</span><br><span class="line">index_standard = (index-x_mean)/x_std</span><br><span class="line"></span><br><span class="line"># 设定窗宽</span><br><span class="line">w = 48</span><br><span class="line"># 根据窗宽划分每个时间步输入</span><br><span class="line">for t in range(len(index_standard)-w):</span><br><span class="line">    a = index_standard[t:t+w]</span><br><span class="line">    x.append(a)</span><br><span class="line"></span><br><span class="line"># 输入x和输出y</span><br><span class="line">x = np.array(x)</span><br><span class="line">y = index_standard[w:(len(index_standard)+1)]</span><br><span class="line"></span><br><span class="line"># 划分训练集和测试集</span><br><span class="line">train_num = int(len(x)*0.85)</span><br><span class="line">test_num = int(len(x)*0.15)</span><br><span class="line">x_train = x[0:train_num]</span><br><span class="line">x_test = x[len(x_train):(len(x_train)+test_num+1)]</span><br><span class="line">y_train = y[0:train_num]</span><br><span class="line">x_test = y[len(y_train):(len(y_train)+test_num+1)]</span><br><span class="line"></span><br><span class="line"># 将二维数据重置为能够输入模型的三维尺度</span><br><span class="line">x_train = np.reshape(x_train,(len(x_train),1,w))</span><br><span class="line">x_test = np.reshape(x_test,(len(x_test),1,w))</span><br></pre></td></tr></table></figure>
+<p>窗宽由自己按实际情况而定，在这里我把窗宽定为48，主要是我们的数据为5分钟级高频数据，1天能采集到48个时间价格。大家也可以多去尝试，从而做出更好的选择。</p>
+<h1 id="SimpleRNN-GRU-amp-LSTM"><a href="#SimpleRNN-GRU-amp-LSTM" class="headerlink" title="SimpleRNN, GRU &amp; LSTM"></a>SimpleRNN, GRU &amp; LSTM</h1><p>这三种类型的RNN层，其各自特点在之前的深度学习课程都已经讲解过了，在这就不再重复啰嗦了，我们直接进行实验并对照结果。在这里为保证结果一致性，因此每种类型RNN层的层数，节点数，batch-size 等超参数都作相同的设定。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># SimpleRNN 模型架构</span><br><span class="line">model = Sequential()</span><br><span class="line">model.add(SimpleRNN(32, return_sequences=True, input_shape=(x_train.shape[1], 1)))</span><br><span class="line">model.add(SimpleRNN(32, return_sequences=True))</span><br><span class="line">model.add(SimpleRNN(32))</span><br><span class="line">model.add(Dense(1))</span><br><span class="line">model.compile(loss=&apos;mean_squared_error&apos;,optimizer=&apos;adam&apos;)</span><br><span class="line"></span><br><span class="line"># GRU</span><br><span class="line">model_gru = Sequential()</span><br><span class="line">model_gru.add(GRU(32, return_sequences=True, input_shape=(x_train.shape[1], 1)))</span><br><span class="line">model_gru.add(GRU(32, return_sequences=True))</span><br><span class="line">model_gru.add(GRU(32))</span><br><span class="line">model_gru.add(Dense(1))</span><br><span class="line">model_gru.compile(loss=&apos;mean_squared_error&apos;,optimizer=&apos;adam)</span><br><span class="line"></span><br><span class="line">#LSTM</span><br><span class="line">model_lstm = Sequential()</span><br><span class="line">model_lstm.add(LSTM(32, return_sequences=True, input_shape=(x_train.shape[1], 1)))</span><br><span class="line">model_lstm.add(LSTM(32, return_sequences=True))</span><br><span class="line">model_lstm.add(LSTM(32))</span><br><span class="line">model_lstm.add(Dense(1))</span><br><span class="line">model_lstm.compile(loss=&apos;mean_squared_error&apos;,optimizer=&apos;ada)</span><br></pre></td></tr></table></figure>
+<p>上面为各个类型RNN层的模型架构，大家可参考<a href="https://keras-cn.readthedocs.io/en/latest/" target="_blank" rel="noopener">Keras文档</a>。建立好模型之后，我们开始对训练集进行训练拟合，并对测试集做出相应预测。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 拟合,以20%样本作为验证集</span><br><span class="line">fit = model.fit(x_train, y_train, batch_size=32, epochs=100, validation_split=0.2, shuffle=False)</span><br><span class="line"></span><br><span class="line"># 预测</span><br><span class="line">pred_rnn = model.predict(x_test,batch_size=32)</span><br><span class="line"></span><br><span class="line"># 将迭代的损失函数保留</span><br><span class="line">fithistory = pd.DataFrame(fit.history)</span><br><span class="line"></span><br><span class="line"># GRU和LSTM的拟合与上面类似，在这里不再重复</span><br></pre></td></tr></table></figure>
+<p>训练结果我们可以看损失值，损失值越大，说明训练效果越差，拟合优度越低。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(15,5))</span><br><span class="line"></span><br><span class="line">plt.subplot(131)</span><br><span class="line">plt.plot(range(1,101), fithistory[&apos;val_loss&apos;],c=&apos;red&apos;, label=&apos;Loss(development)&apos;)</span><br><span class="line">plt.plot(range(1,101), fithistory[&apos;loss&apos;],c=&apos;blue&apos;,label=&apos;Loss(train)&apos;)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.ylabel(&apos;Loss of SimeRNN&apos;)</span><br><span class="line">plt.xlabel(&apos;Number of epochs&apos;)</span><br><span class="line"></span><br><span class="line">plt.subplot(132)</span><br><span class="line">plt.plot(range(1,101), fithistory_gru[&apos;val_loss&apos;],c=&apos;red&apos;, label=&apos;Loss(development)&apos;)</span><br><span class="line">plt.plot(range(1,101), fithistory_gru[&apos;loss&apos;],c=&apos;blue&apos;, label=&apos;Loss(train)&apos;)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.ylabel(&apos;Loss of GRU&apos;)</span><br><span class="line">plt.xlabel(&apos;Number of epochs&apos;)</span><br><span class="line"></span><br><span class="line">plt.subplot(133)</span><br><span class="line">plt.plot(range(1,101), fithistory_lstm[&apos;val_loss&apos;],c=&apos;red&apos;, label=&apos;Loss(development)&apos;)</span><br><span class="line">plt.plot(range(1,101), fithistory_lstm[&apos;loss&apos;],c=&apos;blue&apos;, label=&apos;Loss(train)&apos;)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.ylabel(&apos;Loss of LSTM&apos;)</span><br><span class="line">plt.xlabel(&apos;Number of epochs&apos;)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1810/18092402.png" alt=""></p>
+<p>训练效果主要看蓝线，因为它是训练集的损失值，红线代表的是验证集的损失值。由于验证集和测试集是同分布的，验证集的损失值基本也就相当于测试集的损失值。从图中可见，蓝线中 SimpleRNN 的损失值最低，说明 SimpleRNN 在训练集上的拟合效果最好。而红线中 GRU 的损失值相对较低，说明 GRU 在测试集上的拟合效果会更好。</p>
+<h1 id="Result-Analysis"><a href="#Result-Analysis" class="headerlink" title="Result Analysis"></a>Result Analysis</h1><p>经过上面的训练，我们可以看看预测结果如何，并比较哪种模型的预测效果最好。由于在开始时我们对数据进行了标准化，现在我们要对数据进行逆标准化，使数据恢复原来的量纲。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 其中，pred_gru 和 pred_lstm 分别为GRU和LSTM模型拟合的结果</span><br><span class="line">y_pred_rnn = pred_rnn * x_std + x_mean</span><br><span class="line">y_pred_gru = pred_gru * x_std + x_mean</span><br><span class="line">y_pred_lstm = pred_lstm * x_std + x_mean</span><br><span class="line">y_test_recover = y_test * x_std + x_mean</span><br></pre></td></tr></table></figure>
+<p>顺便将时间点提取出来，其实在第一步就应该提取出来的，省得麻烦。。。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">time = pd.read_csv(&apos;D:/.../000300.csv&apos;, header=0, usecols=[&apos;time&apos;])</span><br><span class="line">time = time.iloc[-8741:]</span><br><span class="line">time = pd.to_datetime(time[&apos;time&apos;])</span><br></pre></td></tr></table></figure>
+<p>接下来我们画个图看看实际值和预测值的差别：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(15,5))</span><br><span class="line"></span><br><span class="line">plt.subplot(131)</span><br><span class="line">plt.plot(time, y_test_recover, c=&apos;red&apos;,label=&apos;CSI_300&apos;)</span><br><span class="line">plt.plot(time, y_pred_rnn, c=&apos;blue&apos;, label=&apos;Prediction based on SimpleRNN&apos;)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.ylabel(&apos;Price&apos;)</span><br><span class="line">plt.xlabel(&apos;Time&apos;)</span><br><span class="line"></span><br><span class="line">plt.subplot(132)</span><br><span class="line">plt.plot(time, y_test_recover, c=&apos;red&apos;,label=&apos;CSI_300&apos;)</span><br><span class="line">plt.plot(time, y_pred_gru, c=&apos;blue&apos;, label=&apos;Prediction based on GRU&apos;)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.ylabel(&apos;Price&apos;)</span><br><span class="line">plt.xlabel(&apos;Time&apos;)</span><br><span class="line"></span><br><span class="line">plt.subplot(133)</span><br><span class="line">plt.plot(time, y_test_recover, c=&apos;red&apos;,label=&apos;CSI_300&apos;)</span><br><span class="line">plt.plot(time, y_pred_lstm, c=&apos;blue&apos;, label=&apos;Prediction based on LSTM&apos;)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.ylabel(&apos;Price&apos;)</span><br><span class="line">plt.xlabel(&apos;Time&apos;)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1810/18092401.png" alt=""></p>
+<p>从图中可见，在前期应该是 GRU 的预测效果与实际价格最为靠近，但到了后期几乎三种模型似乎都偏离得越来越远，因此我们不能简单断定哪个模型最好，还需要一定的评价指标来加以辅助判断。</p>
+<p>而对于序列数据是说，评价指标通常会采用余弦相似度。如果两序列的余弦相似度越高，说明两序列越相似，走势也越相同。<br>$$<br>\cos \theta=\frac{\bf{a} \cdot \bf{b}}{\lvert \bf{a} \rvert \cdot \lvert \bf{b} \rvert}=\frac{x_1y_1+x_2y_2+\cdots+x_ny_n}{\sqrt{x_1^2+x_2^2+\cdots+x_n^2}\sqrt{y_1^2+y_2^2+\cdots+y_n^2}}<br>$$<br>我不太了解哪个包有具体余弦相似度的评价指标，所以自己简单定义了一个：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def cosine_sim(x,y):</span><br><span class="line">    sim = np.dot(x,y)</span><br><span class="line">    norm_x = np.linalg.norm(x)</span><br><span class="line">    norm_y = np.linalg.norm(y)</span><br><span class="line">    cosine_sim = sim/(norm_x * norm_y)</span><br><span class="line">    return cosine_sim</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 上面编写的函数太简陋了。。以至于自己不得不另外统一一下输入的维度，非程序猿的本质暴露无遗。。。</span><br><span class="line">y_test_recover1 = np.reshape(y_test_recover,(1,8741))</span><br><span class="line"></span><br><span class="line"># 逐个计算余弦相似度</span><br><span class="line">cosine_rnn = cosine_sim(y_test_recover1, y_pred_rnn)    </span><br><span class="line">cosine_gru = cosine_sim(y_test_recover1, y_pred_gru)</span><br><span class="line">cosine_lstm = cosine_sim(y_test_recover1, y_pred_lstm)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SimpleRNN</th>
+<th>GRU</th>
+<th>LSTM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cosine_similarity</td>
+<td>0.999678</td>
+<td>0.999868</td>
+<td>0.999961</td>
+</tr>
+</tbody>
+</table>
+<p>。。。。。。好吧，这个评价指标其实感觉并不太好，三个值都异常高且差别超乎想象地小，似乎没有达到我想要区别三个模型的效果。看来我还是得老老实实回头再认认真真复习一下深度学习的课程。不过我们从序列相似度来看，LSTM还是最高的，说明LSMT预测价格的走势和实际价格的走势相似度是高度相似的，尽管从预测图来看似乎两价格的距离很大。然而假设我们只预测涨跌，而不是预测具体价格的话，那么LSTM还是很有优势的。</p>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p>简单做了一个实验，就当是锻炼一下自己打代码的能力了。尽管实验结果并没有我们预期的那么好，其实就是我没能进一步调参所造成的结果。。。有空再试一下好好进行调参看看。</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2018/09/22/58-循环神经网络大比拼——基于金融时序数据预测的检验/">循环神经网络大比拼——基于金融时序数据预测的检验</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2018年09月22日 - 15:09</p>
+
+  <p><span>最后更新:</span>2018年09月24日 - 22:09</p>
+
+  <p><span>原始链接:</span><a href="/2018/09/22/58-循环神经网络大比拼——基于金融时序数据预测的检验/" title="循环神经网络大比拼——基于金融时序数据预测的检验">http://kibo.tech/2018/09/22/58-循环神经网络大比拼——基于金融时序数据预测的检验/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2018/09/22/58-循环神经网络大比拼——基于金融时序数据预测的检验/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RNN/" rel="tag"><i class="fa fa-tag"></i> RNN</a>
+          
+            <a href="/tags/Recurrent-Neural-Networks/" rel="tag"><i class="fa fa-tag"></i> Recurrent Neural Networks</a>
+          
+            <a href="/tags/GRU/" rel="tag"><i class="fa fa-tag"></i> GRU</a>
+          
+            <a href="/tags/LSTM/" rel="tag"><i class="fa fa-tag"></i> LSTM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/18/57-演唱会之夜/" rel="next" title="演唱会之夜">
+                <i class="fa fa-chevron-left"></i> 演唱会之夜
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Data"><span class="nav-number">1.</span> <span class="nav-text">Data</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Data-preprocessing"><span class="nav-number">2.</span> <span class="nav-text">Data preprocessing</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SimpleRNN-GRU-amp-LSTM"><span class="nav-number">3.</span> <span class="nav-text">SimpleRNN, GRU &amp; LSTM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Result-Analysis"><span class="nav-number">4.</span> <span class="nav-text">Result Analysis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Summary"><span class="nav-number">5.</span> <span class="nav-text">Summary</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- ҳ����С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="我们继续上节课的笔记，这节课关注的重点是神经网络的 Human-level performance，神经网络怎样才能达到人类水平？欢迎大家关注！">
+<meta name="keywords" content="Deep Learning,Neural Networks,学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Structuring Machine Learning Projects - Week 1 - (2)">
+<meta property="og:url" content="http://kibo.tech/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="我们继续上节课的笔记，这节课关注的重点是神经网络的 Human-level performance，神经网络怎样才能达到人类水平？欢迎大家关注！">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18040701.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18040801.png">
+<meta property="og:updated_time" content="2018-04-08T12:13:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Structuring Machine Learning Projects - Week 1 - (2)">
+<meta name="twitter:description" content="我们继续上节课的笔记，这节课关注的重点是神经网络的 Human-level performance，神经网络怎样才能达到人类水平？欢迎大家关注！">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18040701.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/">
+
+
+
+
+
+  <title>Structuring Machine Learning Projects - Week 1 - (2) | Foresee</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Structuring Machine Learning Projects - Week 1 - (2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-06T20:23:58+08:00">
+                2018-04-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Course/" itemprop="url" rel="index">
+                    <span itemprop="name">Course</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们继续上节课的笔记，这节课关注的重点是神经网络的 Human-level performance，神经网络怎样才能达到人类水平？欢迎大家关注！</p>
+<a id="more"></a>
+<h1 id="Comparing-to-human-level-performance"><a href="#Comparing-to-human-level-performance" class="headerlink" title="Comparing to human-level performance"></a>Comparing to human-level performance</h1><h2 id="Why-human-level-performance"><a href="#Why-human-level-performance" class="headerlink" title="Why human-level performance ?"></a>Why human-level performance ?</h2><p>近年来，越来越多的人拿机器学习系统的表现和人类水平相比，这事实上不仅反映了当前随着深度学习的发展，机器学习算法在多个领域应用的效果和人类水平的表现越来越近，甚至在工作流程中，机器学习系统会比人类更有效率。比如说图像识别，只要训练数据越来越多，训练模型越来越复杂，算法识别图像的水平和人类水平就会越来越相近，直到超越人类水平。</p>
+<p>当然，由于客观因素存在，比如说图像很模糊，那么不管怎么训练，算法都不可能实现100%的准确率，必定存在一些误差，这个误差的极限就是 Bayes optimal error。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18040701.png" alt="18040701"></p>
+<ul>
+<li>Why compare to human-level performance</li>
+</ul>
+<blockquote>
+<p>Humans are quite good at a lot of tasks. So long as ML is worse than humans, you can: </p>
+<ul>
+<li>Get labeled data from humans.</li>
+<li>Gain insight from manual error analysis: Why did a person get this right?</li>
+<li>Better analysis of bias / variance.</li>
+</ul>
+</blockquote>
+<h2 id="Avoidable-bias"><a href="#Avoidable-bias" class="headerlink" title="Avoidable bias"></a>Avoidable bias</h2><p>什么是可避免的误差？它和我们上节所说的 Bias Optimal Error有什么区别？我们以一个例子来解释。</p>
+<p>针对识别猫图像的例子，人类识别、训练集识别和验证集识别的结果分别如下：</p>
+<table>
+<thead>
+<tr>
+<th>误差</th>
+<th>情况 1</th>
+<th>情况 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Humans-level error</td>
+<td>1%</td>
+<td>7.5%</td>
+</tr>
+<tr>
+<td>Training error</td>
+<td>8%</td>
+<td>8%</td>
+</tr>
+<tr>
+<td>Dev error</td>
+<td>10%</td>
+<td>10%</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>情况 1</li>
+</ul>
+<p>在第 1 种情况下，训练集的误差远远大于人类水平的误差，说明训练效果并不好，算法不能很好地对训练样本进行拟合。应该我们必须改进算法，之前的课程我们介绍过，改进算法的思想主要是两方面，要不改进 Bias，要不改进 Variance。</p>
+<p>显然，相对于训练集与验证集之间的误差，训练集与人类水平之间的误差更大一些，因此我们需要改进 Bias，通过建立更大的神经网络或训练更长时间，使训练样本拟合度更好，减少与真实值的误差。</p>
+<ul>
+<li>情况 2</li>
+</ul>
+<p>在第 2 种情况下，人类水平的识别误差都达到7.5%，说明图像质量很不好。从另一个角度说，算法的效果是很不错了，因为它的识别效果基本和人类水平相近，很难通过改进Bias，来获得更好的识别效果。</p>
+<p>因此，相对于训练集与人类水平之间的误差，训练集与验证集之间的误差更大一些，我们可以选择通过改进 Variance，缩小验证集与训练集之间的识别差距。比如说正则化防止过拟合等等。</p>
+<p>通常情况下，human-level error还是要大于Bayes optimal error的。因为人不是万能的。但在这里，我们可以认为 human-level error 可相当于 Bayes optimal error。因为人对图像的识别都是凭经验的，很容易便能发现图像中是不是猫。但如果连人都不能识别出猫的图像，那么说明图像本身就有问题，算法不可能比人识别得更精确。</p>
+<p>因此，我们便把<strong>Training error与 Bayes optimal error 的差</strong> 当成 Avoidable bias，表示当前训练误差还能继续优化的程度。 </p>
+<h2 id="Understanding-human-level-performance"><a href="#Understanding-human-level-performance" class="headerlink" title="Understanding human-level performance"></a>Understanding human-level performance</h2><p>在上一节，提到 “human-level” error，那么它具体指的是什么？这节我们深入来解释一下人类水平误差。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18040801.png" alt="18040801"></p>
+<p>见上图，对于一张X光照片，要根据照片中的骨骼进行诊断。一般人可能不太懂，会有3%的诊断误差，而一般医生会有1%的诊断误差，有经验的医生会有0.7%的诊断误差。如果是一个团队且有经验的医生，那么诊断为0.5%。那么，我们选哪个作为人类水平的误差？</p>
+<p>首先，我们可以确认贝叶斯误差总是小于或等于0.5%的。通常情况下，我们习惯于将人类水平误差估计贝叶斯误差，比如说识别猫图（只要是正常人，不管大人小孩都能很简单得判断猫，不同人群的识别误差几乎无差异）。但是在这种情况下，由于不同人群的医学水平是不一样的，诊断误差也不一样。那么人类水平误差选哪个？这个还需要通过训练集和验证集的误差来判断。</p>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>情况 1</th>
+<th>情况 2</th>
+<th>情况 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Human-level</td>
+<td>1%/0.7%/0.5%</td>
+<td>1%0.7%/0.5%</td>
+<td>0.5%</td>
+</tr>
+<tr>
+<td>Training error</td>
+<td>5%</td>
+<td>1%</td>
+<td>0.7%</td>
+</tr>
+<tr>
+<td>Dev error</td>
+<td>6%</td>
+<td>5%</td>
+<td>0.8%</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>情况 1 </li>
+</ul>
+<p>当训练集和验证集的误差分别为5%和6%时，人类水平误差定义为1%或0.7%或0.5%都无所谓，因为相较于训练集和验证集误差之间的差距，人类水平误差和训练集误差的差距太大了，此时必须改进 Bias，减小 Avoidable bias。</p>
+<ul>
+<li>情况 2</li>
+</ul>
+<p>当训练集和验证集的误差分别为1%和5%时，人类水平误差同理定义为任一种情况都无所谓，因为相较于训练集和验证集误差之间的差距，人类水平误差和训练集误差的差距太小了，此时必须改进 Variance，防止过拟合。</p>
+<ul>
+<li>情况 3</li>
+</ul>
+<p>当训练集和验证集的误差分别为0.7%和0.8%时，人类水平误差只能定义为0.5%。为什么呢？若人类水平误差定义为1%，那训练集诊断效果就超过人类啦！这当然是不公平的，因为有经验的医生（不管是个体还是团队），其误差都小于等于训练集误差；若人类水平误差定义为0.7%，那么Avoidable bias为0，Variance为0.1%都太小了，算法很难找到改进的空间了，但显然训练集0.7%的误差还达不到贝叶斯最优；因此，人类水平误差只能定义为0.5%，这样算法才能继续去改进，去减小Avoidable bias。</p>
+<p>总结一下，由于贝叶斯误差是未知的，通常情况下我们会以<strong>人类水平误差去估计贝叶斯误差</strong> 。当然，人类水平误差怎么选，还需看具体情况。不管怎么说，只有更好地对贝叶斯误差进行估计，才能更好得确定 Avoidable Bias 和 Variance，从而对算法采取相应措施进行优化。</p>
+<h2 id="Surpassing-human-level-performance"><a href="#Surpassing-human-level-performance" class="headerlink" title="Surpassing human-level performance"></a>Surpassing human-level performance</h2><p>超越人类水平，事实上当前在许多方面算法已经超越了人类水平，在识别误差上越来越小。比如说：</p>
+<h3 id="Problems-where-ML-significantly-surpasses-human-level-perfornmance"><a href="#Problems-where-ML-significantly-surpasses-human-level-perfornmance" class="headerlink" title="Problems where ML significantly surpasses human-level perfornmance"></a>Problems where ML significantly surpasses human-level perfornmance</h3><ul>
+<li>Online advertising</li>
+<li>Product recommendations</li>
+<li>Logistics (predicting transit time)</li>
+<li>Loan approvals</li>
+</ul>
+<p>当然，对于一些自然理解的任务，比如说语音识别、图像识别等，这些都是人类熟悉的方面，算法要跟上人类水平还有一定的距离，但是只要有足够大的样本量和足够复杂的模型，算法总有一天还是能超越人类的。</p>
+<h2 id="Improving-your-model-performance"><a href="#Improving-your-model-performance" class="headerlink" title="Improving your model performance"></a>Improving your model performance</h2><h3 id="The-two-fundamental-assumptions-of-supervised-learning"><a href="#The-two-fundamental-assumptions-of-supervised-learning" class="headerlink" title="The two fundamental assumptions of supervised learning"></a>The two fundamental assumptions of supervised learning</h3><ol>
+<li>You can fit the training set pretty well. (Avoidable Bias)</li>
+<li>The training set performance generalizes pretty well to the dev/test set.(Variance)</li>
+</ol>
+<h3 id="Reducing-avoidable-bias"><a href="#Reducing-avoidable-bias" class="headerlink" title="Reducing avoidable bias"></a>Reducing avoidable bias</h3><ul>
+<li>Train bigger model</li>
+<li>Train longer/better optimization algorithms (momentum, RMSprop, Adam)</li>
+<li>NN architecture/hyperparameter search (RNN, CNN)</li>
+</ul>
+<h3 id="Reducing-variance"><a href="#Reducing-variance" class="headerlink" title="Reducing variance"></a>Reducing variance</h3><ul>
+<li>More data</li>
+<li>Regularization (L2, dropout, data augmentation)</li>
+<li>NN architecture/hyperparameter search </li>
+</ul>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://www.coursera.org/learn/machine-learning-projects/home/week/1" target="_blank" rel="noopener">Structuring Machine Learning Projects - Week 1</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/">Structuring Machine Learning Projects - Week 1 - (2)</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2018年04月06日 - 20:04</p>
+
+  <p><span>最后更新:</span>2018年04月08日 - 20:04</p>
+
+  <p><span>原始链接:</span><a href="/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/" title="Structuring Machine Learning Projects - Week 1 - (2)">http://kibo.tech/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"><i class="fa fa-tag"></i> Deep Learning</a>
+          
+            <a href="/tags/Neural-Networks/" rel="tag"><i class="fa fa-tag"></i> Neural Networks</a>
+          
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/03/26-Structuring-Machine-Learning-Projects-Week-1 17.02.59/" rel="next" title="Structuring Machine Learning Projects - Week 1 - (1)">
+                <i class="fa fa-chevron-left"></i> Structuring Machine Learning Projects - Week 1 - (1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/09/28-Structuring-Machine-Learning-Projects-Week-2 17.02.59/" rel="prev" title="Structuring Machine Learning Projects - Week 2 - (1)">
+                Structuring Machine Learning Projects - Week 2 - (1) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Comparing-to-human-level-performance"><span class="nav-number">1.</span> <span class="nav-text">Comparing to human-level performance</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-human-level-performance"><span class="nav-number">1.1.</span> <span class="nav-text">Why human-level performance ?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Avoidable-bias"><span class="nav-number">1.2.</span> <span class="nav-text">Avoidable bias</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Understanding-human-level-performance"><span class="nav-number">1.3.</span> <span class="nav-text">Understanding human-level performance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Surpassing-human-level-performance"><span class="nav-number">1.4.</span> <span class="nav-text">Surpassing human-level performance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Problems-where-ML-significantly-surpasses-human-level-perfornmance"><span class="nav-number">1.4.1.</span> <span class="nav-text">Problems where ML significantly surpasses human-level perfornmance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Improving-your-model-performance"><span class="nav-number">1.5.</span> <span class="nav-text">Improving your model performance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-two-fundamental-assumptions-of-supervised-learning"><span class="nav-number">1.5.1.</span> <span class="nav-text">The two fundamental assumptions of supervised learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reducing-avoidable-bias"><span class="nav-number">1.5.2.</span> <span class="nav-text">Reducing avoidable bias</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reducing-variance"><span class="nav-number">1.5.3.</span> <span class="nav-text">Reducing variance</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- ҳ����С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

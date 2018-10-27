@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,RNN,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这一部分继续对RNN的相关知识进行深化讲解，比如RNN的类型介绍、语言模型、序列生成和梯度消失等，由于课程中许多内容是关于自然语言处理领域的，本人并不是这个方向，但也想大概了解学习一下这方面的知识，在这里所做的笔记可能并不专业，仅作为自己的总结和理解。欢迎大家关注！">
+<meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,RNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sequence Models - Week 1 - (2)">
+<meta property="og:url" content="http://kibo.tech/2018/06/25/48-Sequence-Models-Week-1-2/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="这一部分继续对RNN的相关知识进行深化讲解，比如RNN的类型介绍、语言模型、序列生成和梯度消失等，由于课程中许多内容是关于自然语言处理领域的，本人并不是这个方向，但也想大概了解学习一下这方面的知识，在这里所做的笔记可能并不专业，仅作为自己的总结和理解。欢迎大家关注！">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18062501.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18062502.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18062503.png">
+<meta property="og:updated_time" content="2018-07-20T06:12:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sequence Models - Week 1 - (2)">
+<meta name="twitter:description" content="这一部分继续对RNN的相关知识进行深化讲解，比如RNN的类型介绍、语言模型、序列生成和梯度消失等，由于课程中许多内容是关于自然语言处理领域的，本人并不是这个方向，但也想大概了解学习一下这方面的知识，在这里所做的笔记可能并不专业，仅作为自己的总结和理解。欢迎大家关注！">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18062501.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2018/06/25/48-Sequence-Models-Week-1-2/">
+
+
+
+
+
+  <title>Sequence Models - Week 1 - (2) | Foresee</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2018/06/25/48-Sequence-Models-Week-1-2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Sequence Models - Week 1 - (2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T08:20:04+08:00">
+                2018-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Course/" itemprop="url" rel="index">
+                    <span itemprop="name">Course</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这一部分继续对RNN的相关知识进行深化讲解，比如RNN的类型介绍、语言模型、序列生成和梯度消失等，由于课程中许多内容是关于自然语言处理领域的，本人并不是这个方向，但也想大概了解学习一下这方面的知识，在这里所做的笔记可能并不专业，仅作为自己的总结和理解。欢迎大家关注！</p>
+<a id="more"></a>
+<h1 id="Recurrent-Neural-Networks"><a href="#Recurrent-Neural-Networks" class="headerlink" title="Recurrent Neural Networks"></a>Recurrent Neural Networks</h1><h2 id="Different-types-of-RNNs"><a href="#Different-types-of-RNNs" class="headerlink" title="Different types of RNNs"></a>Different types of RNNs</h2><p>本节内容主要参考了博文 <a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/" target="_blank" rel="noopener">The Unreasonable Effectiveness of Recurrent Neural Networks</a> 的内容，作者是Andrej Karpathy，也是深度学习中计算机视觉领域的大神了。</p>
+<p>在之前我们介绍RNN时，就说到训练样本中输入的长度 $T_x$ 和输出的长度 $T_y$ 可以是不相同的。我们之前举的姓名识别的例子，其输入长度和输出长度是相同的，这样的RNN我们称为是多对多的结构 (many-to-many architecture)，即多个输入多个输出。</p>
+<p>其次还有多对一的结构 (many-to-one architexture)，例如语义分类，对于一句电影评论，<em>“There is nothing to like in this movie.”</em> ，8个单词依次输入后输出一个从1至5的等级分数。</p>
+<p>另外还有一对一 (one-to-one) 和一对多 (one-to-many) 的结构，一对一结构相对简单，一般比较少运用到。而一对多结构通常用在音乐生成方面，用一个输入指定生成音乐的类型，或者音乐的第1个音符，即使你不知道输入什么，你也可以不输入，或者输入零向量。</p>
+<p>通常，多对多是RNN中最常使用的一种结构。而多对多也分两种情形，一种是输入和输出长度相等，另一种是输入和输出长度不一致。例如机器翻译，输入一种语言，经过翻译后输出另一种语言，其长度就可能不一致。总的来说，RNN 的类型主要分为5种，见下图：</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18062501.png" alt=""></p>
+<h2 id="Language-model-and-sequence-generation"><a href="#Language-model-and-sequence-generation" class="headerlink" title="Language model and sequence generation"></a>Language model and sequence generation</h2><h3 id="What-is-language-modelling"><a href="#What-is-language-modelling" class="headerlink" title="What is language modelling?"></a>What is language modelling?</h3><p>语言建模是当前自然语言处理领域十分基本而又重要的一个任务，这也是RNN处理效果比较好的一个应用方面。</p>
+<p>当你在建立一个语音识别系统时，假设你听到一句话：<em>“The apple and pear salad was delicious.”</em> ，将这句话转化成文本时，到底是下面哪种情况呢？</p>
+<ul>
+<li><em>The apple and pair salad.</em></li>
+<li><em>The apple and pear salad.</em></li>
+</ul>
+<p>尽管两句话听起来完全一模一样，但一个好的语音识别系统会自动辨别选择更合理的一句，这就是语言模型的功能了，它可以计算两句话各自出现的可能性。例如，第一句出现的概率为 $3.2 \times 10^{-13}$，而第二句出现的概率为 $5.7 \times 10^{-10}$，显然相较于第一句，第二句出现的可能性更大，那么语音识别系统就选择第二句转化为文本。</p>
+<h3 id="Language-modelling-with-an-RNN"><a href="#Language-modelling-with-an-RNN" class="headerlink" title="Language modelling with an RNN"></a>Language modelling with an RNN</h3><p>通过RNN建立语言模型，首先我们需要一个包含大量英文文本语料 (word corpus) 的训练集。假设在训练集中有一句话：<em>“Cats average 15 hours of sleep a day.”</em>。那么开始我们会进行分词，建立一个长度为 10,000 的词汇表，然后将句中的8个词转化为对应的词向量。其次我们要识别一个句子在什么时候截止，那么就要添加一个 <code>&lt;EOS&gt;</code>标记，表示 end of sentence. 这样，这句话就存在9个片段，8个词语和一个标记，分别记为 $y^{\langle t \rangle},t=1,2,\dots,9$。</p>
+<p>若是出现了在词汇表中不存在的单词，那么我们将该单词用 <code>&lt;UNK&gt;</code>进行替换，表示 unknown words。 </p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18062502.png" alt=""></p>
+<p>做好以上步骤后，我们开始建立RNN，如上图。在这个RNN中，上一时间步的实际值（即句中的每个单词，非预测值）作为下一时间步的输入，即 $x^{\langle t \rangle}=y^{\langle t-1 \rangle}$。那么在第1个时间步中，初始输入为零向量，即 $x^{\langle 1 \rangle}=\overrightarrow{0}$，并进行 softmax 预测，输出为词汇表中（长度为10,002，除了10,000个词汇表中原有的词汇，还包括<code>&lt;EOS&gt;</code>和<code>&lt;UNK&gt;</code>两个标记）每个单词在句首出现的概率，即输出的维度为10,002 。</p>
+<p>接下来第2个时间步，输入为 $y^{<1>}$ ，即第1个单词 <em>Cats</em>。输出同样为 softmax 预测，计算的是词汇表中所有单词在 <em>“Cats”</em> 为前提条件下出现的概率，即 $P(\cdots|”Cats”)$。同时，在第3个时间步，输入$y^{\langle 2 \rangle}$，计算所有单词在 <em>“Cats average”</em> 为前提条件下出现的概率，即 $P(\cdots|”Cats \ average”)$。</1></p>
+<p>依次类推。根据全概率公式，显然可以计算整句话出现的概率，我们以前3个单词共同出现的概率计算为例：<br>$$<br>P(y^{\langle 1 \rangle},y^{\langle 2 \rangle},y^{\langle 3 \rangle})=P(y^{\langle 1 \rangle}) \cdot P(y^{\langle 2 \rangle}|y^{\langle 1 \rangle}) \cdot P(y^{\langle 3 \rangle}|y^{\langle 1 \rangle},y^{\langle 2 \rangle})<br>$$<br>最后计算损失函数，softmax预测时，我们一般选择的损失函数为：<br>$$<br>L(\hat{y}^{\langle t \rangle},y^{\langle t \rangle})=-\sum_t y_i^{\langle t \rangle} \log \hat{y}_i^{\langle t \rangle} \<br>L=\sum_t L^{\langle t \rangle}(\hat{y}^{\langle t \rangle},y^{\langle t \rangle})<br>$$</p>
+<p>##Sampling novel sequences</p>
+<h3 id="Sampling-a-sequence-from-a-trained-RNN"><a href="#Sampling-a-sequence-from-a-trained-RNN" class="headerlink" title="Sampling a sequence from a trained RNN"></a>Sampling a sequence from a trained RNN</h3><p>当我们训练了一个序列模型后，我们想知道这个模型到底学习到了什么，那么就要进行序列随机抽样（这样翻译好像不太合适，大家可根据建模的过程进行理解），简单来说其作用就是看看已经训练好的模型效果好不好，是否能自动生成有意义的文本。模型见下图：</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18062503.png" alt=""></p>
+<p>已知训练好了一个语言模型，首先我们输出初始零向量，$x^{\langle 1 \rangle}=\overrightarrow{0}​$，让其预测出 $\hat{y}^{\langle 1 \rangle}​$ ，显然 $\hat{y}^{\langle 1 \rangle}​$ 是所有词汇出现概率的向量，然后对 $\hat{y}^{\langle 1 \rangle}​$ 向量进行随机取样，python命令为 <code>np.random.choice()</code> ，随机抽取一个概率值所对应的某个单词的词向量作为下一个时间步的输入。</p>
+<p>接下来输出 $\hat{y}^{\langle 2 \rangle}$ ，再次进行随机抽样，抽取一个概率值所对应的某个单词的词向量作为 $x^{\langle 3 \rangle}$ 的输入，以此类推，直到随机抽样产生一个 <code>&lt;EOS&gt;</code> 标记停止。如果你的词汇表中不包含 <code>&lt;EOS&gt;</code> 标记，那么你可以决定抽样的次数，当到达该次数的时间步时，就停止继续抽样。</p>
+<p>在随机抽样时，不可避免地会抽到 <code>UNK</code> 标记，即词汇表中不存在的单词。如果你不希望模型生成这样的文本，那么可以拒绝此次抽样结果，重新进行随机抽样。当然你也可以保留这种未知单词的结果。</p>
+<h3 id="Character-level-language-model"><a href="#Character-level-language-model" class="headerlink" title="Character-level language model"></a>Character-level language model</h3><p>当前我们所建立的 RNN 都是基于英语单词的水平上的，同样你也可以建立一个基于字母水平的 RNN。那么你的词汇表就全是字母，或是和标点符号以及数字了。如上例中，<em>“Cats average 15 hours of sleep a day.”</em> ，则 $y^{\langle 1 \rangle}=”C”,y^{\langle 2 \rangle}=”a”,y^{\langle 3 \rangle}=”t”,\dots$ . 以此类推。</p>
+<p>使用字母水平的语言模型有好有坏，优点在于你不会遇到<code>&lt;UNK&gt;</code>的单词，因为所有单词都由字母拼写而成。缺点在于每句话都可能是一个很长的序列，不利于捕捉上下文之间的特征，且需要消耗大量的计算资源和训练成本。</p>
+<p>一般字母水平的语言模型并不常用，除非存在某些大量的未知单词时才会选择使用字母水平的语言模型。</p>
+<h2 id="Vanishing-gradient-with-RNNs"><a href="#Vanishing-gradient-with-RNNs" class="headerlink" title="Vanishing gradient with RNNs"></a>Vanishing gradient with RNNs</h2><p>梯度消失是 RNN 最大的一个问题之一，它是如何产生的呢？我们举个例子，假设有下面两句话：</p>
+<ul>
+<li><em>“The cat which already ate and maybe already ate a bunch of food that was delicious …… , was full.”</em></li>
+<li><em>“The cats which already ate and maybe already ate a bunch of food that was delicious …… , were full.”</em></li>
+</ul>
+<p>两句话的区别在于主语和谓语的单复数不同，由上看来，谓语的形式取决于主语是单数还是复数，尽管中间部分很长，这就存在了下文对上文有一个很强的依赖性，然而基本的RNN未必能捕捉到这种强依赖性的特征。</p>
+<p>为什么呢？我们之前曾讨论过对于一个深度的神经网络，它会存在一个梯度消失的问题。因为在深度神经网络中，在前向传播之后进行反向传播时，由于层数太多，梯度很容易减小为0，很难影响到前面层的权重的更新迭代，也很难影响到前面层的计算。</p>
+<p>对于RNN来说也是一样的，如果一个句子很长，由于梯度消失，反向传播时很难可以更新前面时间步的权重，从未无法记忆前面的特征，对后文做出有效的预测。RNN仅仅能根据距离较近的特征做出预测。</p>
+<p>除了梯度消失，还可能存在梯度爆炸问题。但在RNN中，梯度消失问题比梯度爆炸更为难以解决，因为梯度爆炸问题更容易被发现。当存在梯度爆炸问题时，解决办法是梯度裁剪 (gradient clipping)：通过设定阈值，当梯度向量大于阈值时，对梯度向量进行重新调整到在阈值之内，从而避免梯度爆炸。</p>
+<p>对于梯度消失的解决办法，在接下来的博文中会进行详细的介绍。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://www.coursera.org/learn/nlp-sequence-models/home/week/1" target="_blank" rel="noopener">Sequence Models - Week 1</a></li>
+<li><a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/" target="_blank" rel="noopener">The Unreasonable Effectiveness of Recurrent Neural Networks</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2018/06/25/48-Sequence-Models-Week-1-2/">Sequence Models - Week 1 - (2)</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2018年06月25日 - 08:06</p>
+
+  <p><span>最后更新:</span>2018年07月20日 - 14:07</p>
+
+  <p><span>原始链接:</span><a href="/2018/06/25/48-Sequence-Models-Week-1-2/" title="Sequence Models - Week 1 - (2)">http://kibo.tech/2018/06/25/48-Sequence-Models-Week-1-2/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2018/06/25/48-Sequence-Models-Week-1-2/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"><i class="fa fa-tag"></i> Deep Learning</a>
+          
+            <a href="/tags/Neural-Networks/" rel="tag"><i class="fa fa-tag"></i> Neural Networks</a>
+          
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          
+            <a href="/tags/RNN/" rel="tag"><i class="fa fa-tag"></i> RNN</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/06/47-Sequence-Models-Week-1-1/" rel="next" title="Sequence Models - Week 1 - (1)">
+                <i class="fa fa-chevron-left"></i> Sequence Models - Week 1 - (1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/25/49-Sequence-Models-Week-1-3/" rel="prev" title="Sequence Models - Week 1 - (3)">
+                Sequence Models - Week 1 - (3) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Recurrent-Neural-Networks"><span class="nav-number">1.</span> <span class="nav-text">Recurrent Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Different-types-of-RNNs"><span class="nav-number">1.1.</span> <span class="nav-text">Different types of RNNs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Language-model-and-sequence-generation"><span class="nav-number">1.2.</span> <span class="nav-text">Language model and sequence generation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-language-modelling"><span class="nav-number">1.2.1.</span> <span class="nav-text">What is language modelling?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Language-modelling-with-an-RNN"><span class="nav-number">1.2.2.</span> <span class="nav-text">Language modelling with an RNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sampling-a-sequence-from-a-trained-RNN"><span class="nav-number">1.2.3.</span> <span class="nav-text">Sampling a sequence from a trained RNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Character-level-language-model"><span class="nav-number">1.2.4.</span> <span class="nav-text">Character-level language model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vanishing-gradient-with-RNNs"><span class="nav-number">1.3.</span> <span class="nav-text">Vanishing gradient with RNNs</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- ҳ����С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

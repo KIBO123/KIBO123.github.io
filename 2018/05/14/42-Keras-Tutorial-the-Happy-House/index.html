@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,Deep Learning,Keras,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Keras was developed to enable deep learning engineers to build and experiment with different models very quickly. Just as TensorFlow is a higher-level framework than Python, Keras is an even higher-le">
+<meta name="keywords" content="Python,Deep Learning,Keras">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keras Tutorial - the Happy House">
+<meta property="og:url" content="http://kibo.tech/2018/05/14/42-Keras-Tutorial-the-Happy-House/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="Keras was developed to enable deep learning engineers to build and experiment with different models very quickly. Just as TensorFlow is a higher-level framework than Python, Keras is an even higher-le">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051401.jpg">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051402.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051403.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051404.png">
+<meta property="og:updated_time" content="2018-05-14T03:06:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Keras Tutorial - the Happy House">
+<meta name="twitter:description" content="Keras was developed to enable deep learning engineers to build and experiment with different models very quickly. Just as TensorFlow is a higher-level framework than Python, Keras is an even higher-le">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051401.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2018/05/14/42-Keras-Tutorial-the-Happy-House/">
+
+
+
+
+
+  <title>Keras Tutorial - the Happy House | Foresee</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2018/05/14/42-Keras-Tutorial-the-Happy-House/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Keras Tutorial - the Happy House</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-14T10:02:25+08:00">
+                2018-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Work/" itemprop="url" rel="index">
+                    <span itemprop="name">Work</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Keras was developed to enable deep learning engineers to build and experiment with different models very quickly. Just as TensorFlow is a higher-level framework than Python, Keras is an even higher-level framework and provides additional abstractions. Being able to go from idea to result with the least possible delay is key to finding good models. However, Keras is more restrictive than the lower-level frameworks, so there are some very complex models that you can implement in TensorFlow but not (without more difficulty) in Keras. That being said, Keras will work fine for many common models. </p>
+<a id="more"></a>
+<p>Welcome to the first assignment of week 2. In this assignment, you will:</p>
+<ol>
+<li>Learn to use Keras, a high-level neural networks API (programming framework), written in Python and capable of running on top of several lower-level frameworks including TensorFlow and CNTK.</li>
+<li>See how you can in a couple of hours build a deep learning algorithm.</li>
+</ol>
+<p>In this exercise, you’ll work on the “Happy House” problem, which we’ll explain below. Let’s load the required packages and solve the problem of the Happy House! </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">from keras import layers</span><br><span class="line">from keras.layers import Input, Dense, Activation, ZeroPadding2D, BatchNormalization, Flatten, Conv2D</span><br><span class="line">from keras.layers import AveragePooling2D, MaxPooling2D, Dropout, GlobalMaxPooling2D, GlobalAveragePooling2D</span><br><span class="line">from keras.models import Model</span><br><span class="line">from keras.preprocessing import image</span><br><span class="line">from keras.utils import layer_utils</span><br><span class="line">from keras.utils.data_utils import get_file</span><br><span class="line">from keras.applications.imagenet_utils import preprocess_input</span><br><span class="line">import pydot</span><br><span class="line">from IPython.display import SVG</span><br><span class="line">from keras.utils.vis_utils import model_to_dot</span><br><span class="line">from keras.utils import plot_model</span><br><span class="line">from kt_utils import *</span><br><span class="line"></span><br><span class="line">import keras.backend as K</span><br><span class="line">K.set_image_data_format(&apos;channels_last&apos;)</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">from matplotlib.pyplot import imshow</span><br><span class="line"></span><br><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+<p><strong>Note</strong>: As you can see, we’ve imported a lot of functions from Keras. You can use them easily just by calling them directly in the notebook. Ex: <code>X = Input(...)</code> or <code>X = ZeroPadding2D(...)</code>. </p>
+<h1 id="The-Happy-House"><a href="#The-Happy-House" class="headerlink" title="The Happy House"></a>The Happy House</h1><p>For your next vacation, you decided to spend a week with five of your friends from school. It is a very convenient house with many things to do nearby. But the most important benefit is that everybody has commited to be happy when they are in the house. So anyone wanting to enter the house must prove their current state of happiness.</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051401.jpg" alt=""></p>
+<p>As a deep learning expert, to make sure the “Happy” rule is strictly applied, you are going to build an algorithm which that uses pictures from the front door camera to check if the person is happy or not. The door should open only if the person is happy.</p>
+<p>You have gathered pictures of your friends and yourself, taken by the front-door camera. The dataset is labbeled.</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051402.png" alt=""></p>
+<p>Run the following code to normalize the dataset and learn about its shapes. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes = load_dataset()</span><br><span class="line"></span><br><span class="line"># Normalize image vectors</span><br><span class="line">X_train = X_train_orig/255.</span><br><span class="line">X_test = X_test_orig/255.</span><br><span class="line"></span><br><span class="line"># Reshape</span><br><span class="line">Y_train = Y_train_orig.T</span><br><span class="line">Y_test = Y_test_orig.T</span><br><span class="line"></span><br><span class="line">print (&quot;number of training examples = &quot; + str(X_train.shape[0]))</span><br><span class="line">print (&quot;number of test examples = &quot; + str(X_test.shape[0]))</span><br><span class="line">print (&quot;X_train shape: &quot; + str(X_train.shape))</span><br><span class="line">print (&quot;Y_train shape: &quot; + str(Y_train.shape))</span><br><span class="line">print (&quot;X_test shape: &quot; + str(X_test.shape))</span><br><span class="line">print (&quot;Y_test shape: &quot; + str(Y_test.shape))</span><br></pre></td></tr></table></figure>
+<p>Output:</p>
+<p>number of training examples = 600<br>number of test examples = 150<br>X_train shape: (600, 64, 64, 3)<br>Y_train shape: (600, 1)<br>X_test shape: (150, 64, 64, 3)<br>Y_test shape: (150, 1)</p>
+<p><strong>Details of the “Happy” dataset</strong>:</p>
+<ul>
+<li>Images are of shape (64,64,3)</li>
+<li>Training: 600 pictures</li>
+<li>Test: 150 pictures</li>
+</ul>
+<p>It is now time to solve the “Happy” Challenge.</p>
+<h1 id="Building-a-model-in-Keras"><a href="#Building-a-model-in-Keras" class="headerlink" title="Building a model in Keras"></a>Building a model in Keras</h1><p>Keras is very good for rapid prototyping. In just a short time you will be able to build a model that achieves outstanding results.</p>
+<p>Here is an example of a model in Keras:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">def model(input_shape):</span><br><span class="line">    # Define the input placeholder as a tensor with shape input_shape. Think of this as your input image!</span><br><span class="line">    X_input = Input(input_shape)</span><br><span class="line"></span><br><span class="line">    # Zero-Padding: pads the border of X_input with zeroes</span><br><span class="line">    X = ZeroPadding2D((3, 3))(X_input)</span><br><span class="line"></span><br><span class="line">    # CONV -&gt; BN -&gt; RELU Block applied to X</span><br><span class="line">    X = Conv2D(32, (7, 7), strides = (1, 1), name = &apos;conv0&apos;)(X)</span><br><span class="line">    X = BatchNormalization(axis = 3, name = &apos;bn0&apos;)(X)</span><br><span class="line">    X = Activation(&apos;relu&apos;)(X)</span><br><span class="line"></span><br><span class="line">    # MAXPOOL</span><br><span class="line">    X = MaxPooling2D((2, 2), name=&apos;max_pool&apos;)(X)</span><br><span class="line"></span><br><span class="line">    # FLATTEN X (means convert it to a vector) + FULLYCONNECTED</span><br><span class="line">    X = Flatten()(X)</span><br><span class="line">    X = Dense(1, activation=&apos;sigmoid&apos;, name=&apos;fc&apos;)(X)</span><br><span class="line"></span><br><span class="line">    # Create model. This creates your Keras model instance, you&apos;ll use this instance to train/test the model.</span><br><span class="line">    model = Model(inputs = X_input, outputs = X, name=&apos;HappyModel&apos;)</span><br><span class="line"></span><br><span class="line">    return model</span><br></pre></td></tr></table></figure>
+<p>Note that Keras uses a different convention with variable names than we’ve previously used with numpy and TensorFlow. In particular, rather than creating and assigning a new variable on each step of forward propagation such as <code>X</code>, <code>Z1</code>, <code>A1</code>, <code>Z2</code>, <code>A2</code>, etc. for the computations for the different layers, in Keras code each line above just reassigns <code>X</code> to a new value using <code>X = ...</code>. In other words, during each step of forward propagation, we are just writing the latest value in the commputation into the same variable <code>X</code>. The only exception was <code>X_input</code>, which we kept separate and did not overwrite, since we needed it at the end to create the Keras model instance (<code>model = Model(inputs = X_input, ...)</code> above).</p>
+<p><strong>Exercise</strong>: Implement a <code>HappyModel()</code>. This assignment is more open-ended than most. We suggest that you start by implementing a model using the architecture we suggest, and run through the rest of this assignment using that as your initial model. But after that, come back and take initiative to try out other model architectures. For example, you might take inspiration from the model above, but then vary the network architecture and hyperparameters however you wish. You can also use other functions such as <code>AveragePooling2D()</code>, <code>GlobalMaxPooling2D()</code>, <code>Dropout()</code>.</p>
+<p><strong>Note</strong>: You have to be careful with your data’s shapes. Use what you’ve learned in the videos to make sure your convolutional, pooling and fully-connected layers are adapted to the volumes you’re applying it to.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">def HappyModel(input_shape):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Implementation of the HappyModel.</span><br><span class="line">    </span><br><span class="line">    Arguments:</span><br><span class="line">    input_shape -- shape of the images of the dataset</span><br><span class="line"></span><br><span class="line">    Returns:</span><br><span class="line">    model -- a Model() instance in Keras</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    </span><br><span class="line">    ### START CODE HERE ###</span><br><span class="line">    # Feel free to use the suggested outline in the text above to get started, and run through the whole</span><br><span class="line">    # exercise (including the later portions of this notebook) once. The come back also try out other</span><br><span class="line">    # network architectures as well. </span><br><span class="line">    # Define the input placeholder as a tensor with shape input_shape. Think of this as your input image!</span><br><span class="line">    X_input = Input(input_shape)</span><br><span class="line"></span><br><span class="line">    # Zero-Padding: pads the border of X_input with zeroes</span><br><span class="line">    #X = ZeroPadding2D((3, 3))(X_input)</span><br><span class="line"></span><br><span class="line">    # CONV -&gt; BN -&gt; RELU Block applied to X</span><br><span class="line">    #X = Conv2D(32, (7, 7), strides = (1, 1), name = &apos;conv0&apos;)(X_input)</span><br><span class="line">    #X = BatchNormalization(axis = 3, name = &apos;bn0&apos;)(X)</span><br><span class="line">    #X = Activation(&apos;relu&apos;)(X)</span><br><span class="line"></span><br><span class="line">    X = Conv2D(32, (3, 3), strides = (1, 1), name = &apos;conv0&apos;)(X_input)</span><br><span class="line">    X = BatchNormalization(axis = 3, name = &apos;bn0&apos;)(X)</span><br><span class="line">    X = Activation(&apos;relu&apos;)(X)</span><br><span class="line">    </span><br><span class="line">    # MAXPOOL</span><br><span class="line">    X = MaxPooling2D((2, 2), name=&apos;max_pool&apos;)(X)</span><br><span class="line"></span><br><span class="line">    # FLATTEN X (means convert it to a vector) + FULLYCONNECTED</span><br><span class="line">    X = Flatten()(X)</span><br><span class="line">    X = Dense(1, activation=&apos;sigmoid&apos;, name=&apos;fc&apos;)(X)</span><br><span class="line"></span><br><span class="line">    # Create model. This creates your Keras model instance, you&apos;ll use this instance to train/test the model.</span><br><span class="line">    model = Model(inputs = X_input, outputs = X, name=&apos;HappyModel&apos;)</span><br><span class="line">    </span><br><span class="line">    ### END CODE HERE ###</span><br><span class="line">    </span><br><span class="line">    return model</span><br></pre></td></tr></table></figure>
+<p>You have now built a function to describe your model. To train and test this model, there are four steps in Keras:</p>
+<ol>
+<li>Create the model by calling the function above</li>
+<li>Compile the model by calling <code>model.compile(optimizer = &quot;...&quot;, loss = &quot;...&quot;, metrics = [&quot;accuracy&quot;])</code></li>
+<li>Train the model on train data by calling <code>model.fit(x = ..., y = ..., epochs = ..., batch_size = ...)</code></li>
+<li>Test the model on test data by calling <code>model.evaluate(x = ..., y = ...)</code></li>
+</ol>
+<p>If you want to know more about <code>model.compile()</code>, <code>model.fit()</code>, <code>model.evaluate()</code> and their arguments, refer to the official <a href="https://keras.io/models/model/" target="_blank" rel="noopener">Keras documentation</a>.</p>
+<p><strong>Exercise</strong>: Implement step 1, i.e. create the model.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">### START CODE HERE ### (1 line)</span><br><span class="line">happyModel = HappyModel((64,64,3))</span><br><span class="line">### END CODE HERE ###</span><br></pre></td></tr></table></figure>
+<p><strong>Exercise</strong>: Implement step 2, i.e. compile the model to configure the learning process. Choose the 3 arguments of <code>compile()</code> wisely. Hint: the Happy Challenge is a binary classification problem. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">### START CODE HERE ### (1 line)</span><br><span class="line">happyModel.compile(optimizer = &quot;Adam&quot;, loss = &quot;binary_crossentropy&quot;, metrics = [&quot;accuracy&quot;])</span><br><span class="line">### END CODE HERE ###</span><br></pre></td></tr></table></figure>
+<p><strong>Exercise</strong>: Implement step 3, i.e. train the model. Choose the number of epochs and the batch size. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">### START CODE HERE ### (1 line)</span><br><span class="line">happyModel.fit(x = X_train, y = Y_train, epochs = 20, batch_size = 12)</span><br><span class="line">### END CODE HERE ###</span><br></pre></td></tr></table></figure>
+<p>Epoch 1/20<br>600/600 [==============================] - 9s - loss: 0.6325 - acc: 0.7983    Epoch 2/20<br>600/600 [==============================] - 8s - loss: 0.2446 - acc: 0.9067   Epoch 3/20<br>600/600 [==============================] - 9s - loss: 0.2561 - acc: 0.9217    Epoch 4/20<br>600/600 [==============================] - 8s - loss: 0.1242 - acc: 0.9567    Epoch 5/20<br>600/600 [==============================] - 8s - loss: 0.0767 - acc: 0.9767    Epoch 6/20<br>600/600 [==============================] - 8s - loss: 0.0568 - acc: 0.9850     Epoch 7/20<br>600/600 [==============================] - 9s - loss: 0.0530 - acc: 0.9783     Epoch 8/20<br>600/600 [==============================] - 9s - loss: 0.0596 - acc: 0.9817     Epoch 9/20<br>600/600 [==============================] - 9s - loss: 0.1353 - acc: 0.9583     Epoch 10/20<br>600/600 [==============================] - 9s - loss: 0.0962 - acc: 0.9733     Epoch 11/20<br>600/600 [==============================] - 9s - loss: 0.0702 - acc: 0.9783     Epoch 12/20<br>600/600 [==============================] - 9s - loss: 0.0369 - acc: 0.9850     Epoch 13/20<br>600/600 [==============================] - 9s - loss: 0.0613 - acc: 0.9800     Epoch 14/20<br>600/600 [==============================] - 10s - loss: 0.0885 - acc: 0.9700   Epoch 15/20<br>600/600 [==============================] - 9s - loss: 0.0483 - acc: 0.9850     Epoch 16/20<br>600/600 [==============================] - 10s - loss: 0.0658 - acc: 0.9833   Epoch 17/20<br>600/600 [==============================] - 10s - loss: 0.0229 - acc: 0.9900   Epoch 18/20<br>600/600 [==============================] - 10s - loss: 0.0031 - acc: 0.9983   Epoch 19/20<br>600/600 [==============================] - 9s - loss: 0.0293 - acc: 0.9883     Epoch 20/20<br>600/600 [==============================] - 9s - loss: 0.0186 - acc: 0.9900 </p>
+<p>Note that if you run <code>fit()</code> again, the <code>model</code> will continue to train with the parameters it has already learnt instead of reinitializing them.</p>
+<p><strong>Exercise</strong>: Implement step 4, i.e. test/evaluate the model.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">### START CODE HERE ### (1 line)</span><br><span class="line">preds = happyModel.evaluate(x = X_test, y = Y_test)</span><br><span class="line">### END CODE HERE ###</span><br><span class="line">print()</span><br><span class="line">print (&quot;Loss = &quot; + str(preds[0]))</span><br><span class="line">print (&quot;Test Accuracy = &quot; + str(preds[1]))</span><br></pre></td></tr></table></figure>
+<p>150/150 [==============================] - 1s    </p>
+<p>Loss = 0.0749938476086<br>Test Accuracy = 0.973333337307</p>
+<p>If your <code>happyModel()</code> function worked, you should have observed much better than random-guessing (50%) accuracy on the train and test sets.</p>
+<p>To give you a point of comparison, our model gets around <strong>95% test accuracy in 40 epochs</strong> (and 99% train accuracy) with a mini batch size of 16 and “adam” optimizer. But our model gets decent accuracy after just 2-5 epochs, so if you’re comparing different models you can also train a variety of models on just a few epochs and see how they compare.</p>
+<p>If you have not yet achieved a very good accuracy (let’s say more than 80%), here’re some things you can play around with to try to achieve it:</p>
+<ul>
+<li>Try using blocks of CONV-&gt;BATCHNORM-&gt;RELU such as:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X = Conv2D(32, (3, 3), strides = (1, 1), name = &apos;conv0&apos;)(X)</span><br><span class="line">X = BatchNormalization(axis = 3, name = &apos;bn0&apos;)(X)</span><br><span class="line">X = Activation(&apos;relu&apos;)(X)</span><br></pre></td></tr></table></figure>
+<p>until your height and width dimensions are quite low and your number of channels quite large (≈32 for example). You are encoding useful information in a volume with a lot of channels. You can then flatten the volume and use a fully-connected layer.</p>
+<ul>
+<li>You can use MAXPOOL after such blocks. It will help you lower the dimension in height and width.</li>
+<li>Change your optimizer. We find Adam works well.</li>
+<li>If the model is struggling to run and you get memory issues, lower your batch_size (12 is usually a good compromise)</li>
+<li>Run on more epochs, until you see the train accuracy plateauing.</li>
+</ul>
+<p>Even if you have achieved a good accuracy, please feel free to keep playing with your model to try to get even better results.</p>
+<p><strong>Note</strong>: If you perform hyperparameter tuning on your model, the test set actually becomes a dev set, and your model might end up overfitting to the test (dev) set. But just for the purpose of this assignment, we won’t worry about that here.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>Congratulations, you have solved the Happy House challenge!</p>
+<p>Now, you just need to link this model to the front-door camera of your house. We unfortunately won’t go into the details of how to do that here.</p>
+<p><strong>What we would like you to remember from this assignment:</strong></p>
+<ul>
+<li>Keras is a tool we recommend for rapid prototyping. It allows you to quickly try out different model architectures. Are there any applications of deep learning to your daily life that you’d like to implement using Keras?</li>
+<li>Remember how to code a model in Keras and the four steps leading to the evaluation of your model on the test set. Create-&gt;Compile-&gt;Fit/Train-&gt;Evaluate/Test.</li>
+</ul>
+<h1 id="Test-with-your-own-image-Optional"><a href="#Test-with-your-own-image-Optional" class="headerlink" title="Test with your own image (Optional)"></a>Test with your own image (Optional)</h1><p>Congratulations on finishing this assignment. You can now take a picture of your face and see if you could enter the Happy House. To do that:</p>
+<ol>
+<li>Click on “File” in the upper bar of this notebook, then click “Open” to go on your Coursera Hub.</li>
+<li>Add your image to this Jupyter Notebook’s directory, in the “images” folder</li>
+<li>Write your image’s name in the following code</li>
+<li>Run the code and check if the algorithm is right (0 is unhappy, 1 is happy)!</li>
+</ol>
+<p>The training/test sets were quite similar; for example, all the pictures were taken against the same background (since a front door camera is always mounted in the same position). This makes the problem easier, but a model trained on this data may or may not work on your own data. But feel free to give it a try!</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">### START CODE HERE</span><br><span class="line">img_path = &apos;images/my_image.jpg&apos;</span><br><span class="line">### END CODE HERE</span><br><span class="line"></span><br><span class="line">img = image.load_img(img_path, target_size=(64, 64))</span><br><span class="line">imshow(img)</span><br><span class="line"></span><br><span class="line">x = image.img_to_array(img)</span><br><span class="line">x = np.expand_dims(x, axis=0)</span><br><span class="line">x = preprocess_input(x)</span><br><span class="line"></span><br><span class="line">print(happyModel.predict(x))</span><br></pre></td></tr></table></figure>
+<h1 id="Other-useful-functions-in-Keras-Optional"><a href="#Other-useful-functions-in-Keras-Optional" class="headerlink" title="Other useful functions in Keras (Optional)"></a>Other useful functions in Keras (Optional)</h1><p>Two other basic features of Keras that you’ll find useful are:</p>
+<ul>
+<li><code>model.summary()</code>: prints the details of your layers in a table with the sizes of its inputs/outputs</li>
+<li><code>plot_model()</code>: plots your graph in a nice layout. You can even save it as “.png” using SVG() if you’d like to share it on social media ;). It is saved in “File” then “Open…” in the upper bar of the notebook.</li>
+</ul>
+<p>Run the following code.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">happyModel.summary()</span><br></pre></td></tr></table></figure>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051403.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plot_model(happyModel, to_file=&apos;HappyModel.png&apos;)</span><br><span class="line">SVG(model_to_dot(happyModel).create(prog=&apos;dot&apos;, format=&apos;svg&apos;))</span><br></pre></td></tr></table></figure>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051404.png" alt=""></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://www.coursera.org/learn/convolutional-neural-networks/home/week/2" target="_blank" rel="noopener">Convolutional Neural Networks - Week 2</a></li>
+<li><a href="https://keras.io/" target="_blank" rel="noopener">Keras Documentation</a></li>
+<li><a href="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/Keras/Keras%20Tutorial.rar" target="_blank" rel="noopener">Happy House Datasets</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2018/05/14/42-Keras-Tutorial-the-Happy-House/">Keras Tutorial - the Happy House</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2018年05月14日 - 10:05</p>
+
+  <p><span>最后更新:</span>2018年05月14日 - 11:05</p>
+
+  <p><span>原始链接:</span><a href="/2018/05/14/42-Keras-Tutorial-the-Happy-House/" title="Keras Tutorial - the Happy House">http://kibo.tech/2018/05/14/42-Keras-Tutorial-the-Happy-House/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2018/05/14/42-Keras-Tutorial-the-Happy-House/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          
+            <a href="/tags/Deep-Learning/" rel="tag"><i class="fa fa-tag"></i> Deep Learning</a>
+          
+            <a href="/tags/Keras/" rel="tag"><i class="fa fa-tag"></i> Keras</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/13/41-Convolutional-Neural-Networks-Week-2-2/" rel="next" title="Convolutional Neural Networks - Week 2 - (2)">
+                <i class="fa fa-chevron-left"></i> Convolutional Neural Networks - Week 2 - (2)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/14/43-Convolutional-Neural-Networks-Week-3-1/" rel="prev" title="Convolutional Neural Networks - Week 3 - (1)">
+                Convolutional Neural Networks - Week 3 - (1) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#The-Happy-House"><span class="nav-number">1.</span> <span class="nav-text">The Happy House</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Building-a-model-in-Keras"><span class="nav-number">2.</span> <span class="nav-text">Building a model in Keras</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">3.</span> <span class="nav-text">Conclusion</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Test-with-your-own-image-Optional"><span class="nav-number">4.</span> <span class="nav-text">Test with your own image (Optional)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Other-useful-functions-in-Keras-Optional"><span class="nav-number">5.</span> <span class="nav-text">Other useful functions in Keras (Optional)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- ҳ����С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

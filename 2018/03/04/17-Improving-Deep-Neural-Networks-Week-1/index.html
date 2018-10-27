@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="吴恩达老师的深度学习课程是质量很高的一门课程，之前上过他的机器学习，听完后不能自拔，学到很多东西。对于他新开的这门深度学习，我是充满了期待，在这里将听课的一些要点和自己的学习感想记录下来，分享给大家，希望和大家共同进步！">
+<meta name="keywords" content="Deep Learning,Neural Networks,学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Improving Deep Neural Networks - Week 1 - (1)">
+<meta property="og:url" content="http://kibo.tech/2018/03/04/17-Improving-Deep-Neural-Networks-Week-1/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="吴恩达老师的深度学习课程是质量很高的一门课程，之前上过他的机器学习，听完后不能自拔，学到很多东西。对于他新开的这门深度学习，我是充满了期待，在这里将听课的一些要点和自己的学习感想记录下来，分享给大家，希望和大家共同进步！">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030302.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030301.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030401.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030402.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030403.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030404.png">
+<meta property="og:updated_time" content="2018-03-06T09:52:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Improving Deep Neural Networks - Week 1 - (1)">
+<meta name="twitter:description" content="吴恩达老师的深度学习课程是质量很高的一门课程，之前上过他的机器学习，听完后不能自拔，学到很多东西。对于他新开的这门深度学习，我是充满了期待，在这里将听课的一些要点和自己的学习感想记录下来，分享给大家，希望和大家共同进步！">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030302.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2018/03/04/17-Improving-Deep-Neural-Networks-Week-1/">
+
+
+
+
+
+  <title>Improving Deep Neural Networks - Week 1 - (1) | Foresee</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2018/03/04/17-Improving-Deep-Neural-Networks-Week-1/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Improving Deep Neural Networks - Week 1 - (1)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-04T16:28:38+08:00">
+                2018-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Course/" itemprop="url" rel="index">
+                    <span itemprop="name">Course</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>吴恩达老师的深度学习课程是质量很高的一门课程，之前上过他的机器学习，听完后不能自拔，学到很多东西。对于他新开的这门深度学习，我是充满了期待，在这里将听课的一些要点和自己的学习感想记录下来，分享给大家，希望和大家共同进步！</p>
+<a id="more"></a>
+<p>本次课是深度学习专项课程的第二门：<a href="https://www.coursera.org/learn/deep-neural-network/home/welcome" target="_blank" rel="noopener">Improving Deep Neural Networks</a> ，本文从第一周开始。</p>
+<h1 id="Setting-up-your-Machine-Learning-Application"><a href="#Setting-up-your-Machine-Learning-Application" class="headerlink" title="Setting up your Machine Learning Application"></a>Setting up your Machine Learning Application</h1><h2 id="Train-Dev-Test-sets"><a href="#Train-Dev-Test-sets" class="headerlink" title="Train / Dev / Test sets"></a>Train / Dev / Test sets</h2><ul>
+<li>Applied ML is a highly iterative process</li>
+</ul>
+<p>建立一个机器学习模型是个多次重复的过程，我们需要考虑很多参数，如神经网络的层数和节点等，还有更多的超参数，如学习率、激活函数的选择等。事实上，很难知道如何选择这些参数可以使得模型效果更好，往往我们是采用不断尝试的过程，也就是调参。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030302.png" alt=""></p>
+<p>上图便反映了建立机器学习模型中不断循环往复的过程。那么如何尽量地缩短这个过程呢？最开始也最重要的就是合理地划分 Train / dev / test set . </p>
+<ul>
+<li>Train / dev / test set</li>
+</ul>
+<p>(1) 当数据量不太大时（1万以内），Train / Test : 70% / 30% 是比较合适的，或者 Train / Dev / Test : 60% / 20% / 20%  也可以。</p>
+<p>(2) 当数据量较大时（百万级别），Train / Dev / Test : 98% / 1% / 1% ，甚至更少的 Dev / Test 都是可以接受的。</p>
+<ul>
+<li>Mismatched train/test distribution</li>
+</ul>
+<p>(1) Make sure that dev set and test set come from the same distribution.</p>
+<p>(2) Not having a test set might be okay. (Only dev set. )</p>
+<h2 id="Bias-Variance"><a href="#Bias-Variance" class="headerlink" title="Bias / Variance"></a>Bias / Variance</h2><ul>
+<li>We less talk about Bias-Variance Trade-off in deep learning.</li>
+<li>Train set error: tell you about the bias problem; Dev set error: variance problem. e.g.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HIGH VARIANCE</th>
+<th>HIGH BIAS</th>
+<th>BOTH HIGH</th>
+<th>BOTH LOW</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Train set error</td>
+<td>1%</td>
+<td>15%</td>
+<td>15%</td>
+<td>0.5%</td>
+</tr>
+<tr>
+<td>Dev set error</td>
+<td>11%</td>
+<td>16%</td>
+<td>30%</td>
+<td>1%</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Basic-“Recipe”-for-Machine-Learning"><a href="#Basic-“Recipe”-for-Machine-Learning" class="headerlink" title="Basic “Recipe” for Machine Learning"></a>Basic “Recipe” for Machine Learning</h2><p>通常在机器学习中，我们常常会以 “Bias-Variance Trade-off” 作为评价整个模型的指标。也就是说，针对一个模型，它在训练集中得到的结果如何？是否出现High Bias ？如果Bias 很小，OK。那么在验证集中得到的结果又如何？是否出现High Variance？</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030301.png" alt=""></p>
+<p>由于在过去( pre-deep learning era )，没有太好的方法在减少Bias的同时，又减少Variance，两者往往会出现冲突。因为最好的办法只有在Bias和Variance之间尽量取得平衡(Bias-Variance Trade-off)，两者之间都不太大。</p>
+<p>然而，由于数据量的急剧增多，且深度学习理论的发展，我们现在既能够保证Bias足够小（如添加隐含层、添加节点、设计更复杂的神经网络等），又能保证Variance足够低（如使用更过数据、添加正则项等），在减少任意一方的同时，也不会使另一方增大。</p>
+<p>因此，Bias-Variance Trade-off 慢慢不再成为评价深度学习模型的指标，直接以Bias和Variance为准。</p>
+<h1 id="Regularizing-your-neural-network"><a href="#Regularizing-your-neural-network" class="headerlink" title="Regularizing your neural network"></a>Regularizing your neural network</h1><h2 id="Regularization"><a href="#Regularization" class="headerlink" title="Regularization"></a>Regularization</h2><p>当模型出现 High Variance 的时候，一个很好的解决方法就是使用正则化 (Regularization) 。如何实现正则化呢？首先我们得从cost function 开始。</p>
+<ul>
+<li>Logistic Regression</li>
+</ul>
+<p>$$<br>\begin{array}{l}<br>\mathop \min \limits_{\omega ,b} J(\omega ,b)\<br>J(\omega ,b) = \frac{1}{m}\sum\limits_{i = 1}^m L( \hat{y}^{(i)},y^{(i)}) + \frac{\lambda }{2m}\left| \omega  \right|_2^2<br>\end{array}  \tag{1}<br>$$</p>
+<p>其中，$J(\omega ,b)$ 为cost function ,  $\omega  \in R^{n_x},b \in R$,   $\lambda $  为正则化参数。</p>
+<p>通常，正则项有多种形式，在上述公式中为 L2 正则项。</p>
+<p>L2 Regularization:   $ \lVert \omega \rVert_2^2=\sum\limits_{j=1}^{n_x} \omega_j^2=\omega^T\omega $</p>
+<p>L1 Regularization :   $\frac{\lambda }{m}\sum\limits_{j = 1}^{n_x} {\left| {\omega _j} \right|}  = \frac{\lambda }{m}{\lVert \omega  \rVert_1}$</p>
+<p>一般，在L1正则项中，$\omega ​$ 通常是稀疏的，也就是说在 $\omega ​$中会出现许多0。因此L2正则项会更为常用。</p>
+<ul>
+<li>Neural Network</li>
+</ul>
+<p>$$<br>\begin{array}{l}<br>J(\omega ^{[1]},b^{[1]}, \ldots ,\omega ^{[L]},b^{[L]}) = \frac{1}{m}\sum\limits_{i = 1}^m L( \hat{y} ^{(i)},y^{(i)}) + \frac{\lambda }{2m} \sum\limits_{L = 1}^L \left| \omega ^{[L]}\right|^2\<br>\left| \omega ^{[L]} \right|<em>F^2 = \sum\limits</em>{i = 1}^{n^{[L - 1]}} \sum\limits_{j = 1}^{n^{[L]}} (\omega _{ij}^{[L]})^2<br>\end{array}      \tag{2}<br>$$</p>
+<p>其中，$\omega :(n^{[L]},n^{[L - 1]})$ ，该正则项为 “Frobenius norm”。</p>
+<p>根据上面的 cost function，我们如何实现梯度下降呢？<br>$$<br>\begin{array}{l}<br>\frac{\partial J}{\partial \omega ^\left[ L \right]} = d\omega ^\left[ L \right] = (from \; backprop) + \frac{\lambda }{m}\omega ^\left[ L \right]\<br>\omega ^{\left[ L \right]}: = \omega ^\left[ L \right]- \alpha d\omega ^\left[ L \right]<br>\end{array}          \tag{3}<br>$$<br>上两式相互结合，可得：<br>$$<br>\begin{array}{c}<br>\omega ^\left[ L \right]: = \omega ^\left[ L \right] - \alpha \left[ (from\;backprop) + \frac{\lambda }{m}\omega ^\left[ L \right] \right]\ = \omega ^\left[ L \right] - \frac{\alpha \lambda }{m}\omega ^\left[ L \right] - \alpha (from\;backprop)<br>\end{array}              \tag{4}<br>$$<br>从上述结果即可得到，将 $\omega ^\left[ L \right]$提取出来， $(1 - \frac{\alpha \lambda }{m})$总是小于1的，因此这就是L2正则项为什么会权值衰减 (weight decay) 的原因。</p>
+<blockquote>
+<p>What you should remember – the implications of L2-regularization on:</p>
+<ul>
+<li>The cost computation: A regularization term is added to the cost</li>
+<li>The backpropagation function: There are extra terms in the gradients with respect to weight matrices</li>
+<li>Weights end up smaller (“Weight decay”): Weights are pushed to smaller values</li>
+</ul>
+</blockquote>
+<h2 id="Why-regularization-reduces-overfitting"><a href="#Why-regularization-reduces-overfitting" class="headerlink" title="Why regularization reduces overfitting?"></a>Why regularization reduces overfitting?</h2><ul>
+<li>正则化是如何避免过拟合的？</li>
+</ul>
+<p>由公式(2)可知，为保证 cost function 尽量小，当设定超参数   $\lambda $ 越大时，参数矩阵 $\omega ^\left[ L \right]$ 就得尽量小。那么当参数矩阵越接近0（在每一次梯度下降中都会越来越小），每一层的激活函数都会越接近于线性函数，由此Variance 就有越来越小，而Bias越来越大，从而避免了过拟合的产生。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030401.png" alt=""></p>
+<p>以 tanh 函数为例，当定义域范围越靠近0时，函数图像越趋近于线性函数。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030402.png" alt=""></p>
+<h2 id="Dropout-Regularization"><a href="#Dropout-Regularization" class="headerlink" title="Dropout Regularization"></a>Dropout Regularization</h2><p>“Dropout”是什么意思呢？一个简单的理解就是，对于一个复杂的神经网络，我们在其每一层的输出传递中设定一个概率 p，每一层的节点输出，都以p的概率传递到下一层，以1-p的概率被dropout，从而降低了神经网络的复杂度。</p>
+<p>很神奇的是，概率p的设定是随机的，但对于神经网络的训练确实有很大帮助。那么如何实现dropout呢？dropout的方式有很多种，较为常见的就是Inverted Dropout。 </p>
+<ul>
+<li>Inverted Dropout</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># illustrate with layer l = 3.</span><br><span class="line"># keep-prob = 0.8</span><br><span class="line"># d3: dropout vector for layer 3</span><br><span class="line">d3 = np.random.rand(a3.shape[0], a3.shape[1]) &lt; keep-prob</span><br><span class="line">a3 = np.multiply(a3, d3)</span><br><span class="line">a3 /= keep-prob</span><br></pre></td></tr></table></figure>
+<p>在最后一步中，第一层的输出a3要除概率，有点不太理解，公开课上的解释是由于a3 损失了20%的值（被dropout），因此为了保证其均值相同，a3每个元素都应除以概率。</p>
+<ul>
+<li>Making predictions at test time</li>
+</ul>
+<p>在测试集的预测中，我们不再需要使用dropout，因为dropout带着随机的成分，而我们希望在预测中尽量能保证准确，而非随机。训练集中的dropout在一定程度上是为了简化模型的训练。</p>
+<p>With the inverted dropout technique, at test time: You do not apply dropout (do not randomly eliminate units) and do not keep the 1/keep_prob factor in the calculations used in training.</p>
+<h2 id="Understanding-Dropout"><a href="#Understanding-Dropout" class="headerlink" title="Understanding Dropout"></a>Understanding Dropout</h2><p>上节讲了dropout对神经网络的训练虽然起到了简化的作用，但是为什么不会影响正则化的效果呢？这是这节的重点。</p>
+<ul>
+<li>Intuition: Can’t rely on any one feature, so have to spread out weights.</li>
+</ul>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030403.png" alt=""></p>
+<p>如上图，对于每一个中间层节点（紫色圆），其输入的节点都有一定概率被dropout，因此在每一层的信息传递中，不会仅仅依赖于某个特征，且每个节点的权重都不会相差太大，这就避免了部分信息的严重缺失，这是dropout 能work的原因之一。</p>
+<ul>
+<li>另外对于不同节点数的层，其概率(keep-prob)可进行合理调整。</li>
+</ul>
+<p>当两边节点数较多时，即参数矩阵 维数较大时，keep-prob可设置在0.5左右；</p>
+<p>当两边节点数较少时，keep-prob设置应大一些，避免信息流失。</p>
+<p>通常，在神经网络较为复杂时（节点、层数较多），如 Computer Vision中图像像素维度很大时 ，dropout使用更为普遍。但对于较小的网络，则不建议使用dropout。</p>
+<blockquote>
+<p>What you should remember about dropout:</p>
+<ul>
+<li>Dropout is a regularization technique.</li>
+<li>You only use dropout during training. Don’t use dropout (randomly eliminate nodes) during test time.</li>
+<li>Apply dropout both during forward and backward propagation.</li>
+<li>During training time, divide each dropout layer by keep_prob to keep the same expected value for the activations. For example,  if keep_prob is 0.5, then we will on average shut down half the nodes, so the output will be scaled by 0.5 since only the remaining half are contributing to the solution. Dividing by 0.5 is equivalent to multiplying by 2. Hence, the output now has the same expected value. You can check that this works even when keep_prob is other values than 0.5.</li>
+</ul>
+</blockquote>
+<h2 id="Other-regularization-methods"><a href="#Other-regularization-methods" class="headerlink" title="Other regularization methods"></a>Other regularization methods</h2><p>(1) Data augmentation</p>
+<p>当数据量不够大时，或数据获取成本太高时，我们可以采用一些方法对数据进行扩充。比如说猫的图像识别中，对图像进行一个角度的倾斜和反转，可增加一个训练样本。</p>
+<p>(2) Early stopping</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030404.png" alt=""></p>
+<p>上图中蓝线是Training error ，紫线为 Dev set error。Early Stopping 顾名思义，即当训练集和测试集的cost function均达到最小时，选取其对应的迭代次数。</p>
+<p>显然，在神经网络中，最主要的两个目标就是：</p>
+<ul>
+<li>Optimize cost function J (gradient descent)</li>
+<li>Not overfit (Regularization)</li>
+</ul>
+<p>对于每个目标，都有多种方法去进行优化，后续将继续讲解。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
+<li><a href="https://www.coursera.org/learn/deep-neural-network/home/week/1" target="_blank" rel="noopener">Improving Deep Neural Networks - Week 1</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2018/03/04/17-Improving-Deep-Neural-Networks-Week-1/">Improving Deep Neural Networks - Week 1 - (1)</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2018年03月04日 - 16:03</p>
+
+  <p><span>最后更新:</span>2018年03月06日 - 17:03</p>
+
+  <p><span>原始链接:</span><a href="/2018/03/04/17-Improving-Deep-Neural-Networks-Week-1/" title="Improving Deep Neural Networks - Week 1 - (1)">http://kibo.tech/2018/03/04/17-Improving-Deep-Neural-Networks-Week-1/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2018/03/04/17-Improving-Deep-Neural-Networks-Week-1/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"><i class="fa fa-tag"></i> Deep Learning</a>
+          
+            <a href="/tags/Neural-Networks/" rel="tag"><i class="fa fa-tag"></i> Neural Networks</a>
+          
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/04/16-Neural-Networks-and-Deep-Learning-Week-4/" rel="next" title="Neural Networks and Deep Learning - Week 4">
+                <i class="fa fa-chevron-left"></i> Neural Networks and Deep Learning - Week 4
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/05/18-Improving-Deep-Neural-Networks-Week-1-2/" rel="prev" title="Improving Deep Neural Networks - Week 1 - (2)">
+                Improving Deep Neural Networks - Week 1 - (2) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Setting-up-your-Machine-Learning-Application"><span class="nav-number">1.</span> <span class="nav-text">Setting up your Machine Learning Application</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Train-Dev-Test-sets"><span class="nav-number">1.1.</span> <span class="nav-text">Train / Dev / Test sets</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bias-Variance"><span class="nav-number">1.2.</span> <span class="nav-text">Bias / Variance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-“Recipe”-for-Machine-Learning"><span class="nav-number">1.3.</span> <span class="nav-text">Basic “Recipe” for Machine Learning</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Regularizing-your-neural-network"><span class="nav-number">2.</span> <span class="nav-text">Regularizing your neural network</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Regularization"><span class="nav-number">2.1.</span> <span class="nav-text">Regularization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-regularization-reduces-overfitting"><span class="nav-number">2.2.</span> <span class="nav-text">Why regularization reduces overfitting?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dropout-Regularization"><span class="nav-number">2.3.</span> <span class="nav-text">Dropout Regularization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Understanding-Dropout"><span class="nav-number">2.4.</span> <span class="nav-text">Understanding Dropout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-regularization-methods"><span class="nav-number">2.5.</span> <span class="nav-text">Other regularization methods</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- ҳ����С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

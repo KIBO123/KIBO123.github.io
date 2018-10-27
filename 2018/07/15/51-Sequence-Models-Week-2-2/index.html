@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,Word2vec,GloVe,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文是深度学习第5门课程第二周的第2部分，主要讲解关于词嵌入学习的两种方法，分别为 Word2vec 和 Glove，欢迎大家关注！">
+<meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,Word2vec,GloVe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sequence Models - Week 2 - (2)">
+<meta property="og:url" content="http://kibo.tech/2018/07/15/51-Sequence-Models-Week-2-2/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="本文是深度学习第5门课程第二周的第2部分，主要讲解关于词嵌入学习的两种方法，分别为 Word2vec 和 Glove，欢迎大家关注！">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18071601.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18071602.png">
+<meta property="og:updated_time" content="2018-07-20T06:06:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sequence Models - Week 2 - (2)">
+<meta name="twitter:description" content="本文是深度学习第5门课程第二周的第2部分，主要讲解关于词嵌入学习的两种方法，分别为 Word2vec 和 Glove，欢迎大家关注！">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18071601.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2018/07/15/51-Sequence-Models-Week-2-2/">
+
+
+
+
+
+  <title>Sequence Models - Week 2 - (2) | Foresee</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2018/07/15/51-Sequence-Models-Week-2-2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Sequence Models - Week 2 - (2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-15T17:12:24+08:00">
+                2018-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Course/" itemprop="url" rel="index">
+                    <span itemprop="name">Course</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文是深度学习第5门课程第二周的第2部分，主要讲解关于词嵌入学习的两种方法，分别为 Word2vec 和 Glove，欢迎大家关注！</p>
+<a id="more"></a>
+<h1 id="Learning-Word-Embeddings-Word2vec-amp-Glove"><a href="#Learning-Word-Embeddings-Word2vec-amp-Glove" class="headerlink" title="Learning Word Embeddings: Word2vec &amp; Glove"></a>Learning Word Embeddings: Word2vec &amp; Glove</h1><h2 id="Learning-word-embeddings"><a href="#Learning-word-embeddings" class="headerlink" title="Learning word embeddings"></a>Learning word embeddings</h2><h3 id="Neural-language-model"><a href="#Neural-language-model" class="headerlink" title="Neural language model"></a>Neural language model</h3><p>这节主要介绍词嵌入学习中得到具体算法，在深度学习应用到词嵌入学习的理论发展中，人们是从较复杂的算法开始的。然而，慢慢地，研究者们发展出更多更简单的算法，尤其在大型数据集中也可以取得同样好的效果。</p>
+<p>这些算法到现在仍是主流，但由于太简单，反而让人觉得十分奇妙，因此我们从比较复杂的算法开始介绍起，然后再过渡到简单的算法，这样可以更好地解释为什么简单的算法也能实现很好的结果。</p>
+<p>我们还是从例子开始，假设输入一个句子：<em>“I want a glass of orange <strong><strong><strong>__</strong></strong></strong>.”</em>，需要预测出句子空格中的词。在这里，根据我们之前提到的10,000 长度的词汇表，我们分别记下每个词的序号。</p>
+<table>
+<thead>
+<tr>
+<th>I</th>
+<th>want</th>
+<th>a</th>
+<th>glass</th>
+<th>of</th>
+<th>orange</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4343</td>
+<td>9665</td>
+<td>1</td>
+<td>3852</td>
+<td>6163</td>
+<td>6257</td>
+</tr>
+</tbody>
+</table>
+<p>接下来我们要讲的思想来源于 Bengio，详见参考文献 <a href="">2</a>。首先，对每个词构建 one-hot 向量 $O$ ，维度为10,000。其次，对参数矩阵（嵌入矩阵）$E$ 与每个词的 one-hot 向量求点积，得到每个词的嵌入向量 $e$ ，维度为300。最后将所有词的嵌入向量 $e$ 都输入到神经网络中，并进行 softmax 预测。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18071601.png" alt=""></p>
+<p>在神经网络的隐含层和 softmax 层中，都包含其各自的参数 $w$ 和 $b$ 。在输入到隐含层之前，输入有6个词，每个词的维度为300，将它们堆起来，形成一个维度为 1800 的向量，再输入到隐含层。</p>
+<p>然而，通常会选择一个固定的历史窗宽。什么意思呢？也就是说，当我们想要预测下一个词时，总是以其前面连续的几个词作为输入。前面词的数量是一个超参数，由人为决定。这样子不管句子长短，输入到隐含层的向量维度都是相等的了，因此我们只固定根据前面某几个词进行预测。假设总是根据前面4个词进行预测，那么其输入到神经网络隐含层的向量维度就是1200。</p>
+<p>在这个模型中，除了后面隐含层和softmax层的参数外，嵌入矩阵 $E$ 中的每个元素都是参数，都需要进行训练，从而使训练效果最优，即训练集与预测的拟合程度越高。</p>
+<h3 id="Other-context-target-pairs"><a href="#Other-context-target-pairs" class="headerlink" title="Other context/target pairs"></a>Other context/target pairs</h3><p>下面我们对算法进行简化，比较其他方式的算法。我们举一个更为复杂的句子：</p>
+<ul>
+<li><em>“I want a glass of orange <strong>juice</strong> to go along with my cereal.”</em></li>
+</ul>
+<p>其中，要预测的目标单词是 <em>“juice”</em>。我们可以根据以下几种背景词进行预测：</p>
+<p>Context:</p>
+<ul>
+<li>Last 4 words</li>
+<li>4 words on left &amp; right</li>
+<li>Last 1 word</li>
+<li>Nearby 1 word</li>
+</ul>
+<p>第1种背景词是根据目标单词的前4个单词进行预测，第2种背景词是根据目标单词的左右各4个单词进行预测，后面两种背景更为简单，第3种直接根据目标单词的前1个单词进行预测，即 <em>“orange”</em>，第4种背景根据目标单词的附近1个单词进行预测，比如说 <em>“glass”</em>。第4种背景的结果出奇得好。</p>
+<p>在下节中，我们会对这些算法进行更加严谨地说明。</p>
+<h2 id="Word2vec"><a href="#Word2vec" class="headerlink" title="Word2vec"></a>Word2vec</h2><p>本节主要参考 Tomas Mikolov 等人的研究，详见参考文献 <a href="">3</a>。</p>
+<h3 id="Skip-grams"><a href="#Skip-grams" class="headerlink" title="Skip-grams"></a>Skip-grams</h3><p>首先我们从 skip-grams 模型开始介绍，还是以上面的句子为例：</p>
+<ul>
+<li><em>“I want a glass of orange <strong>juice</strong> to go along with my cereal.”</em></li>
+</ul>
+<p>在这个模型中，我们要对背景词和目标词进行训练，背景词的选择有多种方法，上节中我们就讲了这个。在这里，我随机从句子中选择一个词作为背景词。假设我抽到了 <em>“orange”</em> 作为背景词，接下来要选择的是目标词，根据背景词周围的宽度进行选择，比如说背景词前后5个词或10个词的宽度均可。可能你恰恰选择了 <em>“orange”</em> ，或者 <em>“glass”</em> 或 <em>“my”</em> 等都可以。</p>
+<p>那么我们的问题就是给定背景词，需要预测下一个词到底是其前后窗宽为10的哪个词。这不是一个简单的学习问题，因为背景词前后窗宽为10，有太多的可能。但是我们这个问题的目的不是为了准确预测出下一个词，而是为了训练出一个更好的词嵌入矩阵。</p>
+<p>我们把背景词标记为 $c$，把目标词标记为 $t$，那么模型如下：<br>$$<br>O_c \rightarrow E \rightarrow e_c \rightarrow  softmax \ unit \rightarrow \hat{y}<br>$$<br>在 softmax 层中，给定背景词，每个目标词出现的概率为：<br>$$<br>Softmax:p(t|c)=\frac{e^{\theta^T_t e_c}}{\sum^{10000}_{j=1}e^{\theta^T_j e_c}}<br>$$<br>其中，$\theta_t$ 是与输出 $t$ 相关联的参数。损失函数为：<br>$$<br>L(\hat{y},y)=-\sum^{10000}_{i=1}y_i \log \hat{y}_i<br>$$<br>在这里，$\hat{y}$ 和 $y$ 都是 one-hot 向量，$y$ 为目标值，$\hat{y}$ 为预测值。</p>
+<p>这就是 skip-gram模型，通过输入一个背景词，可以跳过中间多个词去预测其他词。</p>
+<h3 id="Problems-with-softmax-classification"><a href="#Problems-with-softmax-classification" class="headerlink" title="Problems with softmax classification"></a>Problems with softmax classification</h3><p>在skip-gram模型中，最大的不足就是计算速度慢。因为softmax层的时候，需要对10000个词进行求和，可能10000还比较少，但如果你的词汇表存在一百万或一千万个单词时，计算就更加慢了。</p>
+<p>当然，这也是有办法解决的，在文献中有一种方法：hierarchical softmax classifier。这种方法不需要一次性计算所有词的和，可能目标词在词汇表中的前5000个？也可能在后5000个？当确定了在前面时，继续往下分，可能在前2500个？也可能在后2500个？依次类推，直到最后你就能直到目标词到底在哪一类中。这样的层次分类可以形成一个树状图。</p>
+<p>实际上，较普遍的词通常会出现在树的顶端，因为有更多的分枝可以连接更多的词，而一些比较罕见的词会出现在分枝底部。</p>
+<p>这个算法就不讲太多，详情可见参考文献 <a href="">3</a>。还有一个很重要的问题就是：</p>
+<p>How to sample the context $c$ ?</p>
+<p>选择一个背景词也是很重要的，因为背景词确定后，目标词就在其前后10个词中出现。一种方法是使用均匀分布，从训练文本中随机抽取。然而这样抽取，很显然会抽到一些词，如 <em>“of”,”a”,”and” “to”</em> 等意义不大的词，但它们出现的频率很高。因此在现实中，人们通常不会直接随机抽取背景词。</p>
+<p>以上就是 Word2vec的skip-gram模型，在文献中还有另一种模型为 CBOW，它是用目标词周围的背景词去预测中间词，这个算法我们不详细讲。</p>
+<h2 id="Negative-Sampling"><a href="#Negative-Sampling" class="headerlink" title="Negative Sampling"></a>Negative Sampling</h2><p>在skip-gram模型中，通过背景词和目标词的映射可以学习到一个有效的词嵌入矩阵，其不足在于计算量大，计算速度慢。在本节中，我们介绍另一个算法，Negative Sampling，它的作用于skip-gram相似，但学习的效率更快。这个算法的主要提出者还是 Mikolov，详见参考文献 <a href="">4</a>。</p>
+<h3 id="Defining-a-new-learning-problem"><a href="#Defining-a-new-learning-problem" class="headerlink" title="Defining a new learning problem"></a>Defining a new learning problem</h3><p>针对上面的例子，我们重新构建一个监督学习问题。给定一对词组 $x$，<em>“orange”</em> 和 <em>“juice”</em>，这是一对背景——目标词组，而且是正的、相关的，输出 $y$ 为 1。若给定令一对词组，<em>“orange”</em> 和 <em>“king”</em>，那么这是负的、不相关的，则输出为 0。</p>
+<p>简单来说，首先选择一个正样本 (positive example)，其次随机在字典中抽取词汇，与原背景词构成负样本 (negative example)，如下表：</p>
+<table>
+<thead>
+<tr>
+<th><strong>Context</strong></th>
+<th><strong>Word</strong></th>
+<th><strong>Target</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>orange</td>
+<td>juice</td>
+<td>1</td>
+</tr>
+<tr>
+<td>orange</td>
+<td>king</td>
+<td>0</td>
+</tr>
+<tr>
+<td>orange</td>
+<td>book</td>
+<td>0</td>
+</tr>
+<tr>
+<td>orange</td>
+<td>the</td>
+<td>0</td>
+</tr>
+<tr>
+<td>orange</td>
+<td>of</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>注意负样本的目标词是从词汇表（字典）中随机抽取的，即使恰好抽取到位于背景词附近的词也是可以的。设负样本的数量为 $k$，对于小数据集，Mikolov et al. 推荐$k$ 在区间 [5, 20] 。而对于大型数据集，$k$ 选择在 [2, 5] 之间。</p>
+<p>那么我们就得到了一个训练集，输入为背景——目标词组，而输出为标签 “0” 和 “1”，负样本数量为4。</p>
+<h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h3><p>我们根据背景词 $c$，目标词 $t$，还有每个背景——目标词组对的标签 $y$，定义一个逻辑回归模型：<br>$$<br>P(y=1|c,t)=\sigma(\theta^T_t e_c)<br>$$<br>对于每个正样本，我们都存在 $k$ 个负样本去训练该模型。那么在测试集中，我们输入的词组是one-hot向量，经过嵌入矩阵后得到嵌入向量 $e$，再通过逻辑回归模型进行预测。根究到底，就是一个包含 10,000 个分类器的二分类逻辑回归问题。</p>
+<p>在这里，我们无需对10,000个词都进行训练。在每次迭代中，只需训练1个正样本和其余4个随机选择的负样本，共5个样本，这就大大减小了计算成本。严格来说，是1个正样本和 $k$ 个负样本，共 $k+1$ 个训练样本。</p>
+<p>这就是 Negative Sampling 模型。</p>
+<h3 id="Selecting-negative-examples"><a href="#Selecting-negative-examples" class="headerlink" title="Selecting negative examples"></a>Selecting negative examples</h3><p>在这个算法中，还有一个比较重要的细节，那就是如何选择负样本。我们刚刚使用的是随机抽样的方法，但这种方法并不能代表英语单词的分布。其次就是根据字典库中词的出现频率进行抽取，而这种方法多数容易抽取出 <em>“the”,”of”,”and”</em> 等词。</p>
+<p>原文作者 Mikolov 提出一种经验值：<br>$$<br>P(w_i)=\frac{f(w_i)^{3/4}}{\sum^{10000}_{j=1}f(w_j)^{3/4}}<br>$$<br>$w_i$ 为字典中的任一单词 $i$，$f(w_i)$ 表示词 $w_i$ 在字典中出现的频率，那么词频取 3/4 次幂，就可以避免均匀分布的完全随机了。</p>
+<h2 id="Glove-word-vectors"><a href="#Glove-word-vectors" class="headerlink" title="Glove word vectors"></a>Glove word vectors</h2><p>Glove 算法也用于嵌入矩阵的学习，这种算法不像 Word2vec 那么常用，但由于它的简便，同样受到人们的追捧。这种算法由 Jeffrey Pennington 等人提出，详见参考文献 <a href="">5</a>。</p>
+<h3 id="Model-1"><a href="#Model-1" class="headerlink" title="Model"></a>Model</h3><p>GloVe 全称为 “global vectors for word representation”，首先我们从文本库中抽取一对背景——目标词组，这对词组距离相近。设 $x_{ij}$ 表示词 $i$ 出现在背景词 $j$ 下的次数，其中 $i$ 相当于目标词 $t$，而 $j$ 相当于背景词 $c$ 。根据背景词和目标词的定义，有 $x_{ij}=x_{ji}$。事实上，如果你定义背景词和目标词同时出现在前后10个词的窗宽之内，那么存在一个对称的关系。如果背景词总是在目标词的前1个，那么 $x_{ij}$ 和 $x_{ji}$ 则未必存在对称的关系。</p>
+<p>为了方便 GloVe 算法，我们就将背景词和目标词定义在一个距离相近的地方出现，即两个词双方的前后10个词为窗宽。那么 $x_{ij}$ 简单来说就是词 $i$ 和 $j$ 出现很近（在窗宽之内）的次数。GloVe 的目标就是使如下函数最小化：<br>$$<br>\min \sum^{10000}<em>{i=1} \sum^{10000}</em>{j=1}f(x_{ij})(\theta^T_i e_j + b_i + b_j’ -\log x_{ij})^2<br>$$<br>其中，$f(x_{ij})$ 是权重项。显然，当 $x_{ij}$ 越接近于0时，$\log x_{ij}$ 越趋向于负无穷，由于平方项，会导致趋向于正无穷。但添加权重项之后，当 $f(x_{ij})=0$ 时，那么即使 $x_{ij}$ 为零，总的最小化函数也就等于零。这是权重项 $f(x_{ij})$ 的第一个作用。</p>
+<p>另外，在句子中停用词 (this, of, a 等)总是频繁出现，而一些出现的并不频繁却又不能忽视的词。对于停用词，$f(x_{ij})$ 会给予较小的权重，对于不能忽视的词，$f(x_{ij})$ 会给予更大的权重。</p>
+<p>在GloVe算法中还有一个细节，那就是参数 $\theta$ 和 嵌入向量 $e$ 是完全对称的。因此它们得到的优化结果是相同的。训练这个算法的方法就是使用均匀分布初始化 $\theta$ 和 $e$，并使用梯度下降算法使目标函数最小化。当每个词都输入并计算之后，取均值。</p>
+<p>对于给定的一个词 $w$，有：<br>$$<br>e_w^{(final)}=\frac{e_w+\theta_w}{2}<br>$$<br>其中，$e_w^{(final)}$ 为最后得到的词 $w$ 的嵌入向量，$e_w$ 和 $\theta_w$ 分别为通过梯度下降训练后的词 $w$ 的嵌入向量和参数向量。因为 $\theta$ 和 $e$ 互相对称。这就是 GloVe算法。</p>
+<h3 id="A-note-on-the-featurization-view-of-word-embeddings"><a href="#A-note-on-the-featurization-view-of-word-embeddings" class="headerlink" title="A note on the featurization view of word embeddings"></a>A note on the featurization view of word embeddings</h3><p>在总结词嵌入的算法之前，它们都有一个性质我们应当提及。在我们的例子中，对于嵌入矩阵，我们打的比方是第一维度是 <em>“Gender”</em>，第二维度是 <em>“Royal”</em>，其次诸如 <em>“Age”</em>,<em>“Food”</em> 之类，共存在300个维度去表示词。我们使用这样的嵌入向量去对词的含义进行解释。然而，很多时候我们并不能保证嵌入矩阵中的每个独立维度都是可以用词义去解释的。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18071602.png" alt=""></p>
+<p>如上图，当一对正交特征向量 <em>“Gender”</em> 和 <em>“Royal”</em> 可以表示某些词时，而学习算法可能会选择其它一些无法解释的特征向量，同样达到表示这些词的效果，如 $e_{w,1}$ 和 $e_{w,2}$，甚至学习算法选择的特征向量并不正交。</p>
+<p>为什么可以这样呢？我们可以从代数的角度进行解释。<br>$$<br>\min \sum^{10000}<em>{i=1}\sum^{10000}</em>{j=1}f(X_{ij})(\theta_i^Te_j+b_i-b_j’-\log X_{ij})^2<br>$$<br>在目标最小化函数中，$\theta_i^Te_j$ 表示的是词，在不同的维度变换下，我们乘以可逆矩阵 $A$ ，得：<br>$$<br>(A\theta_i)^T(A^{-T}e_j)=\theta_i^TA^TA^{-T}e_j=\theta_i^Te_j<br>$$<br>因此，你不能保证学习算法所学习到的嵌入向量都是能够用词的特定意义去解释，但不管进行怎样的变换，都能够对词进行表示。</p>
+<p>以上就是关于词嵌入的算法介绍。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://www.coursera.org/learn/nlp-sequence-models/home/week/2" target="_blank" rel="noopener">Sequence Models - Week 2</a></li>
+<li><a href="">Bengio et.al., 2003, A neural probabilistic language model</a></li>
+<li><a href="">Mikolov et al., 2013. Efficient estimation of word representations in vector space</a></li>
+<li><a href="">Mikolov et al., 2013. Distributed representation of words and phrases and their compositionality</a></li>
+<li><a href="">Pennington et al., 2014. GloVe: Global vectors for word representation</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2018/07/15/51-Sequence-Models-Week-2-2/">Sequence Models - Week 2 - (2)</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2018年07月15日 - 17:07</p>
+
+  <p><span>最后更新:</span>2018年07月20日 - 14:07</p>
+
+  <p><span>原始链接:</span><a href="/2018/07/15/51-Sequence-Models-Week-2-2/" title="Sequence Models - Week 2 - (2)">http://kibo.tech/2018/07/15/51-Sequence-Models-Week-2-2/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2018/07/15/51-Sequence-Models-Week-2-2/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"><i class="fa fa-tag"></i> Deep Learning</a>
+          
+            <a href="/tags/Neural-Networks/" rel="tag"><i class="fa fa-tag"></i> Neural Networks</a>
+          
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          
+            <a href="/tags/Word2vec/" rel="tag"><i class="fa fa-tag"></i> Word2vec</a>
+          
+            <a href="/tags/GloVe/" rel="tag"><i class="fa fa-tag"></i> GloVe</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/13/50-Sequence-Models-Week-2-1/" rel="next" title="Sequence Models - Week 2 - (1)">
+                <i class="fa fa-chevron-left"></i> Sequence Models - Week 2 - (1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/20/52-Sequence-Models-Week-2-3/" rel="prev" title="Sequence Models - Week 2 - (3)">
+                Sequence Models - Week 2 - (3) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Learning-Word-Embeddings-Word2vec-amp-Glove"><span class="nav-number">1.</span> <span class="nav-text">Learning Word Embeddings: Word2vec &amp; Glove</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Learning-word-embeddings"><span class="nav-number">1.1.</span> <span class="nav-text">Learning word embeddings</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Neural-language-model"><span class="nav-number">1.1.1.</span> <span class="nav-text">Neural language model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Other-context-target-pairs"><span class="nav-number">1.1.2.</span> <span class="nav-text">Other context/target pairs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Word2vec"><span class="nav-number">1.2.</span> <span class="nav-text">Word2vec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Skip-grams"><span class="nav-number">1.2.1.</span> <span class="nav-text">Skip-grams</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Problems-with-softmax-classification"><span class="nav-number">1.2.2.</span> <span class="nav-text">Problems with softmax classification</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Negative-Sampling"><span class="nav-number">1.3.</span> <span class="nav-text">Negative Sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Defining-a-new-learning-problem"><span class="nav-number">1.3.1.</span> <span class="nav-text">Defining a new learning problem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Model"><span class="nav-number">1.3.2.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Selecting-negative-examples"><span class="nav-number">1.3.3.</span> <span class="nav-text">Selecting negative examples</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Glove-word-vectors"><span class="nav-number">1.4.</span> <span class="nav-text">Glove word vectors</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-note-on-the-featurization-view-of-word-embeddings"><span class="nav-number">1.4.2.</span> <span class="nav-text">A note on the featurization view of word embeddings</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- ҳ����С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

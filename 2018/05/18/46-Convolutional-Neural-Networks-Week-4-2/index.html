@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,Neural Style Transfer,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这是课程4第4周的最后一部分，主要内容为神经风格转换 (Neural Style Transfer)，欢迎大家关注！">
+<meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,Neural Style Transfer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Convolutional Neural Networks - Week 4 - (2)">
+<meta property="og:url" content="http://kibo.tech/2018/05/18/46-Convolutional-Neural-Networks-Week-4-2/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="这是课程4第4周的最后一部分，主要内容为神经风格转换 (Neural Style Transfer)，欢迎大家关注！">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051801.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051802.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051803.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051804.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051805.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051806.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051807.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051808.png">
+<meta property="og:updated_time" content="2018-05-19T02:00:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Convolutional Neural Networks - Week 4 - (2)">
+<meta name="twitter:description" content="这是课程4第4周的最后一部分，主要内容为神经风格转换 (Neural Style Transfer)，欢迎大家关注！">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051801.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2018/05/18/46-Convolutional-Neural-Networks-Week-4-2/">
+
+
+
+
+
+  <title>Convolutional Neural Networks - Week 4 - (2) | Foresee</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2018/05/18/46-Convolutional-Neural-Networks-Week-4-2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Convolutional Neural Networks - Week 4 - (2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-18T08:23:34+08:00">
+                2018-05-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Course/" itemprop="url" rel="index">
+                    <span itemprop="name">Course</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这是课程4第4周的最后一部分，主要内容为神经风格转换 (Neural Style Transfer)，欢迎大家关注！</p>
+<a id="more"></a>
+<h1 id="Neural-Style-Transfer"><a href="#Neural-Style-Transfer" class="headerlink" title="Neural Style Transfer"></a>Neural Style Transfer</h1><h2 id="What-is-neural-style-tranfer"><a href="#What-is-neural-style-tranfer" class="headerlink" title="What is neural style tranfer?"></a>What is neural style tranfer?</h2><p>ConvNet 有趣的应用之一就是神经风格转换 (Neural Style Transfer)，这是什么呢？</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051801.png" alt=""></p>
+<p>我们看上图，我们提供一幅真实场景的图片，称为 content image (简写为 C)；再提供一幅虚拟的图画，称为 style image (S)；我们将 style image 的风格运用到 content image 中，生成一幅新的图画，称为 generated image (G)。这就是神经风格转换。</p>
+<h2 id="What-are-deep-ConvNets-learning"><a href="#What-are-deep-ConvNets-learning" class="headerlink" title="What are deep ConvNets learning?"></a>What are deep ConvNets learning?</h2><p>深度 ConvNet 到底在学习什么？在这节中，我们会对 ConvNet 学习的东西进行可视化，这会帮助我们更进一步地了解神经风格转换。</p>
+<h3 id="Visualizing-what-a-deep-network-is-learning"><a href="#Visualizing-what-a-deep-network-is-learning" class="headerlink" title="Visualizing what a deep network is learning"></a>Visualizing what a deep network is learning</h3><p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051802.png" alt=""></p>
+<p>假设我们在训练上面这个 ConvNet，是 AlexNet 类型的网络架构。首先我们看第1层的隐含节点，当你将所有训练集都输入到 ConvNet之后，该隐含节点会找出令该节点的 activation 最大化的9个小图块 (image patches)，每个图块表示其原有图像卷积后检测到的结果，见下图 (a)：</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051803.png" alt=""></p>
+<p>我们看下一个隐含节点，同样可以得到9个小图块，见上图 (b) ；依次类推，我们可以看到9个节点输出的81个小图块。每个节点检测的方向都不相同，有的是斜对角的，有的是竖直方向，有的是水平方向。因为是第1层隐含层，所以检测到的结果还比较粗糙，但已经捕捉到一些特征，比如说边缘、形状和颜色等，这个例子来自参考文献 <a href="">2</a>，大家可去详细阅读。接下来我们看更深层的网络学习的结果。</p>
+<h3 id="Visualizing-deep-layers"><a href="#Visualizing-deep-layers" class="headerlink" title="Visualizing deep layers"></a>Visualizing deep layers</h3><p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051804.png" alt=""></p>
+<p>随着网络层数越深，检测到的图像区域越大，特征也越丰富，不再像是第1层只能捕捉到边缘等比较粗糙的特征。我们见上图，在这里共给出了5层的网络可视化，显然能检测到的细节越来越多。</p>
+<p>每一层的检测过程都和上一节所说的类似，找出能令某一层中每个节点的activation 最大化的图块作为输出。这就是 ConvNet 真正学习的过程。</p>
+<h2 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h2><p> 上面我们讲到 content image (C), style image (S) 和 generrated image (G)，那么如何判断 G 的效果好不好呢？我们需要计算关于 G 的 cost function。</p>
+<p>我们将 cost function 定义为两个部分，分别为 content cost 和 style cost ，也就是 C 和 S 的损失：<br>$$<br>J(G)= \alpha J_{content}(C,G)+\beta J_{style}(S,G)<br>$$<br>$ J_{content}(C,G)  $ 衡量了G 的图像内容与 C 的相似度，而 $J_{style}(S,G)$ 则衡量了 G 的风格与 S 的相似度，然后通过将两者加权求和计算总的 cost。具体细节可参考文献 <a href="">3</a>.</p>
+<p>使用 $J(G)$ 来生成 G 的计算步骤如下：</p>
+<ol>
+<li>Initiate G randomly $\rightarrow \ G:100\times 100\times 3$  </li>
+<li>Use gradient descent to minimize $J(G)$ $\rightarrow \ G:=G-\frac{\partial}{\partial G}J(G)$ </li>
+</ol>
+<p>那么我们看看其变化过程：</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051805.png" alt=""></p>
+<h2 id="Content-Cost-Function"><a href="#Content-Cost-Function" class="headerlink" title="Content Cost Function"></a>Content Cost Function</h2><p>我们刚刚讲了 Cost Function 包含了两个部分，这节中主要讲第一部分，也就是 Content Cost Function ，首先给出内容损失函数的计算步骤：</p>
+<ul>
+<li>Say you use hidden layer $l$ to compute content cost.</li>
+<li>Use pre-trained ConvNet. (E.g., VGG network)</li>
+<li>Let $ a^{[l] (C)} $ and $ a^{[l] (G)} $ be the activation of layer $l$ on the images</li>
+<li>If  $ a^{<a href="C">l</a>} $ and $ a^{<a href="G">l</a>} $ are similar, both images have similar content</li>
+</ul>
+<p>我们假设使用第 $ l $ 层来计算内容损失，如果层数越浅，比如说第1层，那么生成的图片G 会与你的初始图片 C 十分相似；如果层数越深，那么你要在 G 中找到和 C 相似的地方，那么就得看得仔细一点了。所以在实际中，我们通常选定 $l$ 在浅层和深层之间。</p>
+<p>其次，使用一个预先训练好的 Convnet，可以是 VGG 结构或者是其它，开始计算 C 和 G 在内容上的相似度。我们假设  $ a^{<a href="C">l</a>} $ 和 $ a^{<a href="G">l</a>} $ 分别为C 和 G 在第 $ l $ 层的激活值 (activation) ，计算它们之间的相似度，若相似度越接近，说明图片的内容也越相似。那么，$ J_{content}(C,G) $ 为：<br>$$<br>J_{content}(C,G)=\frac{1}{2} ||a^{<a href="C">l</a>}-a^{<a href="G">l</a>}||^2<br>$$<br>在图片输入前标准化可要可不要，因为在 $ J(G) $ 中含有 超参数 $\alpha$ 进行调整。另外，  $ a^{<a href="C">l</a>} $ 和 $ a^{<a href="G">l</a>} $ 应将它们拉直成向量，才能计算 $ J_{content}(C,G) $ .</p>
+<h2 id="Style-Cost-Function"><a href="#Style-Cost-Function" class="headerlink" title="Style Cost Function"></a>Style Cost Function</h2><h3 id="Meaning-of-the-“style”-of-an-image"><a href="#Meaning-of-the-“style”-of-an-image" class="headerlink" title="Meaning of the “style” of an image"></a>Meaning of the “style” of an image</h3><p>在讲 Style Cost 之前，我们要详细了解一下什么是图像的风格。假设在ConvNet第 $l$ 层的输出维度为 $n_h \times n_w \times n_c$ ，$n_c$ 为第三个维度，我们把该维度称为 channels. 那么我们把风格 (style)定义为不同channels 之间激活值的相关性。</p>
+<blockquote>
+<p>Say you are using layer $ l $’s activation to measure “style.”</p>
+<p>Define style as correlation between activations across channels.</p>
+</blockquote>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051806.png" alt=""></p>
+<p>我们举个简单的例子，比如说上图为某一层的输出 activations，有5个channels，每个channels都有不同的色调，那么我们把风格定义为不同channels之间激活值的相关性，比如说在第1channel和第2channel的边缘，画了一些点，这些点表示激活值，我们要计算的风格就是计算这两组点的相关性。</p>
+<h3 id="Intuition-about-style-of-an-image"><a href="#Intuition-about-style-of-an-image" class="headerlink" title="Intuition about style of an image"></a>Intuition about style of an image</h3><p>那么为什么不同channels之间的相关性能捕捉到风格呢？</p>
+<p>我们看上图，假设红色channel对应图中下面部分第二组的9个小图块，我们要检测出这中间存在的竖直特征，其次黄色channel对应第四组的9个小图块，它们看起来偏向橙色。那么如果这两个channel相关性很高，就表明图像中的某部分存在竖直结构，就会偏向橙色色调，这就是风格；但如果两个channel不太相关，那么即使存在竖直结构，也未必会是橙色的。</p>
+<p>我们用不同channels之间的相关性去衡量风格，即衡量生成图片 (generated image) 中第1channel和第2channel的相关性，它反映了竖直结构特征和橙色色调特征是否会同时出现的频率，这也就衡量了生成图片的风格和 style image 的风格之间的相似度。</p>
+<h3 id="Style-matrix"><a href="#Style-matrix" class="headerlink" title="Style matrix"></a>Style matrix</h3><p>我们把上面的Intuition写的正式点。首先我们要计算风格矩阵 (style matrix)，它实际上就是所有channels之间的相关性矩阵。我们令第 $l$ 层的激活值为 $a_{i,j,k}^{[l]}$ ，$i,j,k$ 分别代表在 $n_h,n_w,n_c$ 三个维度下的值，同时令第 $l$ 层的风格矩阵为 $G^{[l]}$，那么其维度为 $n^{[l]}_c \times n^{[l]}_c $ 。</p>
+<p>设style image中第 $k$ 个channel 和第 $k’$ 个channel之间的风格矩阵为 $ G_{kk’}^{<a href="S">l</a>} $ ，同理generated image中第 $k$ 个channel 和第 $k’$ 个channel之间的风格矩阵为 $ G_{kk’}^{<a href="G">l</a>} $ ，则：<br>$$<br>G_{kk’}^{<a href="S">l</a>}= \sum_{i=1}^{n_H^{[l]}} \sum_{j=1}^{n_W^{[l]}} a^{<a href="S">l</a>}<em>{ijk} a^{<a href="S">l</a>}</em>{ijk’}   \<br>G_{kk’}^{<a href="G">l</a>}= \sum_{i=1}^{n_H^{[l]}} \sum_{j=1}^{n_W^{[l]}} a^{<a href="G">l</a>}<em>{ijk} a^{<a href="G">l</a>}</em>{ijk’}<br>$$<br>由于 $ k \in [1,n_c]$ ，我们将所有不同的channel一一计算出相关性，即可得 $n_c \times n_c$ 维的风格矩阵 $G^{[l]}$ . 根据上两式，我们可以发现，当激活值越大时，相关性会越高，当激活值越小时，相关性也就越小。风格矩阵，在这里我们称为 Style matrix，但同时它也称为 gram matrix .</p>
+<p>最后，我们计算 style cost function，即 $J_{style}^{[l]}(S,G)$ ：<br>$$<br>\begin{aligned}<br>J_{style}^{[l]}(S,G) &amp;=  \frac{1}{(2n_H^{[l]}n_W^{[l]}n_C^{[l]})^2}||G^{<a href="S">l</a>}-G^{<a href="G">l</a>}||_F^2  \<br>                            &amp;= \frac{1}{(2n_H^{[l]}n_W^{[l]}n_C^{[l]})^2} \sum_k \sum_{k’}(G_{kk’}^{<a href="S">l</a>}-G_{kk’}^{<a href="G">l</a>})</p>
+<p>\end{aligned}<br>$$<br>这是第 $l$ 层的风格损失函数，对于总的风格损失函数，只要将所有层的风格损失函数求和即可。当然，也可以添加超参数 $\lambda$ 进行加权求和：<br>$$<br>J_{style}(S,G)= \sum_l \lambda^{[l]}J_{style}^{[l]}(S,G)<br>$$</p>
+<h2 id="1D-and-3D-Generalizations"><a href="#1D-and-3D-Generalizations" class="headerlink" title="1D and 3D Generalizations"></a>1D and 3D Generalizations</h2><p>我们已经学了关于 ConvNet 的众多知识，包括 ConvNet 的多种架构，以及 ConvNet 的多种应用，如图像识别、目标检测、人脸识别和风格转换等。我们讲的大部分应用都是关于 2D 的图像，事实上图像还有1D和3D的，我们的算法也可以应用在1D和3D 的图像中，我们来具体看看。</p>
+<h3 id="Convolutions-in-2D-and-1D"><a href="#Convolutions-in-2D-and-1D" class="headerlink" title="Convolutions in 2D and 1D"></a>Convolutions in 2D and 1D</h3><p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051807.png" alt=""></p>
+<p>见上图，对于2D的图像，假如说图像维度为 $14\times 14$，滤波器为 $5\times 5$，有16个滤波器，那么卷积之后可得输出为 $10\times 10 \times 16$。若图像是彩色的，则维度为  $14\times 14 \times 3$，在这里彩色图像维度尽管是3维的，但并不属于3D图像，我们只是将色调拆分为RGB三种分别来看而已。那么滤波器和图像维度必须保持一致，即$5\times 5\times 3$，同样有16个滤波器，卷积之后可得输出为 $10\times 10 \times 16$ 。</p>
+<p>1D图像同样可以使用类似的卷积运算，常见的1D图像，比如说信号图。该信号图测量你的心脏，每跳动一下将产生多大电压。假设信号图的维度是14，因为只有1个维度，所以滤波器的维度保持一致，为5，采用16个滤波器，卷积后可得输出维度为 $10 \times 16$.</p>
+<p>对于1D的数据，我们更常采用 RNN (recurrent neural network)，递归神经网络，我们下门课程序列模型 (sequence model) 会讲到这种网络结构。</p>
+<h3 id="3D-convolution"><a href="#3D-convolution" class="headerlink" title="3D convolution"></a>3D convolution</h3><p>3D图像是怎样的呢？我们举个例子，比如说 CT 扫描图，这是X光照的一种，但可以对你进行一层一层地扫描，直到将你完整地堆叠成一个整体，见下图：</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051808.png" alt=""></p>
+<p>这才是真正的3D图像。假设一张3D图像，其维度为 $14\times 14\times14$ ，三个维度分别为 height, width, depth，第3个维度为 depth，而不是我们之前说的channels. 那么我们的滤波器维度应该为 $5 \times 5 \times 5$，滤波器个数为16，那么卷积之后可得输出维度为 $10 \times 10 \times 10 \times 16$. </p>
+<p>假设下一层还有32个 $5 \times 5 \times 5 \times 16$ 的滤波器，那么将上一层的输出输入到下一层，可得下一层输出为 $6 \times 6 \times 6 \times 32$ .</p>
+<p>这就是卷积运算在1D和3D图像中的应用。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://www.coursera.org/learn/convolutional-neural-networks/home/week/4" target="_blank" rel="noopener">Convolutional Neural Networks - Week 4</a></li>
+<li><a href="">Zeiler and Fergus., 2013, Visualizing and understanding convolutional networks</a></li>
+<li><a href="">Gatys et al., 2015. A neural algorithm of artistic style. Images on slide generated by Justin Johnson</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2018/05/18/46-Convolutional-Neural-Networks-Week-4-2/">Convolutional Neural Networks - Week 4 - (2)</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2018年05月18日 - 08:05</p>
+
+  <p><span>最后更新:</span>2018年05月19日 - 10:05</p>
+
+  <p><span>原始链接:</span><a href="/2018/05/18/46-Convolutional-Neural-Networks-Week-4-2/" title="Convolutional Neural Networks - Week 4 - (2)">http://kibo.tech/2018/05/18/46-Convolutional-Neural-Networks-Week-4-2/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2018/05/18/46-Convolutional-Neural-Networks-Week-4-2/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"><i class="fa fa-tag"></i> Deep Learning</a>
+          
+            <a href="/tags/Neural-Networks/" rel="tag"><i class="fa fa-tag"></i> Neural Networks</a>
+          
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          
+            <a href="/tags/Neural-Style-Transfer/" rel="tag"><i class="fa fa-tag"></i> Neural Style Transfer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/17/45-Convolutional-Neural-Networks-Week-4-1/" rel="next" title="Convolutional Neural Networks - Week 4 - (1)">
+                <i class="fa fa-chevron-left"></i> Convolutional Neural Networks - Week 4 - (1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/06/47-Sequence-Models-Week-1-1/" rel="prev" title="Sequence Models - Week 1 - (1)">
+                Sequence Models - Week 1 - (1) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Neural-Style-Transfer"><span class="nav-number">1.</span> <span class="nav-text">Neural Style Transfer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-neural-style-tranfer"><span class="nav-number">1.1.</span> <span class="nav-text">What is neural style tranfer?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-are-deep-ConvNets-learning"><span class="nav-number">1.2.</span> <span class="nav-text">What are deep ConvNets learning?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualizing-what-a-deep-network-is-learning"><span class="nav-number">1.2.1.</span> <span class="nav-text">Visualizing what a deep network is learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualizing-deep-layers"><span class="nav-number">1.2.2.</span> <span class="nav-text">Visualizing deep layers</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cost-Function"><span class="nav-number">1.3.</span> <span class="nav-text">Cost Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Content-Cost-Function"><span class="nav-number">1.4.</span> <span class="nav-text">Content Cost Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Style-Cost-Function"><span class="nav-number">1.5.</span> <span class="nav-text">Style Cost Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Meaning-of-the-“style”-of-an-image"><span class="nav-number">1.5.1.</span> <span class="nav-text">Meaning of the “style” of an image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Intuition-about-style-of-an-image"><span class="nav-number">1.5.2.</span> <span class="nav-text">Intuition about style of an image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Style-matrix"><span class="nav-number">1.5.3.</span> <span class="nav-text">Style matrix</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1D-and-3D-Generalizations"><span class="nav-number">1.6.</span> <span class="nav-text">1D and 3D Generalizations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Convolutions-in-2D-and-1D"><span class="nav-number">1.6.1.</span> <span class="nav-text">Convolutions in 2D and 1D</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3D-convolution"><span class="nav-number">1.6.2.</span> <span class="nav-text">3D convolution</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- ҳ����С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

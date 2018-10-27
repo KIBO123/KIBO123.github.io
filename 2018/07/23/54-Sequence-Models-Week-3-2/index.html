@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,Attention Model,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本节主要讲解 Beam Search 的误差分析和注意力模型，欢迎大家关注！">
+<meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,Attention Model">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sequence Models - Week 3 - (2)">
+<meta property="og:url" content="http://kibo.tech/2018/07/23/54-Sequence-Models-Week-3-2/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="本节主要讲解 Beam Search 的误差分析和注意力模型，欢迎大家关注！">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1807/180727/18072701.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1807/180727/18072702.png">
+<meta property="og:updated_time" content="2018-07-29T01:43:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sequence Models - Week 3 - (2)">
+<meta name="twitter:description" content="本节主要讲解 Beam Search 的误差分析和注意力模型，欢迎大家关注！">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1807/180727/18072701.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2018/07/23/54-Sequence-Models-Week-3-2/">
+
+
+
+
+
+  <title>Sequence Models - Week 3 - (2) | Foresee</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2018/07/23/54-Sequence-Models-Week-3-2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Sequence Models - Week 3 - (2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T14:32:55+08:00">
+                2018-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Course/" itemprop="url" rel="index">
+                    <span itemprop="name">Course</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本节主要讲解 Beam Search 的误差分析和注意力模型，欢迎大家关注！</p>
+<a id="more"></a>
+<h1 id="Various-sequence-to-sequence-architectures"><a href="#Various-sequence-to-sequence-architectures" class="headerlink" title="Various sequence to sequence architectures"></a>Various sequence to sequence architectures</h1><h2 id="Error-analysis-in-beam-search"><a href="#Error-analysis-in-beam-search" class="headerlink" title="Error analysis in beam search"></a>Error analysis in beam search</h2><p>正如我们上文所说，Beam Search 是启发式搜索算法，它未必一定能输出概率最大的翻译结果。因为它仅仅跟踪于 $B$ 种可能性。那么当 Beam Search 出错了该怎么办？我们可以进行错误分析 (error analysis)，搞清楚到底是 Beam Search的问题，还是RNN模型的问题，并是否值得花时间去改进。</p>
+<p><em>“Jane visite l’Afrique en septembre.”</em></p>
+<p>还是这个例子，假设在我们机器翻译模型的验证集 (development set) 中，给出了人类的翻译结果，记为 $y^\ast $，而算法给出的翻译结果记为 $\hat{y}$ ：</p>
+<p><strong>Human:</strong> <em>“Jane visits Africa in September.”</em></p>
+<p><strong>Algorithm:</strong> <em>“Jane visited Africa last September.”</em></p>
+<p>显然，人类的翻译结果更好一些，而算法给出的结果尽管没大的错误，但意思已经发生了改变。我们的模型主要包含两个部分，一部分是RNN网络，集合了 encoder network 和 decoder network，另一部分是 beam search 算法。那么到底是哪部分不够好，才导致了这样的结果呢？</p>
+<h3 id="Error-analysis-on-beam-search"><a href="#Error-analysis-on-beam-search" class="headerlink" title="Error analysis on beam search"></a>Error analysis on beam search</h3><p>在误差分析中，我们分别计算人类和算法两种翻译结果的概率：$P(y^\ast|x)$ 和 $P(\hat{y}|x)$。这是可能存在两种情况：</p>
+<p>Case 1 : $P(y^\ast|x)&gt;P(\hat{y}|x)$</p>
+<ul>
+<li>Beam Search chose $\hat{y}$. But $y^\ast$ attains higher $P(y|x)$.</li>
+<li>Conclusion: Beam search is at fault.</li>
+</ul>
+<p>Case 2 : $P(y^\ast|x) \leq P(\hat{y}|x)$</p>
+<ul>
+<li>$y^\ast$ is a better translation than $\hat{y}$. But RNN predicted $P(y^\ast|x)&lt;P(\hat{y}|x)$.</li>
+<li>Conclusion: RNN model is at fault.</li>
+</ul>
+<p>我们知道 Beam Search 的目标函数是寻找概率最大的翻译结果，即 $\arg\max_y P(y|x)$。在第一种情况中，当 $P(y^\ast|x)&gt;P(\hat{y}|x)$ 时，Beam Search 却选择了 $\hat{y}$ 的翻译结果，说明 Beam Search没有成功搜索到最优结果，这是来自 Beam Search的误差。</p>
+<p>而在第二种情况中，当 $P(y^\ast|x) \leq P(\hat{y}|x)$ 时，由于我们已经知道 $y^\ast$ 的结果优于 $\hat{y}$，更优的结果应该有更大的概率。然而RNN模型却计算得到 $P(y^\ast|x)&lt;P(\hat{y}|x)$，因此这是来自RNN的误差，它没有预测准确。</p>
+<p>在这里我们忽略了 Length normalization后的结果，实际上在评估这些概率时，应该考虑 length normalization。对于整个验证集，我们可以进行如下误差分析过程：</p>
+<table>
+<thead>
+<tr>
+<th>Human</th>
+<th>Algorithm</th>
+<th>$P(y^\ast</th>
+<th>x)$</th>
+<th>$P(\hat{y}</th>
+<th>x)$</th>
+<th>At fault</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jane visits Africa in September.</td>
+<td>Jane visited Africa last September.</td>
+<td>$2 \times 10^{-10}$</td>
+<td>$1 \times 10^{-10}$</td>
+<td><strong>B</strong></td>
+</tr>
+<tr>
+<td>……</td>
+<td>……</td>
+<td>……</td>
+<td>……</td>
+<td><strong>R</strong></td>
+</tr>
+<tr>
+<td>……</td>
+<td>……</td>
+<td>……</td>
+<td>……</td>
+<td><strong>B</strong></td>
+</tr>
+<tr>
+<td>……</td>
+<td>……</td>
+<td>……</td>
+<td>……</td>
+<td><strong>R</strong></td>
+</tr>
+<tr>
+<td>……</td>
+<td>……</td>
+<td>……</td>
+<td>……</td>
+<td><strong>R</strong></td>
+</tr>
+</tbody>
+</table>
+<p>在表中 <strong>At faule</strong> 一列，<strong>B</strong> 表示由 Beam Search 引发的误差，<strong>R</strong> 表示由 RNN 模型引发的误差。最后，我们分别计算由 <strong>B</strong> 和由 <strong>R</strong> 带来误差的比例。如果由 <strong>B</strong> 带来的误差比例更大，那么我们可以尝试增大 beam width；如果由 <strong>R</strong> 带来的误差比例更大，那么我们可以对RNN模型进行修改，比如说添加正则项，增大训练集，或换一种网络架构等等。</p>
+<p>针对不同问题，使用不同的解决办法，可以更好地提高我们的模型结果。</p>
+<h2 id="Bleu-Score-optional"><a href="#Bleu-Score-optional" class="headerlink" title="Bleu Score (optional)"></a>Bleu Score (optional)</h2><p>对于机器翻译，当前尚存在一些难题。其中之一就是比如说在翻译法语时，可能出现多个同样好的翻译结果。通常我们会采用精确度来评价一个模型的好坏，但当出现多个同样好的结果时如何计算精确度？可以通过 BLEU score来衡量。</p>
+<h3 id="Evaluating-machine-translation"><a href="#Evaluating-machine-translation" class="headerlink" title="Evaluating machine translation"></a>Evaluating machine translation</h3><p>假设给定一个法语句子：<em>“Le chat est sur le tapis.”</em>，那么可以给出以下两种人类的翻译结果：</p>
+<ul>
+<li>Reference 1: The cat is on the mat.</li>
+<li>Reference 2: There is a cat on the mat.</li>
+</ul>
+<p>这两种翻译都十分恰当。BLEU score算法要做的是给定一个机器生成的翻译，它自动计算分值去评价这个机器翻译的好坏。如果机器生成的翻译越接近人类的翻译水平，那么 BLEU score 越高。</p>
+<p>BLEU，全称 bilingual evaluation understudy，由 Papineni等人提出，详见参考文献 <a href="">2</a>。Understudy，在电影界中指的是替角的意思。BLEU的意思就是你可以让人类评估者对机器翻译系统进行评估，也可以使用 BLEU score，它就像是替代的评估方式。</p>
+<p>BLEU score计算的是机器生成翻译的词是否出现在人类翻译中，即两种翻译的匹配度，那么人类翻译分为两部分，一为验证集，一为测试集。假设机器翻译的结果为：</p>
+<ul>
+<li>MT output : the the the the the the the</li>
+</ul>
+<p>机器翻译包含了7个 <em>“the”</em>，显然是个很糟糕的翻译。但是其每个词 <em>“the”</em> 都在 Reference 1和 Reference 2 出现过，那么准确率为 $\frac{7}{7}$ ，很高。这样的准确率计算方式并不好。因此我们使用修正的准确率，因为每个词 <em>“the”</em> 在Reference 1 和 Reference 2中出现的次数分别为2和1，最高出现的次数为2，修正准确率取的是出现最多的次数，而不是所有的次数，即为 $\frac{2}{7}$。在这里，分母为词 <em>“the”</em> 出现在机器翻译句中出现的总次数，分子为词 <em>“the”</em> 出现在人类参考句中出现最多的总次数。</p>
+<p>我们刚刚计算的是单个词的准确率，但显然我们想要知道的是所有词组句子总的准确率，那么就要计算 Bleu score 了。</p>
+<h3 id="Bleu-score-on-bigrams"><a href="#Bleu-score-on-bigrams" class="headerlink" title="Bleu score on bigrams"></a>Bleu score on bigrams</h3><p>bigrams 指的是临近的词组，那么接下来bigrams 的Bleu score定义如下。还是选择之前的例子：</p>
+<ul>
+<li>Reference 1: The cat is on the mat.</li>
+<li>Reference 2: There is a cat on the mat.</li>
+<li>MT output: The cat the cat on the mat.</li>
+</ul>
+<p>假设机器翻译输出了一个稍微比较好的翻译 (MT output)，那么依次的 bigrams 分别为：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Count</th>
+<th>Countclip</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“the cat”</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>“cat the”</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>“cat on”</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>“on the”</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>“the mat”</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>其中，表中“Count”列指的是各个 bigrams 在MT中出现的次数，而“Countclip”列指的是各个 bigrams 在 Reference 1和 Reference 2 中出现的次数。那么 bigrams 的精确率 (Bleu score) 就是 $\frac{4}{6}$，即两列的和之比，分子为“Countclip”列之和，分母为“Count”列之和。</p>
+<h3 id="Bleu-score-on-unigrams"><a href="#Bleu-score-on-unigrams" class="headerlink" title="Bleu score on unigrams"></a>Bleu score on unigrams</h3><p>“unigrams”指的是单个词，我们把关于 unigrams 的精确率记为 $P_1$，$P$ 表示精确率，下标 $1$ 表示单个词 unigrams。<br>$$<br>P_1=\frac{\sum_{unigram \in \hat{y}}CountClip(unigram)}{\sum_{unigram \in \hat{y}}Count(unigram)}<br>$$<br>进一步推广到 n-grams，也是同理，其精确率 $P_n$ 为：<br>$$<br>P_n=\frac{\sum_{n_grams \in \hat{y}}CountClip(n_grams)}{\sum_{n_grams \in \hat{y}}Count(n_grams)}<br>$$</p>
+<h3 id="Bleu-details"><a href="#Bleu-details" class="headerlink" title="Bleu details"></a>Bleu details</h3><p>$p_n$ = Bleu score on n-grams only</p>
+<p>当MT的输出和Reference 的翻译完全一样时，那么Bleu score就等于1。我们将多个精确率结合起来，计算最后的 Bleu score：</p>
+<p>Combined Bleu score:  $BP \cdot \exp({\frac{1}{4} \sum^4_{n=1}p_n}) $ </p>
+<p>其中 BP 是一个惩罚项，表示 brevity penalty。因为当我们的输出翻译越短时，更容易得到更高的精确率，然而我们未必需要那么短的输出，那么 BP 就是针对输出翻译太短的一个惩罚项。BP惩罚项具体如下：<br>$$<br>BP=<br>\left{<br>\begin{aligned}<br>1   \qquad, \  &amp; if \ MT_output_length &gt; reference_output_length \<br>exp(\frac{1-MT_output_length}{reference_output_length}) ,\ &amp; otherwise</p>
+<p>\end{aligned}<br>\right.<br>$$<br>当机器输出的长度大于人类翻译长度时，$BP=1$，否则小于1。</p>
+<p>Bleu score 通常用于评价许多系统，如文本生成、机器翻译和图片配标题等，在深度学习中是一个非常有用的指标。</p>
+<h2 id="Attention-Model-Intuition"><a href="#Attention-Model-Intuition" class="headerlink" title="Attention Model Intuition"></a>Attention Model Intuition</h2><p>注意力模型，在深度学习中是一个影响力很大的思想，它对 RNN 中的 Encoder-Decoder 架构做了一定的改进，使得效果更为显著。我们这节主要讲它是如何works 的？</p>
+<p>给定一个很长的法语句子如下：</p>
+<p>Jane s’est rendue en Afrique en septembre dernier, a a pprecie la culture et a rencontre beaucoup de gens merveilleux; elle est revenue en parlant comment son voyage etait merveilleux, et elle me tente d’y aller aussi.</p>
+<p>在RNN中，会将上面的法语完全输入到 encoder network 中，记忆储存整个句子并传输到激活值中，再到 decoder network 中生成英语翻译输出：</p>
+<p>Jane went to Africa last September, and enjoyed the culture and met many wonderful people; she came back raving about how wonderful her trip was, and is tempting me to go too.</p>
+<p>然而，人类并不是这么翻译句子的，通常人们会先读一部分，翻译一部分，再接着读一部分翻译一部分，因为人们很难短时间记住一个很长的句子再对它进行翻译。因此对于 Encoder-Decoder结构来说，在短句中的翻译结果相对于长句中翻译结果，总是有更高的 Bleu score。注意力模型在翻译句子中会更像人们的表现，即一次关注句子的一部分进行翻译。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1807/180727/18072701.png" alt=""></p>
+<p>上图给出了 Attention Model 的架构，但是有点乱，我会一步一步慢慢解释，它是由 Dimitri 等人提出来的，详见参考文献 <a href="">3</a> 。</p>
+<p>我们用一个较简短的法语句子来解释，<em>“jane visite l’Afrique en septembre”</em>，我们将其输入到一个双向RNN (bidirectional RNN)，先经过前向传递，而后经过反向传递，最后在传递到激活值 $S$ 中生成输出。</p>
+<p>那么关键来了，在生成第一个输出中，应该关注于法语句子的哪一部份？显然主要应该关注于第一个输入单词，其次再关注临近的几个词，没必要完全关注整个句子。那么对于临近关注的几个词，我们分别计算一个关注权重 (attention weight)，即 $\alpha^{\langle t,t’ \rangle}$。其中，$t$ 为第 $t$ 个生成的输出，$t’$ 为第 $t’$ 个输入词。例如说 $\alpha^{\langle 1,2 \rangle}$，它指的是生成第 1 个输出 <em>Jane</em> 时需要对第 2 个输入词 <em>“visite”</em> 关注的程度。依次在生成每个输出时，都存在对临近输入词的关注权重 $\alpha$，与输入词形成 $C$，再传递到激活值 $S$ 中得到输出。以此类推，直到最后输出 <code>EOS</code>，结束整个句子的翻译。</p>
+<p>大概的步骤就是这样，在下节中我们会给出更为详细的公式解释。</p>
+<h2 id="Attention-Model"><a href="#Attention-Model" class="headerlink" title="Attention Model"></a>Attention Model</h2><h3 id="Attention-model"><a href="#Attention-model" class="headerlink" title="Attention model"></a>Attention model</h3><p>上节中我们看到注意力模型其在生成翻译时，的确更像人类一样，不断关注输入的一小部分来翻译。那么这节我们对给出更多关注注意力模型的具体细节。</p>
+<p>正如我们之前的架构，首先是双向RNN，当然可以使用 GRU或LSTM单元，LSTM会更常用一些。在双向 RNN中，每一个时间步总会有一个前向一个后向的传播，我们用 $a^{\langle t’ \rangle}$ 表示时间步 $t’$ 下第 $t’$ 个输入词的特征向量，那么 $a^{\langle t’ \rangle}=(\overrightarrow{a}^{\langle t’ \rangle},\overleftarrow{a}^{\langle t’ \rangle})$。将 $a^{\langle t’ \rangle}$ 与关注权重 $\alpha^{\langle t,t’ \rangle}$ 结合，得到 $c^{\langle t \rangle}$，输入到激活层得 $s^{\langle t \rangle}$，最后输出预测词 $y^{\langle t \rangle}$。我们以第1个输出 $y^{\langle 1 \rangle}$ 为例：<br>$$<br>a^{\langle t’ \rangle}=(\overrightarrow{a}^{\langle t’ \rangle},\overleftarrow{a}^{\langle t’ \rangle}) \<br>\sum_{t’} \alpha^{\langle 1, t’ \rangle}=1 \<br>c^{\langle 1 \rangle}=\sum_{t’} \alpha^{\langle 1, t’ \rangle}a^{\langle t’ \rangle}<br>$$<br>在这里，对于每个输出的关注权重之和为1，如 $\sum_{t’} \alpha^{\langle 1,t’ \rangle}=1$ .</p>
+<p>我们从整个神经网络架构看，不看下面的双向 RNN 部分，而看上面部分从 $c​$ 输入到 $y​$ 输出，就是一个标准的RNN。</p>
+<h3 id="Computing-attention-alpha-langle-t-t’-rangle"><a href="#Computing-attention-alpha-langle-t-t’-rangle" class="headerlink" title="Computing attention $\alpha^{\langle t,t’ \rangle}$"></a>Computing attention $\alpha^{\langle t,t’ \rangle}$</h3><p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1807/180727/18072702.png" alt=""></p>
+<p> $\alpha^{\langle t,t’ \rangle}$ = amount of attention $y^{\langle t \rangle}$ should pay to  $a^{\langle t’ \rangle}$</p>
+<p>我们已经知道了 $\alpha^{\langle t,t’ \rangle}$ 的含义，那么其计算如下：<br>$$<br>\alpha^{\langle t,t’ \rangle}=\frac{\exp(e^{\langle t,t’ \rangle})}{\sum^{T_x}_{t’=1}\exp(e^{\langle t,t’ \rangle})}<br>$$<br>$e^{\langle t,t’ \rangle}$ 为参数，我们可以通过上一时间步的输出激活值 $s^{\langle t-1 \rangle}$ 和当前时间步的输入激活值 $a^{\langle t’ \rangle}$ 来得到，即将它们同时输入到一个小型隐含层，通过 gradient descent 得到 $e^{\langle t,t’ \rangle}$，见上图左下角。</p>
+<p>整个网络架构图见上图右下角，这个架构图更清晰。Attention Model 的一个缺点就是想要运行这个网络需要花上成倍的时间和成本。如果你的输入长度为 $T_x$，而输出长度为 $T_y$，那么所有参数的量即为 $T_x \times T_y$，计算成本相当大。</p>
+<p>我们介绍了注意力模型在机器翻译的应用，它同样可以用在 image captioning 上。</p>
+<h3 id="Attention-examples"><a href="#Attention-examples" class="headerlink" title="Attention examples"></a>Attention examples</h3><p>在本周课程的编程练习中，机器翻译问题相对较难，我们可以尝试用 Attention 来解决 Date normalization 问题。</p>
+<ul>
+<li>July 20th 1969 $\rightarrow$ 1969 - 07 - 20</li>
+<li>23 April, 2564 $\rightarrow$ 1564 - 04 -23</li>
+</ul>
+<p>我们将不同格式的日期输入进行转换，然后输出统一格式的日期。这个问题将在这周的练习中解决。</p>
+<p>那么以上就是关于 Attention Model 的相关内容，需要更详细内容可阅读参考文献。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://www.coursera.org/learn/nlp-sequence-models/home/week/3" target="_blank" rel="noopener">Sequence Models - Week 3</a></li>
+<li><a href="">Papineni et al., 2002. Bleu: A method for a automatic evaluation of machine translation</a></li>
+<li><a href="">Bahdanau et al., 2014. Neural machine translation by jointly learning to align and translate</a></li>
+<li><a href="">Xu et al., 2015. Show attention and tell: neural image caption generation with visual attention</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2018/07/23/54-Sequence-Models-Week-3-2/">Sequence Models - Week 3 - (2)</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2018年07月23日 - 14:07</p>
+
+  <p><span>最后更新:</span>2018年07月29日 - 09:07</p>
+
+  <p><span>原始链接:</span><a href="/2018/07/23/54-Sequence-Models-Week-3-2/" title="Sequence Models - Week 3 - (2)">http://kibo.tech/2018/07/23/54-Sequence-Models-Week-3-2/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2018/07/23/54-Sequence-Models-Week-3-2/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"><i class="fa fa-tag"></i> Deep Learning</a>
+          
+            <a href="/tags/Neural-Networks/" rel="tag"><i class="fa fa-tag"></i> Neural Networks</a>
+          
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          
+            <a href="/tags/Attention-Model/" rel="tag"><i class="fa fa-tag"></i> Attention Model</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/21/53-Sequence-Models-week-3-1/" rel="next" title="Sequence Models - Week 3 - (1)">
+                <i class="fa fa-chevron-left"></i> Sequence Models - Week 3 - (1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/27/55-Sequence-Models-Week-3-3/" rel="prev" title="Sequence Models - Week 3 - (3)">
+                Sequence Models - Week 3 - (3) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Various-sequence-to-sequence-architectures"><span class="nav-number">1.</span> <span class="nav-text">Various sequence to sequence architectures</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Error-analysis-in-beam-search"><span class="nav-number">1.1.</span> <span class="nav-text">Error analysis in beam search</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Error-analysis-on-beam-search"><span class="nav-number">1.1.1.</span> <span class="nav-text">Error analysis on beam search</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bleu-Score-optional"><span class="nav-number">1.2.</span> <span class="nav-text">Bleu Score (optional)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Evaluating-machine-translation"><span class="nav-number">1.2.1.</span> <span class="nav-text">Evaluating machine translation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bleu-score-on-bigrams"><span class="nav-number">1.2.2.</span> <span class="nav-text">Bleu score on bigrams</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bleu-score-on-unigrams"><span class="nav-number">1.2.3.</span> <span class="nav-text">Bleu score on unigrams</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bleu-details"><span class="nav-number">1.2.4.</span> <span class="nav-text">Bleu details</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Attention-Model-Intuition"><span class="nav-number">1.3.</span> <span class="nav-text">Attention Model Intuition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Attention-Model"><span class="nav-number">1.4.</span> <span class="nav-text">Attention Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Attention-model"><span class="nav-number">1.4.1.</span> <span class="nav-text">Attention model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Computing-attention-alpha-langle-t-t’-rangle"><span class="nav-number">1.4.2.</span> <span class="nav-text">Computing attention $\alpha^{\langle t,t’ \rangle}$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Attention-examples"><span class="nav-number">1.4.3.</span> <span class="nav-text">Attention examples</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- ҳ����С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

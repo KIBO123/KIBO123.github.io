@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="决策理论与方法,报童问题,行为决策,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在报童问题中，每天的报纸需求是随机的，报童每天只有一次机会去订购当天的报纸，且中途不能补货。如果报童的订货量远远大于当天的需求，那么他只能亏损处理没卖出的剩余报纸；如果报童的订货量小于当天的需求，那么他就卖不够，拿不到最大收益。那么，报童应该如何确定订货量去平衡卖不出和卖不够的亏损呢？ 显然，报童确定订货量的目标是期望收益最大化。然而研究发现，在大多数情况下报童的选择会与期望收益最大化方案大相径庭">
+<meta name="keywords" content="决策理论与方法,报童问题,行为决策">
+<meta property="og:type" content="article">
+<meta property="og:title" content="已知需求分布下报童问题的决策偏差">
+<meta property="og:url" content="http://kibo.tech/2018/04/13/31-已知需求分布下报童问题的决策偏差/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="在报童问题中，每天的报纸需求是随机的，报童每天只有一次机会去订购当天的报纸，且中途不能补货。如果报童的订货量远远大于当天的需求，那么他只能亏损处理没卖出的剩余报纸；如果报童的订货量小于当天的需求，那么他就卖不够，拿不到最大收益。那么，报童应该如何确定订货量去平衡卖不出和卖不够的亏损呢？ 显然，报童确定订货量的目标是期望收益最大化。然而研究发现，在大多数情况下报童的选择会与期望收益最大化方案大相径庭">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041301.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041302.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041303.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041304.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041401.png">
+<meta property="og:updated_time" content="2018-04-16T23:49:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="已知需求分布下报童问题的决策偏差">
+<meta name="twitter:description" content="在报童问题中，每天的报纸需求是随机的，报童每天只有一次机会去订购当天的报纸，且中途不能补货。如果报童的订货量远远大于当天的需求，那么他只能亏损处理没卖出的剩余报纸；如果报童的订货量小于当天的需求，那么他就卖不够，拿不到最大收益。那么，报童应该如何确定订货量去平衡卖不出和卖不够的亏损呢？ 显然，报童确定订货量的目标是期望收益最大化。然而研究发现，在大多数情况下报童的选择会与期望收益最大化方案大相径庭">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041301.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2018/04/13/31-已知需求分布下报童问题的决策偏差/">
+
+
+
+
+
+  <title>已知需求分布下报童问题的决策偏差 | Foresee</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2018/04/13/31-已知需求分布下报童问题的决策偏差/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">已知需求分布下报童问题的决策偏差</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T19:26:23+08:00">
+                2018-04-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Paper/" itemprop="url" rel="index">
+                    <span itemprop="name">Paper</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在报童问题中，每天的报纸需求是随机的，报童每天只有一次机会去订购当天的报纸，且中途不能补货。如果报童的订货量远远大于当天的需求，那么他只能亏损处理没卖出的剩余报纸；如果报童的订货量小于当天的需求，那么他就卖不够，拿不到最大收益。那么，报童应该如何确定订货量去平衡卖不出和卖不够的亏损呢？</p>
+<p>显然，报童确定订货量的目标是期望收益最大化。然而研究发现，在大多数情况下报童的选择会与期望收益最大化方案大相径庭，甚至和大多数理论都不一致，比如说风险厌恶、风险偏好、前景理论、浪费厌恶、缺货厌恶等等，那么为什么会出现这样的情况？本文将介绍 Maurice et al. (2000) 在 <a href="">Management Science</a> 上发表的文章：<a href="">Decision Bias in the Newsvendor Problem with a Known Demand Distribution: Experimental Evidence </a> 。这篇文章将对报童问题的行为决策做出描述和解释。</p>
+<a id="more"></a>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>报童问题发生在各行各业中，企业管理者时常也会面临报童问题。通常，经理的决策并非就是最大期望收益方案，为什么他们并不直接追求收益最大化呢？本文首先给出了几个原因：</p>
+<ol>
+<li><strong>相较于收益最大化，决策者有其他偏好</strong> 。如风险厌恶型决策者的订货量总会少于最大收益方案。</li>
+<li><strong>决策者需要探索性尝试来确认库存水准</strong> 。</li>
+<li><strong>决策者对每天的需求分布预测有偏差</strong> 。然而,在文章中是假设决策者已知需求分布的，因为通常企业经理都能获取到相似产品的历史数据。</li>
+</ol>
+<p>文章中采用了两个实验来调查经理的库存决策，其中发现两种订货模式：(1) 高利润产品的订货量总是小于收益最大化方案；(2) 低利润产品的订货量总是大于收益最大化方案。</p>
+<h1 id="Descriptive-Models-of-Newsvendor-Decision-Making"><a href="#Descriptive-Models-of-Newsvendor-Decision-Making" class="headerlink" title="Descriptive Models of Newsvendor Decision Making"></a>Descriptive Models of Newsvendor Decision Making</h1><p>设决策者销售时段前的初始订货量为 $q$ ，在一个销售时段内的随机需求量为 $D$ ，均值为 $\mu$ 。令 $F$ 为需求分布函数，则 $f$ 为需求密度函数。为简化模型，假设 $F$ 是连续可导且严格递增的。而且，假设决策人对分布函数的估计无差。那么，决策者每订货一个单位的成本为 $c$ ，售价为 $p$  ，$p&gt;c$  . 那么当$q&gt;D$ 时，在销售时段结束后每单位的退回价为 $s$ ，且 $s&lt;c$ 。</p>
+<p>设 $\pi(q,D)$ 为净收益，则<br>$$<br>\pi(q,D)=(p-s) \min(q,D)-(c-s)q<br>$$<br>期望收益为：<br>$$<br>E[\pi(q,D)]= \int_0^q f(x) \pi(q,x)dx+(1-F(q))\pi(q,q)<br>$$<br>令最大期望收益方案的订货量为 $q_n$，即 $q_n=\arg \max E[\pi(q,D)]$ ，可解得：<br>$$<br>F(q_n)=\frac{p-c}{p-s}  \tag{1}<br>$$<br>证明可见附录。</p>
+<p>这个比例 $(p-c)/(p-s)$ 称为临界分位数，文章将其作为产品的分类标准，即将高利润产品定义为：<br>$$<br>\frac{p-c}{p-s} \geq \frac{1}{2}   \tag{2}<br>$$<br>反之则为低利润产品。</p>
+<p>文章中还对风险中性、风险偏好、风险厌恶、前景理论、损失厌恶、浪费厌恶、缺货厌恶、低估机会成本等多种情况下的决策模型进行解释和求解，在这里不一一叙述。下图为以收益最大化决策方案订货量为基准，其他决策模型的订货量与基准的比较，“+”表示订货量比基准大，“-”表示订货量比基准小，“+/-”表示订货量可能比基准大，也可能比基准小。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041301.png" alt=""></p>
+<h1 id="Newsvendor-Experiments"><a href="#Newsvendor-Experiments" class="headerlink" title="Newsvendor Experiments"></a>Newsvendor Experiments</h1><p>前面的模型都是建立在别人的理论基础上的，每个模型似乎得到的决策方案都不尽相同，那么哪种会更符合企业经理的决策呢？文章又通过两个实验来验证在不同边际利润下决策者的决策方案，并解释这些方案与利润最大化方案的区别在哪里。</p>
+<h2 id="实验-1-：均匀分布实验"><a href="#实验-1-：均匀分布实验" class="headerlink" title="实验 1 ：均匀分布实验"></a>实验 1 ：均匀分布实验</h2><p>第1个实验主要调查在重复环境下受测者对高利润产品的低利润产品的订货决策，需求分布函数已知且服从参数区间为 $[1,300]$ 均匀分布。</p>
+<ul>
+<li>Methods</li>
+</ul>
+<p>34名受测者来自杜克大学MBA专业的学生，每个受测者都会收到一个计算机程序，这个程序中有一个销售 “wodgets” 的库存问题。受测者无法获知销售的次数，以及未来每轮销售中产品的成本和价格。程序将提示受测者做出30次订货决策。</p>
+<p>受测者在每次决策前都会被提供产品的成本和需求量，”Wodgets” 销售价格为12法郎，回收价格为 0。低利润 “Woegets”的成本为9法郎，高利润 “Woegets” 的成本为3法郎。那么，低利润的临界分位数为 $(12-9)/(12-0)=25\%$ ，高利润的临界分位数为 $(12-3)/(12-0)=75\%$ 。</p>
+<p>根据均匀分布的分布函数，可得：对于高利润产品，收益最大化的订货量为 $q_n=225$ ，期望收益为 675 法郎；对于低利润产品，收益最大化的订货量为 $q_n=75$ ，期望收益为 75 法郎。</p>
+<p>每个受测者对于高利润产品和低利润产品都分别做出15次订货决策，其中20个受测者先对高利润产品做决策，14个受测者先对低利润产品做决策。受测者可获得每次决策后产生的收益等所有信息。</p>
+<ul>
+<li>Results</li>
+</ul>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041302.png" alt=""></p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041303.png" alt=""></p>
+<p>从上面两图可见，可得出以下结论：</p>
+<ol>
+<li>对于高利润产品，受测者的订货量总是低于收益最大化方案；而对于低利润产品，受测者的订货量总是高于收益最大化方案。</li>
+<li>受测者对于高利润产品的订货量均值为176.68，对于低利润产品的订货量均值为134.06，平均来说，高利润产品的订货量远大于低利润产品。</li>
+<li>对于高利润产品，其平均订货量与收益最大化订货量相差48个单位，期望收益相差 5% ；对于低利润产品，其平均订货量与收益最大化订货量相差59个单位，期望收益相差 61%。</li>
+</ol>
+<p>文章还定义了调整分数 (adjustment score)，来对结果更深入地进行分析：<br>$$<br>Adjustment \ Score=\frac{q_t-q_{t-1}}{d_{t-1}-q_{t-1}}  \tag{3}<br>$$<br>式中，$t$ 为销售阶段，$q$ 为订货量，$d$ 为需求量。</p>
+<p>当调整分数为正时，存在两种情况：(1)上一阶段中，若需求量大于订货量，则这一阶段的订货量要大于上一阶段订货量；(2)上一阶段中，若需求量小于订货量，则这一阶段的订货量要小于上一阶段订货量。</p>
+<p>显然，当调整分数为正时，很好理解，打个比方，去年货订得比需求多，卖不完，那么今年订少点，去年订的货不够卖，今年订多点。我们把这样的调整称为正向调整。</p>
+<p>当调整分数为负时，也有两种情况，但和正向调整思路相反，我们把这样的调整称为负向调整。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041304.png" alt=""></p>
+<p>如上图所示，</p>
+<ol>
+<li>大部分决策者的订货量基本不发生变化；</li>
+<li>大部分订货量进行正向调整的决策要高于负向调整；</li>
+<li>在前期的销售阶段，决策者会更倾向于调整订货量。</li>
+</ol>
+<h2 id="实验-2-：高需求分布实验"><a href="#实验-2-：高需求分布实验" class="headerlink" title="实验 2 ：高需求分布实验"></a>实验 2 ：高需求分布实验</h2><p>实验 1 的结论已经和大多数原则产生不同，比如说风险厌恶、风险偏好、浪费厌恶、缺货厌恶等，因为这些理论都只追求一个目标最优；然而，前景理论它也是行为决策的一种，它认为相比于盈利，损失更令人难以承受。因此，当销售获利时，决策者总会减少订货量，从而避免在下个销售时期内亏损。因此，文章设计了第2个实验，观察决策者在绝对获利情况下的决策方案。</p>
+<ul>
+<li>Methods</li>
+</ul>
+<p>相较于实验 1 ，实验 2 对需求分布函数做了部分调整，即增加了参数为[901,1200] 的均匀分布区间，表示高需求范围。那么我们做一下简单计算可以发现，即使决策者订货量最大为 1200，而需求量最小为 901，低利润产品仍能盈利12法郎，而高利润产品能盈利 7212 法郎。</p>
+<p>那么在低需求范围下，高利润和低利润产品的收益最大化订货量分别为225和75；而在高需求范围下，高利润和低利润产品的收益最大化订货量分别为1125和975。</p>
+<p>实验 2 重新挑选了44位杜克大学MBA学生进行实验，实验流程和实验1 相同。</p>
+<ul>
+<li>Results</li>
+</ul>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041401.png" alt=""></p>
+<p>结果显示，当上个销售阶段的需求量和订货量相差很大时，受测者更倾向于进行正向调整。这和前景理论的结果并非完全一致。</p>
+<h1 id="General-Discussion"><a href="#General-Discussion" class="headerlink" title="General Discussion"></a>General Discussion</h1><p>文章中主要的结论就是，在行为决策中，决策者的决策方案往往会和期望最大化原则背道而驰。在文章的两个实验中，可见决策者在对不同边际利润下的产品会做出不同的选择，如对于高利润产品，决策者的订货量会低于收益最大化订货量，而对于低利润产品，决策者的订货量会高于收益最大化订货量。</p>
+<p>这个结果在大多数决策原则下是不能够解释的。当然，这个结果和前景理论会有相似的地方，但也不能完全被前景理论所解释。</p>
+<p>在文献中，报童问题通常是采用期望收益最大化原则进行求解，而在本文中第一次研究了报童问题的行为决策方案。决策者通常会对模型求解出来的最优方案做出修正，本研究对此做出解释，这是值得大家关注的。事实上，行为决策的出现说明了传统收益最大化的原则，其假设上是有缺陷的，在研究上应该采用更新的技术去对过去的理论进行完善和补充。</p>
+<h1 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h1><p><strong>式 (1) 证明：</strong><br>$$<br>\begin{aligned}<br>E[\pi(q,x)] &amp;= p \int_0^qxf(x)dx+pq \int_q^{\infty}f(x)dx+s \int_0^q(q-x)f(x)dx-cq  \<br>                    &amp;=p \int_0^qxf(x)dx+pq \big[1-\int_0^q f(x)dx \big]+s \int_0^q qf(x)dx-s \int_0^q xf(x)dx-cq  \<br>                    &amp;=(p-s)\int_0^q xf(x)dx-(p-s)qF(q)+(p-c)q   \<br>                    &amp;=(p-s)\big[qF(q)-\int_0^q F(x)dx\big]-(p-s)qF(q)+(p-c)q<br>\end{aligned}<br>$$<br>$E[\pi(q,x)]$ 对 $q$ 求导，得：<br>$$<br>\begin{aligned}<br>\frac{\partial E[\pi(q,x)]}{\partial q} &amp;=(p-s)qf(q)-(p-s)F(q)-(p-s)qf(q)+(p-c)  \<br>                                                                  &amp;=(p-c)-(p-s)F(q) \<br> \end{aligned}<br>$$<br>令导数为 0 ，可解得：<br>$$<br>F(q)=\frac{p-c}{p-s}<br>$$</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="">Schweitzer M E, Cachon G P. Decision bias in the newsvendor problem with a known demand distribution: Experimental evidence[J]. Management Science, 2000, 46(3): 404-420.</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2018/04/13/31-已知需求分布下报童问题的决策偏差/">已知需求分布下报童问题的决策偏差</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2018年04月13日 - 19:04</p>
+
+  <p><span>最后更新:</span>2018年04月17日 - 07:04</p>
+
+  <p><span>原始链接:</span><a href="/2018/04/13/31-已知需求分布下报童问题的决策偏差/" title="已知需求分布下报童问题的决策偏差">http://kibo.tech/2018/04/13/31-已知需求分布下报童问题的决策偏差/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2018/04/13/31-已知需求分布下报童问题的决策偏差/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/决策理论与方法/" rel="tag"><i class="fa fa-tag"></i> 决策理论与方法</a>
+          
+            <a href="/tags/报童问题/" rel="tag"><i class="fa fa-tag"></i> 报童问题</a>
+          
+            <a href="/tags/行为决策/" rel="tag"><i class="fa fa-tag"></i> 行为决策</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/10/30-Structuring-Machine-Learning-Projects-Week-2-3 17.02.59/" rel="next" title="Structuring Machine Learning Projects - Week 2 - (3)">
+                <i class="fa fa-chevron-left"></i> Structuring Machine Learning Projects - Week 2 - (3)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/24/32-风险型决策——贝叶斯分析/" rel="prev" title="风险型决策——贝叶斯分析">
+                风险型决策——贝叶斯分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Descriptive-Models-of-Newsvendor-Decision-Making"><span class="nav-number">2.</span> <span class="nav-text">Descriptive Models of Newsvendor Decision Making</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Newsvendor-Experiments"><span class="nav-number">3.</span> <span class="nav-text">Newsvendor Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实验-1-：均匀分布实验"><span class="nav-number">3.1.</span> <span class="nav-text">实验 1 ：均匀分布实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验-2-：高需求分布实验"><span class="nav-number">3.2.</span> <span class="nav-text">实验 2 ：高需求分布实验</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#General-Discussion"><span class="nav-number">4.</span> <span class="nav-text">General Discussion</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Appendix"><span class="nav-number">5.</span> <span class="nav-text">Appendix</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- ҳ����С���� -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
