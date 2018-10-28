@@ -2,15 +2,27 @@
 
 
 
+
+
+
+
+
+
+
+
+
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+
+
+
 
 
 
@@ -38,10 +50,6 @@
 
 
 
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
 
 
 
@@ -50,45 +58,25 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.2">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Hexo, NexT">
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
 
 
 
 
 
 
-
-
-
-
-<meta name="description" content="This is a new world fulled of freedom and hope !">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Foresee">
-<meta property="og:url" content="http://kibo.tech/page/4/index.html">
-<meta property="og:site_name" content="Foresee">
-<meta property="og:description" content="This is a new world fulled of freedom and hope !">
-<meta property="og:locale" content="zh-Hans">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Foresee">
-<meta name="twitter:description" content="This is a new world fulled of freedom and hope !">
 
 
 
@@ -97,15 +85,13 @@
   var CONFIG = {
     root: '/',
     scheme: 'Pisces',
-    version: '5.1.4',
+    version: '6.4.2',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -117,15 +103,40 @@
 </script>
 
 
+  
+
+
+
+
+  <meta name="description" content="This is a new world fulled of freedom and hope !">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Foresee">
+<meta property="og:url" content="http://kibo.tech/page/4/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="This is a new world fulled of freedom and hope !">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Foresee">
+<meta name="twitter:description" content="This is a new world fulled of freedom and hope !">
+
+
+
+
+
 
   <link rel="canonical" href="http://kibo.tech/page/4/">
 
 
 
-
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
 
   <title>Foresee</title>
   
+
 
 
 
@@ -144,9 +155,38 @@
 
 
 
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -169,13 +209,15 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
+    
       
         <p class="site-subtitle">I like for you to be still.</p>
       
+    
   </div>
 
   <div class="site-nav-toggle">
-    <button>
+    <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -183,76 +225,66 @@
   </div>
 </div>
 
-<nav class="site-nav">
-  
 
+
+<nav class="site-nav">
   
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            首页
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
-            
-            标签
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
-            
-            分类
-          </a>
-        </li>
-      
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            归档
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
-            
-            关于
-          </a>
-        </li>
-      
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>关于</a>
+  </li>
 
+      
       
         <li class="menu-item menu-item-search">
           
             <a href="javascript:;" class="popup-trigger">
           
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
-            
-            搜索
-          </a>
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
         </li>
       
     </ul>
+  
+
   
 
   
@@ -281,12 +313,23 @@
 
 
 
- </div>
+  
+
+
+
+</div>
     </header>
+
+    
+
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
+            
+
+          
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
@@ -299,6 +342,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
@@ -308,8 +353,8 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/foresee.JPG">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -323,11 +368,21 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/09/28-Structuring-Machine-Learning-Projects-Week-2 17.02.59/" itemprop="url">Structuring Machine Learning Projects - Week 2 - (1)</a></h1>
+                <a class="post-title-link" href="/2018/04/09/28-Structuring-Machine-Learning-Projects-Week-2 17.02.59/" itemprop="url">
+                  Structuring Machine Learning Projects - Week 2 - (1)
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -335,11 +390,12 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-09T19:27:01+08:00">
-                2018-04-09
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2018-04-09 19:27:01" itemprop="dateCreated datePublished" datetime="2018-04-09T19:27:01+08:00">2018-04-09</time>
             
 
             
@@ -357,11 +413,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Course/" itemprop="url" rel="index">
-                    <span itemprop="name">Course</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Course/" itemprop="url" rel="index"><span itemprop="name">Course</span></a></span>
 
                 
                 
@@ -379,18 +431,17 @@
           
 
           
-            <div class="post-wordcount">
+            <div class="post-symbolscount">
               
-                
+
+              
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计&#58;</span>
+                  <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="字数统计">
-                  1.4k
-                </span>
+                <span title="本文字数">2.6k</span>
               
 
               
@@ -404,9 +455,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">
-                  5
-                </span>
+                <span title="阅读时长">2 分钟</span>
               
             </div>
           
@@ -429,15 +478,20 @@
         
           <p>本文是深度学习第3门课程的第二周，主要学习目标有两个，一个是了解什么是多任务学习和迁移学习，另一个是通过训练集、验证集和测试集的算法结果去评估并改进bias、variance和data-mismatch等问题。欢迎大家关注！</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/04/09/28-Structuring-Machine-Learning-Projects-Week-2 17.02.59/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/04/09/28-Structuring-Machine-Learning-Projects-Week-2 17.02.59/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
@@ -480,6 +534,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
@@ -489,8 +545,8 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/foresee.JPG">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -504,11 +560,21 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/" itemprop="url">Structuring Machine Learning Projects - Week 1 - (2)</a></h1>
+                <a class="post-title-link" href="/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/" itemprop="url">
+                  Structuring Machine Learning Projects - Week 1 - (2)
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -516,11 +582,12 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-06T20:23:58+08:00">
-                2018-04-06
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2018-04-06 20:23:58" itemprop="dateCreated datePublished" datetime="2018-04-06T20:23:58+08:00">2018-04-06</time>
             
 
             
@@ -538,11 +605,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Course/" itemprop="url" rel="index">
-                    <span itemprop="name">Course</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Course/" itemprop="url" rel="index"><span itemprop="name">Course</span></a></span>
 
                 
                 
@@ -560,18 +623,17 @@
           
 
           
-            <div class="post-wordcount">
+            <div class="post-symbolscount">
               
-                
+
+              
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计&#58;</span>
+                  <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="字数统计">
-                  1.9k
-                </span>
+                <span title="本文字数">3.6k</span>
               
 
               
@@ -585,9 +647,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">
-                  7
-                </span>
+                <span title="阅读时长">3 分钟</span>
               
             </div>
           
@@ -610,15 +670,20 @@
         
           <p>我们继续上节课的笔记，这节课关注的重点是神经网络的 Human-level performance，神经网络怎样才能达到人类水平？欢迎大家关注！</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
@@ -661,6 +726,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
@@ -670,8 +737,8 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/foresee.JPG">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -685,11 +752,21 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/03/26-Structuring-Machine-Learning-Projects-Week-1 17.02.59/" itemprop="url">Structuring Machine Learning Projects - Week 1 - (1)</a></h1>
+                <a class="post-title-link" href="/2018/04/03/26-Structuring-Machine-Learning-Projects-Week-1 17.02.59/" itemprop="url">
+                  Structuring Machine Learning Projects - Week 1 - (1)
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -697,11 +774,12 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-03T20:13:54+08:00">
-                2018-04-03
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2018-04-03 20:13:54" itemprop="dateCreated datePublished" datetime="2018-04-03T20:13:54+08:00">2018-04-03</time>
             
 
             
@@ -719,11 +797,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Course/" itemprop="url" rel="index">
-                    <span itemprop="name">Course</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Course/" itemprop="url" rel="index"><span itemprop="name">Course</span></a></span>
 
                 
                 
@@ -741,18 +815,17 @@
           
 
           
-            <div class="post-wordcount">
+            <div class="post-symbolscount">
               
-                
+
+              
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计&#58;</span>
+                  <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="字数统计">
-                  1.5k
-                </span>
+                <span title="本文字数">2.6k</span>
               
 
               
@@ -766,9 +839,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">
-                  5
-                </span>
+                <span title="阅读时长">2 分钟</span>
               
             </div>
           
@@ -791,15 +862,20 @@
         
           <p>这周我们将深度学习的第三门课程 <a href="">Structuring Machine Learning Projects </a> ，这门课程比较简短，只有两周的课时，主要讲述机器学习策略，欢迎大家关注！</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/04/03/26-Structuring-Machine-Learning-Projects-Week-1 17.02.59/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/04/03/26-Structuring-Machine-Learning-Projects-Week-1 17.02.59/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
@@ -842,6 +918,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
@@ -851,8 +929,8 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/foresee.JPG">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -866,11 +944,21 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/27/25-多属性决策——以建设项目的风险评估为例 17.06.12/" itemprop="url">多属性决策——以建设项目的风险评估为例</a></h1>
+                <a class="post-title-link" href="/2018/03/27/25-多属性决策——以建设项目的风险评估为例 17.06.12/" itemprop="url">
+                  多属性决策——以建设项目的风险评估为例
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -878,11 +966,12 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T16:08:01+08:00">
-                2018-03-27
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2018-03-27 16:08:01" itemprop="dateCreated datePublished" datetime="2018-03-27T16:08:01+08:00">2018-03-27</time>
             
 
             
@@ -900,11 +989,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Paper/" itemprop="url" rel="index">
-                    <span itemprop="name">Paper</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a></span>
 
                 
                 
@@ -922,18 +1007,17 @@
           
 
           
-            <div class="post-wordcount">
+            <div class="post-symbolscount">
               
-                
+
+              
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计&#58;</span>
+                  <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="字数统计">
-                  532
-                </span>
+                <span title="本文字数">1.1k</span>
               
 
               
@@ -947,9 +1031,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">
-                  2
-                </span>
+                <span title="阅读时长">1 分钟</span>
               
             </div>
           
@@ -973,15 +1055,20 @@
           <p>多属性决策（MADM）处理的是离散型问题，通常针对有限的、预先设定数量的备选方案，通过内部属性相互之间的比较，对各备选方案进行评价后排定各方案的优劣次序，再从中择优的方法。</p>
 <p>在这里我们以 Edmundas et al. (2010) 的文章 <a href="">Risk Assessment Of Construction Projects</a> 为例，讲解多属性决策方法在风险评估中的应用，以及文中出现的两种算法 ( <strong>TOPSIS</strong> , <strong>COPRAS-G</strong> ) 的原理和计算方法。</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/27/25-多属性决策——以建设项目的风险评估为例 17.06.12/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/03/27/25-多属性决策——以建设项目的风险评估为例 17.06.12/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
@@ -1024,6 +1111,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
@@ -1033,8 +1122,8 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/foresee.JPG">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -1048,11 +1137,21 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/24/24-Improving-Deep-Neural-Networks-Week-3-3 17.05.15/" itemprop="url">Improving Deep Neural Networks - Week 3 - (3)</a></h1>
+                <a class="post-title-link" href="/2018/03/24/24-Improving-Deep-Neural-Networks-Week-3-3 17.05.15/" itemprop="url">
+                  Improving Deep Neural Networks - Week 3 - (3)
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1060,11 +1159,12 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-24T19:44:10+08:00">
-                2018-03-24
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2018-03-24 19:44:10" itemprop="dateCreated datePublished" datetime="2018-03-24T19:44:10+08:00">2018-03-24</time>
             
 
             
@@ -1082,11 +1182,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Course/" itemprop="url" rel="index">
-                    <span itemprop="name">Course</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Course/" itemprop="url" rel="index"><span itemprop="name">Course</span></a></span>
 
                 
                 
@@ -1104,18 +1200,17 @@
           
 
           
-            <div class="post-wordcount">
+            <div class="post-symbolscount">
               
-                
+
+              
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计&#58;</span>
+                  <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="字数统计">
-                  868
-                </span>
+                <span title="本文字数">3k</span>
               
 
               
@@ -1129,9 +1224,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">
-                  4
-                </span>
+                <span title="阅读时长">3 分钟</span>
               
             </div>
           
@@ -1154,15 +1247,20 @@
         
           <p>本文是第3周课程的最后一部分，主要讲解多类别分类算法，以及 Tensorflow 这个大名鼎鼎的深度学习框架，欢迎大家关注！</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/24/24-Improving-Deep-Neural-Networks-Week-3-3 17.05.15/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/03/24/24-Improving-Deep-Neural-Networks-Week-3-3 17.05.15/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
@@ -1205,6 +1303,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
@@ -1214,8 +1314,8 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/foresee.JPG">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -1229,11 +1329,21 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/23/23-Improving-Deep-Neural-Networks-Week-3-2 17.03.22/" itemprop="url">Improving Deep Neural Networks - Week 3 - (2)</a></h1>
+                <a class="post-title-link" href="/2018/03/23/23-Improving-Deep-Neural-Networks-Week-3-2 17.03.22/" itemprop="url">
+                  Improving Deep Neural Networks - Week 3 - (2)
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1241,11 +1351,12 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-23T19:50:20+08:00">
-                2018-03-23
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2018-03-23 19:50:20" itemprop="dateCreated datePublished" datetime="2018-03-23T19:50:20+08:00">2018-03-23</time>
             
 
             
@@ -1263,11 +1374,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Course/" itemprop="url" rel="index">
-                    <span itemprop="name">Course</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Course/" itemprop="url" rel="index"><span itemprop="name">Course</span></a></span>
 
                 
                 
@@ -1285,18 +1392,17 @@
           
 
           
-            <div class="post-wordcount">
+            <div class="post-symbolscount">
               
-                
+
+              
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计&#58;</span>
+                  <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="字数统计">
-                  1.5k
-                </span>
+                <span title="本文字数">3.9k</span>
               
 
               
@@ -1310,9 +1416,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">
-                  6
-                </span>
+                <span title="阅读时长">4 分钟</span>
               
             </div>
           
@@ -1335,15 +1439,20 @@
         
           <p>本文为第3周课程的第二部门，主要讲解 Batch Normalization。欢迎大家关注！</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/23/23-Improving-Deep-Neural-Networks-Week-3-2 17.03.22/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/03/23/23-Improving-Deep-Neural-Networks-Week-3-2 17.03.22/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
@@ -1386,6 +1495,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
@@ -1395,8 +1506,8 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/foresee.JPG">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -1410,11 +1521,21 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/22/22-Improving-Deep-Neural-Networks-Week-3 17.02.59/" itemprop="url">Improving Deep Neural Networks - Week 3 - (1)</a></h1>
+                <a class="post-title-link" href="/2018/03/22/22-Improving-Deep-Neural-Networks-Week-3 17.02.59/" itemprop="url">
+                  Improving Deep Neural Networks - Week 3 - (1)
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1422,11 +1543,12 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-22T21:40:08+08:00">
-                2018-03-22
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2018-03-22 21:40:08" itemprop="dateCreated datePublished" datetime="2018-03-22T21:40:08+08:00">2018-03-22</time>
             
 
             
@@ -1444,11 +1566,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Course/" itemprop="url" rel="index">
-                    <span itemprop="name">Course</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Course/" itemprop="url" rel="index"><span itemprop="name">Course</span></a></span>
 
                 
                 
@@ -1466,18 +1584,17 @@
           
 
           
-            <div class="post-wordcount">
+            <div class="post-symbolscount">
               
-                
+
+              
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计&#58;</span>
+                  <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="字数统计">
-                  1.2k
-                </span>
+                <span title="本文字数">2.2k</span>
               
 
               
@@ -1491,9 +1608,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">
-                  4
-                </span>
+                <span title="阅读时长">2 分钟</span>
               
             </div>
           
@@ -1516,15 +1631,20 @@
         
           <p>这周课程是第二门课程的最后一周，本文主要关注于调参，对调参的一些细节以及需要注意的技巧都加以描述，欢迎大家关注！</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/22/22-Improving-Deep-Neural-Networks-Week-3 17.02.59/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/03/22/22-Improving-Deep-Neural-Networks-Week-3 17.02.59/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
@@ -1567,6 +1687,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
@@ -1576,8 +1698,8 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/foresee.JPG">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -1591,11 +1713,21 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/11/21-粗糙集决策简析 17.02.59/" itemprop="url">粗糙集决策简析</a></h1>
+                <a class="post-title-link" href="/2018/03/11/21-粗糙集决策简析 17.02.59/" itemprop="url">
+                  粗糙集决策简析
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1603,11 +1735,12 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-11T15:21:07+08:00">
-                2018-03-11
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2018-03-11 15:21:07" itemprop="dateCreated datePublished" datetime="2018-03-11T15:21:07+08:00">2018-03-11</time>
             
 
             
@@ -1625,11 +1758,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
-                    <span itemprop="name">Algorithm</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a></span>
 
                 
                 
@@ -1647,18 +1776,17 @@
           
 
           
-            <div class="post-wordcount">
+            <div class="post-symbolscount">
               
-                
+
+              
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计&#58;</span>
+                  <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="字数统计">
-                  2.2k
-                </span>
+                <span title="本文字数">5.4k</span>
               
 
               
@@ -1672,9 +1800,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">
-                  9
-                </span>
+                <span title="阅读时长">5 分钟</span>
               
             </div>
           
@@ -1699,15 +1825,20 @@
 <p>对于确定性决策，常用一般的数学规划模型便可清晰地描述决策问题并确定决策方案；对于风险决策等，可考虑概率，采用贝叶斯分析方法；那么对于不确定性决策来说，除了较为简单的悲观准则、乐观准则、等可能准则等决策方式之外，是否还有更为完善的理论或分析方法可解决不确定性决策呢？</p>
 <p>经过一系列的资料收集和文献查阅，我认为粗糙集理论是个比较好的方向。</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/11/21-粗糙集决策简析 17.02.59/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/03/11/21-粗糙集决策简析 17.02.59/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
@@ -1750,6 +1881,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
@@ -1759,8 +1892,8 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/foresee.JPG">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -1774,11 +1907,21 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/08/20-Improving-Deep-Neural-Networks-Week-2-2/" itemprop="url">Improving Deep Neural Networks - Week 2 - (2)</a></h1>
+                <a class="post-title-link" href="/2018/03/08/20-Improving-Deep-Neural-Networks-Week-2-2/" itemprop="url">
+                  Improving Deep Neural Networks - Week 2 - (2)
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1786,11 +1929,12 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-08T17:14:01+08:00">
-                2018-03-08
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2018-03-08 17:14:01" itemprop="dateCreated datePublished" datetime="2018-03-08T17:14:01+08:00">2018-03-08</time>
             
 
             
@@ -1808,11 +1952,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Course/" itemprop="url" rel="index">
-                    <span itemprop="name">Course</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Course/" itemprop="url" rel="index"><span itemprop="name">Course</span></a></span>
 
                 
                 
@@ -1830,18 +1970,17 @@
           
 
           
-            <div class="post-wordcount">
+            <div class="post-symbolscount">
               
-                
+
+              
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计&#58;</span>
+                  <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="字数统计">
-                  1.6k
-                </span>
+                <span title="本文字数">4.7k</span>
               
 
               
@@ -1855,9 +1994,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">
-                  6
-                </span>
+                <span title="阅读时长">4 分钟</span>
               
             </div>
           
@@ -1880,15 +2017,20 @@
         
           <p>第二周课程的第二部分，主要为 momentum 、 RMSprop、Adam optimization 等快速梯度下降的优化算法，欢迎大家关注！</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/08/20-Improving-Deep-Neural-Networks-Week-2-2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/03/08/20-Improving-Deep-Neural-Networks-Week-2-2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
@@ -1931,6 +2073,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
@@ -1940,8 +2084,8 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/foresee.JPG">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -1955,11 +2099,21 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/07/19-Improving-Neural-Networks-Week-2/" itemprop="url">Improving Deep Neural Networks - Week 2 - (1)</a></h1>
+                <a class="post-title-link" href="/2018/03/07/19-Improving-Neural-Networks-Week-2/" itemprop="url">
+                  Improving Deep Neural Networks - Week 2 - (1)
+                </a>
+              
+            
+          </h1>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1967,11 +2121,12 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-07T21:26:56+08:00">
-                2018-03-07
-              </time>
-            
 
+              
+                
+              
+
+              <time title="创建时间：2018-03-07 21:26:56" itemprop="dateCreated datePublished" datetime="2018-03-07T21:26:56+08:00">2018-03-07</time>
             
 
             
@@ -1989,11 +2144,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Course/" itemprop="url" rel="index">
-                    <span itemprop="name">Course</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Course/" itemprop="url" rel="index"><span itemprop="name">Course</span></a></span>
 
                 
                 
@@ -2011,18 +2162,17 @@
           
 
           
-            <div class="post-wordcount">
+            <div class="post-symbolscount">
               
-                
+
+              
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计&#58;</span>
+                  <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="字数统计">
-                  1.3k
-                </span>
+                <span title="本文字数">3.2k</span>
               
 
               
@@ -2036,9 +2186,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">
-                  5
-                </span>
+                <span title="阅读时长">3 分钟</span>
               
             </div>
           
@@ -2061,15 +2209,20 @@
         
           <p>欢迎来到课程第二周，上周课程主要讲了训练神经网络的一系列优化方法，如正则化、Dropout、随机初始权重和梯度检验等，这周主要内容是上一周的进一步拓展，同样是一些优化算法，但或许在难度上会更大一些。</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/07/19-Improving-Neural-Networks-Week-2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/03/07/19-Improving-Neural-Networks-Week-2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
@@ -2108,15 +2261,12 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
 
           </div>
-          
-
-
           
 
         </div>
@@ -2143,59 +2293,190 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
-            
               <p class="site-author-name" itemprop="name">KIBO</p>
               <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
           </div>
 
-          <nav class="site-state motion-element">
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">58</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
 
-            
-              <div class="site-state-item site-state-posts">
               
-                <a href="/archives/">
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
               
-                  <span class="site-state-item-count">58</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
 
-            
               
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
               
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">57</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
+            </nav>
           
 
           
 
           
-          
 
           
           
 
+          
+          
+
+          
+            
+          
           
 
         </div>
@@ -2215,17 +2496,35 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
-  <span class="with-love">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">KIBO</span>
 
   
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">235k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">3:34</span>
+  
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
 
 
 
@@ -2233,7 +2532,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.4.2</div>
 
 
 
@@ -2243,9 +2542,20 @@
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
 
   
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
 </div>
+
 
 
 
@@ -2266,7 +2576,10 @@
     
 
     
+	
+    
 
+    
   </div>
 
   
@@ -2285,7 +2598,11 @@
 
 
 
-  
+
+
+
+
+
 
 
 
@@ -2305,16 +2622,6 @@
 
   
   
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
     <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
@@ -2323,18 +2630,13 @@
     <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
 
 
 
@@ -2342,9 +2644,9 @@
   
 
 
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/affix.js?v="></script>
 
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v="></script>
 
 
 
@@ -2353,21 +2655,7 @@
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
 
 
 
@@ -2375,11 +2663,7 @@
 
 
 
-
-
   
-
-
 
 
 
@@ -2441,6 +2725,8 @@
         .css('overflow', 'hidden');
       $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
 
+      
+
       $.ajax({
         url: path,
         dataType: isXml ? "xml" : "json",
@@ -2474,6 +2760,7 @@
                 var title = data.title.trim();
                 var titleInLowerCase = title.toLowerCase();
                 var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
                 var contentInLowerCase = content.toLowerCase();
                 var articleUrl = decodeURIComponent(data.url);
                 var indexOfTitle = [];
@@ -2720,38 +3007,151 @@
   
 
   
+
+  
   
 
   
   
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
+    
+      
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
         for (i=0; i < all.length; i += 1) {
           all[i].SourceElement().parentNode.className += ' has-jax';
         }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
   
 
 
   
+  
 
   
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script type="text/javascript">
+  
+    bookmark.loadBookmark();
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
 
 </body>
 </html>
-
-<!-- ҳ����С���� -->
-<script type="text/javascript" src="/js/src/clicklove.js"></script>
