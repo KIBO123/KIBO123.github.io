@@ -88,7 +88,7 @@
 <meta property="og:description" content="本文为第3周课程的第二部门，主要讲解 Batch Normalization。欢迎大家关注！">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18032401.png">
-<meta property="og:updated_time" content="2018-10-27T10:28:44.653Z">
+<meta property="og:updated_time" content="2018-10-28T01:22:00.774Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Improving Deep Neural Networks - Week 3 - (2)">
 <meta name="twitter:description" content="本文为第3周课程的第二部门，主要讲解 Batch Normalization。欢迎大家关注！">
@@ -395,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  1.5k
                 </span>
               
 
@@ -411,7 +411,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  6
                 </span>
               
             </div>
@@ -439,22 +439,27 @@
 <ul>
 <li>Implementing Batch Norm</li>
 </ul>
-<p>$$<br>Given\ some\ intermediate\ values\ in \ NN : \ z^ &amp;#123 (1) &amp;#125 ,…,z^ &amp;#123 (m) &amp;#125  \<br>\mu=\frac &amp;#123 1 &amp;#125  &amp;#123 m &amp;#125 \sum_i z^ &amp;#123 (i) &amp;#125    \<br>\sigma^2=\frac &amp;#123 1 &amp;#125  &amp;#123 m &amp;#125 \sum_i(z^ &amp;#123 (i) &amp;#125 -\mu)^2   \<br>z^ &amp;#123 (i) &amp;#125 _ &amp;#123 norm &amp;#125 =\frac &amp;#123 z^ &amp;#123 (i) &amp;#125 -\mu &amp;#125  &amp;#123 \sqrt &amp;#123 \sigma^2+\varepsilon &amp;#125  &amp;#125<br>$$</p>
-<p>上面公式为隐含层标准化的过程，在标准化中添加 $\varepsilon$ 是为了防止出现 $\sigma^2=0$ 的情况。当经过标准化后，隐含层节点分布服从标准正态分布，即均值为0，方差为1。但如果我们想让隐含层节点服从其它正态分布，而非标准呢？<br>$$<br>\tilde &amp;#123 z &amp;#125 ^ &amp;#123 (i) &amp;#125 =\gamma z^ &amp;#123 (i) &amp;#125 _ &amp;#123 norm &amp;#125 +\beta<br>$$<br>其中，$\gamma$ 和 $\beta$ 均为 learnable parameters. 在梯度下降时，或其他一些算法，如momentum、rms、adam等，这些参数都会随之 update。那么，当$\gamma = \sqrt &amp;#123 \sigma^2+\varepsilon &amp;#125 $ 且 $\beta=\mu$ 时，$\tilde &amp;#123 z &amp;#125 ^ &amp;#123 (i) &amp;#125 =z^ &amp;#123 (i) &amp;#125 $ 。经过标准化后的 $\tilde &amp;#123 z &amp;#125 ^ &amp;#123 (i) &amp;#125 $ 可直接用于下一层的计算。</p>
+<script type="math/tex; mode=display">
+Given\ some\ intermediate\ values\ in \ NN : \ z^ { (1)},...,z^ { (m)} \\
+\mu=\frac { 1} {m}\sum_i z^ { (i)}   \\
+\sigma^2=\frac { 1} {m}\sum_i(z^ { (i)}-\mu)^2   \\
+z^ { (i)}_ { norm}=\frac { z^ { (i)}-\mu} {\sqrt { \sigma^2+\varepsilon} }</script><p>上面公式为隐含层标准化的过程，在标准化中添加 $\varepsilon$ 是为了防止出现 $\sigma^2=0$ 的情况。当经过标准化后，隐含层节点分布服从标准正态分布，即均值为0，方差为1。但如果我们想让隐含层节点服从其它正态分布，而非标准呢？</p>
+<script type="math/tex; mode=display">
+\tilde { z}^ { (i)}=\gamma z^ { (i)}_ { norm}+\beta</script><p>其中，$\gamma$ 和 $\beta$ 均为 learnable parameters. 在梯度下降时，或其他一些算法，如momentum、rms、adam等，这些参数都会随之 update。那么，当$\gamma = \sqrt { \sigma^2+\varepsilon}$ 且 $\beta=\mu$ 时，$\tilde { z}^ { (i)}=z^ { (i)}$ 。经过标准化后的 $\tilde { z}^ { (i)}$ 可直接用于下一层的计算。</p>
 <p>那为什么非要添加 $\gamma$ 和 $\beta$ 呢？让隐含层节点服从标准正态分布不好吗？那么因为由于标准正态分布均值为0，那么大部分的值都会分布在 0 附近。由此造成的后果是，在经过激活函数( sigmoid )的时候，大部分的值都会限定于 sigmoid 中间近似于线性的部分。</p>
 <h2 id="Fitting-Batch-Norm-into-a-neural-network"><a href="#Fitting-Batch-Norm-into-a-neural-network" class="headerlink" title="Fitting Batch Norm into a neural network"></a>Fitting Batch Norm into a neural network</h2><ul>
 <li>Adding Batch Norm to a network</li>
 </ul>
-<p>$$<br>x \xrightarrow &amp;#123 \omega^ &amp;#123 [1] &amp;#125 ,b^ &amp;#123 [1] &amp;#125  &amp;#125 z^ &amp;#123 [1] &amp;#125  \xrightarrow[BN] &amp;#123 \beta^ &amp;#123 [1] &amp;#125 ,\gamma^ &amp;#123 [1] &amp;#125  &amp;#125  \tilde &amp;#123 z &amp;#125 ^ &amp;#123 [1] &amp;#125  \rightarrow a^ &amp;#123 [1] &amp;#125 =g^ &amp;#123 [1] &amp;#125 (\tilde &amp;#123 z^ &amp;#123 [1] &amp;#125  &amp;#125 ) \xrightarrow &amp;#123 \omega^ &amp;#123 [2] &amp;#125 ,b^ &amp;#123 [2] &amp;#125  &amp;#125 z^ &amp;#123 [2] &amp;#125  \rightarrow \dots<br>$$</p>
-<p>从上流程可见，Batch-Norm添加在激活函数之前即可。显然，参数又多了两个，现在共有 4 个参数：$\omega^ &amp;#123 [1] &amp;#125 ,b^ &amp;#123 [l] &amp;#125 ,\beta^ &amp;#123 [l] &amp;#125 ,\gamma^ &amp;#123 [l] &amp;#125 $ .</p>
+<script type="math/tex; mode=display">
+x \xrightarrow { \omega^ { [1]},b^ { [1]} }z^ { [1]} \xrightarrow[BN] { \beta^ { [1]},\gamma^ { [1]} }\tilde { z}^ { [1]} \rightarrow a^ { [1]}=g^ { [1]}(\tilde { z^ { [1]} }) \xrightarrow { \omega^ { [2]},b^ { [2]} }z^ { [2]} \rightarrow \dots</script><p>从上流程可见，Batch-Norm添加在激活函数之前即可。显然，参数又多了两个，现在共有 4 个参数：$\omega^ { [1]},b^ { [l]},\beta^ { [l]},\gamma^ { [l]}$ .</p>
 <ul>
 <li>Working with mini-batches</li>
 </ul>
-<p>Batch-Norm同样可和mini-batches 一起使用，同样在每个batch，每层的激活函数之前进行标准化即可。需要注意的是， $z^ &amp;#123 [l] &amp;#125 =\omega^ &amp;#123 [l] &amp;#125 a^ &amp;#123 [l-1] &amp;#125 +b^ &amp;#123 [l] &amp;#125 $ ，由于在batch norm要进行标准化，并再次进行 rescale 。显然，添加常数 $b^ &amp;#123 [l] &amp;#125 $ 在此并无意义，都会在标准化减去均值时所抵消。因此在这里，可省去一个参数  $b^ &amp;#123 [l] &amp;#125 $ . 同时，要注意 $z^ &amp;#123 [l] &amp;#125 $ 及其他参数都具有相同的维度，即 $(n^ &amp;#123 [l] &amp;#125 ,1)$ .</p>
+<p>Batch-Norm同样可和mini-batches 一起使用，同样在每个batch，每层的激活函数之前进行标准化即可。需要注意的是， $z^ { [l]}=\omega^ { [l]}a^ { [l-1]}+b^ { [l]}$ ，由于在batch norm要进行标准化，并再次进行 rescale 。显然，添加常数 $b^ { [l]}$ 在此并无意义，都会在标准化减去均值时所抵消。因此在这里，可省去一个参数  $b^ { [l]}$ . 同时，要注意 $z^ { [l]}$ 及其他参数都具有相同的维度，即 $(n^ { [l]},1)$ .</p>
 <ul>
 <li>Implementing gradient descent</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">for t = 1,...,number of mini-batch:</span><br><span class="line">    Compute forward prop on X &amp;#123 t &amp;#125 </span><br><span class="line">        In each hidden layer, use BN to replace z[l] with z_tilde[l]</span><br><span class="line">    Use backprop to compute dw[l],dbeta[l],dgamma[l]</span><br><span class="line">    Update parameters :</span><br><span class="line">    w[l]:= w[l] - alpha * dw[l]</span><br><span class="line">    beta[l]:= beta[l] - alpha * dbeta[l]</span><br><span class="line">    gamma[l]:= gamma[l] - alpha * dgamma[l]</span><br><span class="line">also work with momentum, rms prop , adam</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">for t = 1,...,number of mini-batch:</span><br><span class="line">    Compute forward prop on X &#123; t&#125;</span><br><span class="line">        In each hidden layer, use BN to replace z[l] with z_tilde[l]</span><br><span class="line">    Use backprop to compute dw[l],dbeta[l],dgamma[l]</span><br><span class="line">    Update parameters :</span><br><span class="line">    w[l]:= w[l] - alpha * dw[l]</span><br><span class="line">    beta[l]:= beta[l] - alpha * dbeta[l]</span><br><span class="line">    gamma[l]:= gamma[l] - alpha * dgamma[l]</span><br><span class="line">also work with momentum, rms prop , adam</span><br></pre></td></tr></table></figure>
 <h2 id="Why-does-Batch-Norm-work"><a href="#Why-does-Batch-Norm-work" class="headerlink" title="Why does Batch Norm work"></a>Why does Batch Norm work</h2><ul>
 <li>Learning on shifting input distribution</li>
 </ul>
@@ -463,17 +468,19 @@
 <li>Why this is a problem with neural networks?</li>
 </ul>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18032401.png" alt=""></p>
-<p>我们看上面一个神经网络，为了保证训练得到的 $\hat &amp;#123 y &amp;#125 $ 尽量与实际值相近，每一层的参数 $[\omega,b]$ 都在不断更新迭代。然而，对于某一层的参数值来说，总是受到前面一层参数值的影响，也就是说上一层传递至该层的输出改变，即会导致该层传递至下一层的值也发生改变。这也是我们上一段所说的 covariate shift。</p>
+<p>我们看上面一个神经网络，为了保证训练得到的 $\hat { y}$ 尽量与实际值相近，每一层的参数 $[\omega,b]$ 都在不断更新迭代。然而，对于某一层的参数值来说，总是受到前面一层参数值的影响，也就是说上一层传递至该层的输出改变，即会导致该层传递至下一层的值也发生改变。这也是我们上一段所说的 covariate shift。</p>
 <p>由于 Batch-Norm 对每一层的输入都进行标准化，在一定程度上解决这个问题。因为标准化后，输入的分布均服从标准正态分布，那么不管输入怎么变，其均值和方差都分别为 0 和 1 （或rescale后服从其它正态分布），对下一层造成的影响也比较小。</p>
 <ul>
 <li>Batch Norm as regularization</li>
 </ul>
 <p>(1) Each mini-batch is scaled by the mean / variance computed on just that mini-batch.</p>
-<p>(2) This adds some noise to the values $z^ &amp;#123 [l] &amp;#125 $ within that mini-batch. So similar to dropout, it adds some noise to each hidden layer’s activations.</p>
+<p>(2) This adds some noise to the values $z^ { [l]}$ within that mini-batch. So similar to dropout, it adds some noise to each hidden layer’s activations.</p>
 <p>(3) This has a slight regularization effect.</p>
 <p>以上三条讲述的是Batch-Norm的另一个影响，即有部分正则化的作用，可防止过拟合，但不太建议把 Batch-Norm 当作 Regularization 来使用，因为 Batch-Norm的正则化作用并不太明显，其最主要的作用还是在于给隐含层进行标准化，从而加快梯度下降的速度。</p>
 <h2 id="Batch-Norm-at-test-time"><a href="#Batch-Norm-at-test-time" class="headerlink" title="Batch Norm at test time"></a>Batch Norm at test time</h2><p>我们知道，在训练集中，对每个mini-batch 进行一次batch-norm 。但是在测试集中，对于每个样本都要进行一次batch-norm，那么应该如何估计测试集样本的均值和方差呢？</p>
-<p>一个典型的方法就是通过对训练集每个mini-batch求指数加权移动平均值和方差，直到最后一个均值和方差作为测试集样本的均值和方差。<br>$$<br>for \ layer \ [l]:X^ &amp;#123 \ &amp;#123 1\ &amp;#125  &amp;#125  \rightarrow \mu^ &amp;#123 \ &amp;#123 1\ &amp;#125 [l] &amp;#125 ,X^ &amp;#123 \ &amp;#123 2\ &amp;#125  &amp;#125  \rightarrow \mu^ &amp;#123 \ &amp;#123 2\ &amp;#125 [l] &amp;#125 ,X^ &amp;#123 \ &amp;#123 3\ &amp;#125  &amp;#125  \rightarrow \mu^ &amp;#123 \ &amp;#123 3\ &amp;#125 [l] &amp;#125 ,\dots<br>$$<br>训练集 $l$ 层中得出最后的一个 $u^ &amp;#123 [l] &amp;#125 $ 作为测试集第 $l$ 层的均值，方差同理。</p>
+<p>一个典型的方法就是通过对训练集每个mini-batch求指数加权移动平均值和方差，直到最后一个均值和方差作为测试集样本的均值和方差。</p>
+<script type="math/tex; mode=display">
+for \ layer \ [l]:X^ { \ { 1\} }\rightarrow \mu^ { \ { 1\}[l]},X^ { \ { 2\} }\rightarrow \mu^ { \ { 2\}[l]},X^ { \ { 3\} }\rightarrow \mu^ { \ { 3\}[l]},\dots</script><p>训练集 $l$ 层中得出最后的一个 $u^ { [l]}$ 作为测试集第 $l$ 层的均值，方差同理。</p>
 <p>尽管指数加权移动平均得到的均值和方差估计都比较粗糙，但事实上这个方法的鲁棒性是非常好的。</p>
 <p>未完待续~~</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
@@ -508,7 +515,7 @@
 
   <p><span>发布时间:</span>2018年03月23日 - 19:03</p>
 
-  <p><span>最后更新:</span>2018年10月27日 - 18:10</p>
+  <p><span>最后更新:</span>2018年10月28日 - 09:10</p>
 
   <p><span>原始链接:</span><a href="/2018/03/23/23-Improving-Deep-Neural-Networks-Week-3-2 17.03.22/" title="Improving Deep Neural Networks - Week 3 - (2)">http://kibo.tech/2018/03/23/23-Improving-Deep-Neural-Networks-Week-3-2 17.03.22/</a>
 
@@ -800,7 +807,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -848,12 +855,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -891,21 +893,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

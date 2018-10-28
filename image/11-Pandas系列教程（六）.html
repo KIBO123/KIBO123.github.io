@@ -374,8 +374,7 @@
 <p><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.get_option.html" target="_blank" rel="noopener">pandas.get_option()</a> 有许多相关的设置，在这里选取几个比较典型的进行详解。</p>
 <h2 id="最大显示行数设置"><a href="#最大显示行数设置" class="headerlink" title="最大显示行数设置"></a>最大显示行数设置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 查看当前 DataFrame 的最大显示行数</span><br><span class="line">pd.get_option(&apos;display.max_rows&apos;)    # 默认为60</span><br><span class="line"></span><br><span class="line"># 设定最大显示行数，参数 None 为显示全部</span><br><span class="line">pd.set_option(&apos;display.max_rows&apos;,None)  </span><br><span class="line"></span><br><span class="line"># 重置，即返回默认设置</span><br><span class="line">pd.reset_option(&apos;display.max_rows&apos;) </span><br><span class="line"></span><br><span class="line"># 最大显示列数设置同理</span><br><span class="line">pd.get_option(&apos;display.max_columns&apos;)</span><br></pre></td></tr></table></figure>
 <h2 id="最大列宽设置"><a href="#最大列宽设置" class="headerlink" title="最大列宽设置"></a>最大列宽设置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 查看当前 DataFrame 的最大列宽</span><br><span class="line">pd.get_option(&apos;display.max_colwidth&apos;)   # 默认为50个字符宽</span><br><span class="line"></span><br><span class="line"># 设定最大列宽</span><br><span class="line">pd.set_option(&apos;display.max_colwidth&apos;,1000)</span><br></pre></td></tr></table></figure>
-<p>##小数点后几位显示设置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 设置显示小数点后2位</span><br><span class="line">pd.set_option(&apos;display.precision&apos;,2)</span><br></pre></td></tr></table></figure>
+<h2 id="小数点后几位显示设置"><a href="#小数点后几位显示设置" class="headerlink" title="小数点后几位显示设置"></a>小数点后几位显示设置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 设置显示小数点后2位</span><br><span class="line">pd.set_option(&apos;display.precision&apos;,2)</span><br></pre></td></tr></table></figure>
 <h2 id="每隔3位数值显示逗号"><a href="#每隔3位数值显示逗号" class="headerlink" title="每隔3位数值显示逗号"></a>每隔3位数值显示逗号</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 新建 x,y 列</span><br><span class="line">drinks[&apos;x&apos;] = drinks.wine_servings * 1000</span><br><span class="line">drinks[&apos;y&apos;] = drinks.total_litres_of_pure_alcohol * 1000</span><br><span class="line"></span><br><span class="line"># 设置每隔 3 位数加一逗号</span><br><span class="line">pd.set_option(&apos;display.float_format&apos;,&apos;&#123;:,&#125;&apos;.format)</span><br></pre></td></tr></table></figure>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180302/18030209.png" alt=""></p>
 <p>最后给个小提示：如果在没有连接互联网的情况下，输入命令也可以查询关于<code>get_option()</code>的相关documents.</p>
@@ -510,7 +509,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据去重"><span class="nav-number">1.</span> <span class="nav-text">数据去重</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#避免两种形式的-SettingWithCopyWarning"><span class="nav-number">2.</span> <span class="nav-text">避免两种形式的 SettingWithCopyWarning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#形式（一）："><span class="nav-number">2.1.</span> <span class="nav-text">形式（一）：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#形式（二）："><span class="nav-number">2.2.</span> <span class="nav-text">形式（二）：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#产生警告的原因"><span class="nav-number">2.3.</span> <span class="nav-text">产生警告的原因</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DataFrame的显示设置"><span class="nav-number">3.</span> <span class="nav-text">DataFrame的显示设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#最大显示行数设置"><span class="nav-number">3.1.</span> <span class="nav-text">最大显示行数设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最大列宽设置"><span class="nav-number">3.2.</span> <span class="nav-text">最大列宽设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#每隔3位数值显示逗号"><span class="nav-number">3.3.</span> <span class="nav-text">每隔3位数值显示逗号</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据去重"><span class="nav-number">1.</span> <span class="nav-text">数据去重</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#避免两种形式的-SettingWithCopyWarning"><span class="nav-number">2.</span> <span class="nav-text">避免两种形式的 SettingWithCopyWarning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#形式（一）："><span class="nav-number">2.1.</span> <span class="nav-text">形式（一）：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#形式（二）："><span class="nav-number">2.2.</span> <span class="nav-text">形式（二）：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#产生警告的原因"><span class="nav-number">2.3.</span> <span class="nav-text">产生警告的原因</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DataFrame的显示设置"><span class="nav-number">3.</span> <span class="nav-text">DataFrame的显示设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#最大显示行数设置"><span class="nav-number">3.1.</span> <span class="nav-text">最大显示行数设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最大列宽设置"><span class="nav-number">3.2.</span> <span class="nav-text">最大列宽设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小数点后几位显示设置"><span class="nav-number">3.3.</span> <span class="nav-text">小数点后几位显示设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#每隔3位数值显示逗号"><span class="nav-number">3.4.</span> <span class="nav-text">每隔3位数值显示逗号</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>
@@ -555,7 +554,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -603,12 +602,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -646,21 +640,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

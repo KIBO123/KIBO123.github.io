@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,NLP,Word Embeddings,">
+  <meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,Word Embeddings,NLP,">
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="本文是序列模型的课程第二周，在这周主要介绍自然语言处理，包括词嵌入 (word embeddings) 的模型和应用，欢迎大家关注！">
-<meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,NLP,Word Embeddings">
+<meta name="keywords" content="Deep Learning,Neural Networks,学习笔记,Word Embeddings,NLP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Sequence Models - Week 2 - (1)">
 <meta property="og:url" content="http://kibo.tech/2018/07/13/50-Sequence-Models-Week-2-1/index.html">
@@ -398,7 +398,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.8k
                 </span>
               
 
@@ -414,7 +414,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  10
                 </span>
               
             </div>
@@ -488,6 +488,7 @@
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18071502.png" alt=""></p>
 <p>这个向量 encoding 和词的 embedding 的意思差不多，区别之一就在于人脸识别模型输入的是人脸图片，即使是没从见过的脸也可以输入，而词嵌入输入的是大量的文本，且其学习的大量文本实固定的。</p>
 <h2 id="Properties-of-word-embeddings"><a href="#Properties-of-word-embeddings" class="headerlink" title="Properties of word embeddings"></a>Properties of word embeddings</h2><p>词嵌入有一个很重要的特性，那就是它可以进行类比推理 (analogy reasoning)。举个例子，提个问题：男对女，那国王对什么？大家都猜得到，国王对皇后。然而，词嵌入也能做出这样的推断，它是怎么实现的呢？</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -529,9 +530,29 @@
 </tr>
 </tbody>
 </table>
-<p>上表分别是四个单词在4个特征维度上的系数，简单来说就是四个单词的嵌入向量 (embedding vector)，分别记作 $e_{man},e_{woman},e_{king},e_{queen}$ 。其中，我们可以发现：<br>$$<br>e_{man}-e_{woman} \approx<br>\begin{bmatrix}<br>-2 \<br>0  \<br>0  \<br>0<br>\end{bmatrix},<br>e_{king}-e_{queen} \approx<br>\begin{bmatrix}<br>-2 \<br>0  \<br>0  \<br>0<br>\end{bmatrix}<br>$$<br>显然，两个嵌入向量之差几乎相同。这就是词嵌入可以进行类比推断的原因。当给定“男对女”时，问“国王对什么？”，即 $e_{man}-e_{woman} \approx e_{king}-e_{?}$，通过计算词的嵌入向量差，再计算相似度，即可知道与“国王”对应的词是什么。</p>
-<p>这个想法是由 Tomas Mikolov 等人提出的，详情可见参考文献 <a href="">3</a>。我们将这个算法写得正式一点，即：<br>$$<br>Find \; word \;  w:    arg\max \limits_w  \ sim(e_w,e_{king}-e_{man}+e_{woman})<br>$$<br>上式讲述的是找到一个词 $w$，使得该词的嵌入向量 $e_w$ 与 $e_{king}-e_{man}+e_{woman}$ 的相似度 (similarity) 最大。在大部分文献中，通过这种方式进行类比推断的准确率均在30%~75%之间。</p>
-<p>对于相似度函数，通常采用的是余弦相似度 (Cosine similarity)。<br>$$<br>sim(\overrightarrow{u},\overrightarrow{v})=\frac{\overrightarrow{u}^T\overrightarrow{v}}{\lVert \overrightarrow{u} \rVert_2 \lVert \overrightarrow{v} \rVert_2 }<br>$$<br>其中，$\lVert \bullet \rVert_2$ 表示欧几里得距离。</p>
+</div>
+<p>上表分别是四个单词在4个特征维度上的系数，简单来说就是四个单词的嵌入向量 (embedding vector)，分别记作 $e_{man},e_{woman},e_{king},e_{queen}$ 。其中，我们可以发现：</p>
+<script type="math/tex; mode=display">
+e_{man}-e_{woman} \approx 
+\begin{bmatrix}
+-2 \\
+0  \\
+0  \\
+0
+\end{bmatrix},
+e_{king}-e_{queen} \approx 
+\begin{bmatrix}
+-2 \\
+0  \\
+0  \\
+0
+\end{bmatrix}</script><p>显然，两个嵌入向量之差几乎相同。这就是词嵌入可以进行类比推断的原因。当给定“男对女”时，问“国王对什么？”，即 $e_{man}-e_{woman} \approx e_{king}-e_{?}$，通过计算词的嵌入向量差，再计算相似度，即可知道与“国王”对应的词是什么。</p>
+<p>这个想法是由 Tomas Mikolov 等人提出的，详情可见参考文献 <a href="">3</a>。我们将这个算法写得正式一点，即：</p>
+<script type="math/tex; mode=display">
+Find \; word \;  w:    arg\max \limits_w  \ sim(e_w,e_{king}-e_{man}+e_{woman})</script><p>上式讲述的是找到一个词 $w$，使得该词的嵌入向量 $e_w$ 与 $e_{king}-e_{man}+e_{woman}$ 的相似度 (similarity) 最大。在大部分文献中，通过这种方式进行类比推断的准确率均在30%~75%之间。</p>
+<p>对于相似度函数，通常采用的是余弦相似度 (Cosine similarity)。</p>
+<script type="math/tex; mode=display">
+sim(\overrightarrow{u},\overrightarrow{v})=\frac{\overrightarrow{u}^T\overrightarrow{v}}{\lVert \overrightarrow{u} \rVert_2 \lVert \overrightarrow{v} \rVert_2 }</script><p>其中，$\lVert \bullet \rVert_2$ 表示欧几里得距离。</p>
 <ul>
 <li>Man:Woman as Boy:Girl</li>
 <li>Ottawa:Canada as Nairobi:Kenya </li>
@@ -540,8 +561,11 @@
 </ul>
 <p>以上是一些类比推断的例子，这就是词嵌入的类比推断功能。</p>
 <h2 id="Embedding-matrix"><a href="#Embedding-matrix" class="headerlink" title="Embedding matrix"></a>Embedding matrix</h2><p>当我们执行算法对词嵌入进行学习时，会得到一个嵌入矩阵 (embedding matrix)。假设我们有一个10,000长度的词汇表，对于每个词都有300个特征，那么可以形成一个维度为 $300 \times 10,000$ 的矩阵，这个矩阵就是嵌入矩阵 $E$。</p>
-<p>单词 <em>“Orange”</em> 在词汇表中的第6257位，它的 one-hot 向量记为 $O_{6257}$，维度为 $10,000 \times 1$ 。那么其 one-hot 向量与嵌入矩阵进行点积运算，就可以得到 <em>“Orange”</em> 的嵌入向量，维度为 $300 \times 1$。<br>$$<br>E \cdot O_{6257} =e_{6257}<br>$$<br>同理，对于词汇表中的任意一个词 $j$，其one-hot向量为 $O_j$ ，与嵌入矩阵 $E$ 进行点积运算，即可得到该词 $j$ 的嵌入向量。<br>$$<br>E \cdot O_{j} =e_{j}<br>$$</p>
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<p>单词 <em>“Orange”</em> 在词汇表中的第6257位，它的 one-hot 向量记为 $O_{6257}$，维度为 $10,000 \times 1$ 。那么其 one-hot 向量与嵌入矩阵进行点积运算，就可以得到 <em>“Orange”</em> 的嵌入向量，维度为 $300 \times 1$。</p>
+<script type="math/tex; mode=display">
+E \cdot O_{6257} =e_{6257}</script><p>同理，对于词汇表中的任意一个词 $j$，其one-hot向量为 $O_j$ ，与嵌入矩阵 $E$ 进行点积运算，即可得到该词 $j$ 的嵌入向量。</p>
+<script type="math/tex; mode=display">
+E \cdot O_{j} =e_{j}</script><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
 <li><a href="https://www.coursera.org/learn/nlp-sequence-models/home/week/2" target="_blank" rel="noopener">Sequence Models - Week 2</a></li>
 <li><a href="">van der Maaten and Hinton., 2008. Visualizing data using t_SNE</a></li>
 <li><a href="">Mikolov et al., 2013. Linguistic regularities in continuous space word representations</a></li>
@@ -665,9 +689,9 @@
           
             <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
           
-            <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
-          
             <a href="/tags/Word-Embeddings/" rel="tag"><i class="fa fa-tag"></i> Word Embeddings</a>
+          
+            <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
           
         </div>
       
@@ -871,7 +895,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -919,12 +943,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -962,21 +981,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

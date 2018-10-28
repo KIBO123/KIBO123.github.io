@@ -393,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  1.9k
                 </span>
               
 
@@ -409,7 +409,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  8
                 </span>
               
             </div>
@@ -433,13 +433,44 @@
         <p>通常现实生活中的决策，风险型决策和不确定型决策占了大部分。之前写过用<a href="http://kibo.tech/2018/03/11/21-粗糙集决策简析/">粗糙集</a>方法去解决不确定型决策，这次我们主要采用贝叶斯分析的方法去解决风险型问题。本文主要参照了岳超源的<a href="">《决策理论与方法》</a> 一书，由科学出版社出版。</p>
 <a id="more"></a>
 <h1 id="贝叶斯风险与贝叶斯规则"><a href="#贝叶斯风险与贝叶斯规则" class="headerlink" title="贝叶斯风险与贝叶斯规则"></a>贝叶斯风险与贝叶斯规则</h1><p>我们知道，风险型决策的基本方法是将状态变量视为随机变量，用先验状态分布表示状态变量的概率分布，用期望值准则计算方案的满意程度。而贝叶斯决策则认为先验状态分布与实际情况存在一定误差，为了提高决策质量，需要通过调查或随机试验，收集有关状态变量的补充信息，对先验分布进行修正，用后验状态分布进行决策。</p>
-<p>首先，我们定义一下风险函数。给定自然状态 $\theta$ ，采取决策规则 $\delta$ 时，其损失函数为 $l(\theta,\delta(x))$ ，那么风险函数则为损失函数对随机实验后果（观测结果） $x$ 的期望值，记作 $R(\theta,\delta)$，即<br>$$<br>R(\theta,\delta)=E_{\theta}^{X}[l(\theta,\delta(x))]  \tag{1}<br>$$</p>
-<h2 id="贝叶斯风险"><a href="#贝叶斯风险" class="headerlink" title="贝叶斯风险"></a>贝叶斯风险</h2><p>当自然状态的先验概率为 $\pi(\theta)$，决策人采用策略 $\delta$ 时，风险函数 $R(\theta,\delta)$ 关于自然状态 $\theta$ 的期望值称为贝叶斯风险，记作 $r(\pi,\delta)$，即<br>$$<br>r(\pi,\delta)=E^{\pi}[R(\theta,\delta)]=E^{\pi}\big[E_{\theta}^{X}[l(\theta,\delta(x))]\big] \tag{2}<br>$$</p>
-<p>当 $\theta$、$x$ 为连续型随机变量，$\pi(\theta)$ 为先验概率密度函数，则：<br>$$<br>\begin{aligned}<br>r(\pi,\delta) &amp; =\int_{\theta \in \Theta}R(\theta,\delta)\pi(\theta)d\theta   \<br>&amp;=\int_{\theta \in \Theta}\int_{x \in X}l(\theta,\delta(x))f(x|\theta)dx\cdot \pi(\theta)d\theta<br>\end{aligned}  \tag{3}<br>$$<br>当 $\theta$、$x$ 为离散型随机变量，$\pi(\theta)$ 为先验概率，则：<br>$$<br>\begin{aligned}<br>r(\pi,\delta) &amp; =\sum_{\theta \in \Theta}R(\theta,\delta)\pi(\theta)   \<br>&amp;=\sum_{\theta \in \Theta}\sum_{x \in X}l(\theta,\delta(x))p(x|\theta)\cdot \pi(\theta)<br>\end{aligned}   \tag{4}<br>$$<br>如果 $r(\pi,\delta_1)&lt;r(\pi,\delta_2)$，则称策略 $\delta_1$ 优于 $\delta_2$ ，记作 $\delta_1 \succ \delta_2$。这就是<strong>正规型</strong>的贝叶斯分析。</p>
-<h2 id="贝叶斯决策规则"><a href="#贝叶斯决策规则" class="headerlink" title="贝叶斯决策规则"></a>贝叶斯决策规则</h2><p>先验分布为 $\pi(\theta)$ 时，若策略空间存在某个策略 $\delta^{\pi}$ ，能够使：<br>$$<br>\forall \delta \in \Delta, \  r(\pi,\delta^{\pi}) \leq r(\pi.\delta)<br>$$<br>则称 $\delta^{\pi}$ 是贝叶斯规则，亦称贝叶斯策略。也就是说，最优的决策规则是贝叶斯规则$\delta^{\pi}$ ，它能使贝叶斯风险 $r(\pi,\delta)$ 极小化，即进行贝叶斯分析时应该选择 $\delta^{\pi}$， 使：<br>$$<br>r(\pi,\delta^{\pi})=\min_{\delta \in \Delta}{r(\pi,\delta)}   \tag{5}<br>$$</p>
-<h1 id="贝叶斯分析的扩展型"><a href="#贝叶斯分析的扩展型" class="headerlink" title="贝叶斯分析的扩展型"></a>贝叶斯分析的扩展型</h1><p>在解实际问题时，求使(3)式极小的 $\delta(x)$ 往往十分困难，尤其在状态和观察值比较复杂时，$\Delta$ 集中的策略数目很大，穷举所有的 $\delta(x)$ 有困难，且计算量颇大。因此实际计算时往往采用扩展型的贝叶斯分析。</p>
-<p>因为自然状态的概率分布 $\pi(\theta)$ 、似然函数 $f(x|\theta)$ 和损失函数 $l(\theta,\delta(x))$ 均为有限值。由 Fubini 定理，式(3)中的积分次序可换，即：<br>$$<br>\begin{aligned}<br>r(\pi,\delta)  &amp;=\int_{\theta \in \Theta}\int_{x \in X}l(\theta,\delta(x))f(x|\theta)dx\cdot \pi(\theta)d\theta  \<br>&amp;=\int_{x \in X} \left[ \int_{\theta \in \Theta}l(\theta,\delta(x))f(x|\theta) \pi(\theta)d\theta \right]dx<br>\end{aligned} \tag{6}<br>$$<br>显然，要使式(6)达到最小，应对每个 $x \in X$，选择一 $\delta$ ，使式(6)中括号内的积分（记作 $r’$）极小：<br>$$<br>r’=\int_{\theta \in \Theta}l(\theta,\delta(x))f(x|\theta) \cdot \pi(\theta)d\theta  \tag{7}<br>$$<br>因为观察值 $x$ 的边缘分布 $m(x)&gt;0$ ，使式(7)为极小，必然会使下式极小：<br>$$<br>\begin{aligned}<br>r’’&amp;=(m(x))^{-1} \cdot\int_{\theta \in \Theta}l(\theta,\delta(x))f(x|\theta) \cdot \pi(\theta)d\theta \<br>&amp;=\int_{\theta \in \Theta}l(\theta,\delta(x))\left[ \frac{f(x|\theta) \cdot \pi(\theta)}{m(x)} \right]d\theta \<br>&amp;=\int_{\theta \in \Theta}l(\theta,\delta(x)) \pi(\theta|x)d\theta<br>\end{aligned} \tag{8}<br>$$<br>当 $\theta$、$x$ 为离散型随机变量时，式(8)即：<br>$$<br>r’’=\sum l(\theta,\delta(x)) \pi(\theta|x)   \tag{9}<br>$$<br>对每个观察值 $x​$ ，选择行动 $\delta​$ ，使之对给定 $x​$ 时自然状态 $\theta​$ 的后验分布 $\pi(\theta|x)​$ 的期望损失为最小，或者使式(7)最小化，即可求得贝叶斯规则 $\delta^{\pi}​$ 。</p>
+<p>首先，我们定义一下风险函数。给定自然状态 $\theta$ ，采取决策规则 $\delta$ 时，其损失函数为 $l(\theta,\delta(x))$ ，那么风险函数则为损失函数对随机实验后果（观测结果） $x$ 的期望值，记作 $R(\theta,\delta)$，即</p>
+<script type="math/tex; mode=display">
+R(\theta,\delta)=E_{\theta}^{X}[l(\theta,\delta(x))]  \tag{1}</script><h2 id="贝叶斯风险"><a href="#贝叶斯风险" class="headerlink" title="贝叶斯风险"></a>贝叶斯风险</h2><p>当自然状态的先验概率为 $\pi(\theta)$，决策人采用策略 $\delta$ 时，风险函数 $R(\theta,\delta)$ 关于自然状态 $\theta$ 的期望值称为贝叶斯风险，记作 $r(\pi,\delta)$，即</p>
+<script type="math/tex; mode=display">
+r(\pi,\delta)=E^{\pi}[R(\theta,\delta)]=E^{\pi}\big[E_{\theta}^{X}[l(\theta,\delta(x))]\big] \tag{2}</script><p>当 $\theta$、$x$ 为连续型随机变量，$\pi(\theta)$ 为先验概率密度函数，则：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+r(\pi,\delta) & =\int_{\theta \in \Theta}R(\theta,\delta)\pi(\theta)d\theta   \\
+&=\int_{\theta \in \Theta}\int_{x \in X}l(\theta,\delta(x))f(x|\theta)dx\cdot \pi(\theta)d\theta 
+\end{aligned}  \tag{3}</script><p>当 $\theta$、$x$ 为离散型随机变量，$\pi(\theta)$ 为先验概率，则：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+r(\pi,\delta) & =\sum_{\theta \in \Theta}R(\theta,\delta)\pi(\theta)   \\
+&=\sum_{\theta \in \Theta}\sum_{x \in X}l(\theta,\delta(x))p(x|\theta)\cdot \pi(\theta) 
+\end{aligned}   \tag{4}</script><p>如果 $r(\pi,\delta_1)&lt;r(\pi,\delta_2)$，则称策略 $\delta_1$ 优于 $\delta_2$ ，记作 $\delta_1 \succ \delta_2$。这就是<strong>正规型</strong>的贝叶斯分析。</p>
+<h2 id="贝叶斯决策规则"><a href="#贝叶斯决策规则" class="headerlink" title="贝叶斯决策规则"></a>贝叶斯决策规则</h2><p>先验分布为 $\pi(\theta)$ 时，若策略空间存在某个策略 $\delta^{\pi}$ ，能够使：</p>
+<script type="math/tex; mode=display">
+\forall \delta \in \Delta, \  r(\pi,\delta^{\pi}) \leq r(\pi.\delta)</script><p>则称 $\delta^{\pi}$ 是贝叶斯规则，亦称贝叶斯策略。也就是说，最优的决策规则是贝叶斯规则$\delta^{\pi}$ ，它能使贝叶斯风险 $r(\pi,\delta)$ 极小化，即进行贝叶斯分析时应该选择 $\delta^{\pi}$， 使：</p>
+<script type="math/tex; mode=display">
+r(\pi,\delta^{\pi})=\min_{\delta \in \Delta}{r(\pi,\delta)}   \tag{5}</script><h1 id="贝叶斯分析的扩展型"><a href="#贝叶斯分析的扩展型" class="headerlink" title="贝叶斯分析的扩展型"></a>贝叶斯分析的扩展型</h1><p>在解实际问题时，求使(3)式极小的 $\delta(x)$ 往往十分困难，尤其在状态和观察值比较复杂时，$\Delta$ 集中的策略数目很大，穷举所有的 $\delta(x)$ 有困难，且计算量颇大。因此实际计算时往往采用扩展型的贝叶斯分析。</p>
+<p>因为自然状态的概率分布 $\pi(\theta)$ 、似然函数 $f(x|\theta)$ 和损失函数 $l(\theta,\delta(x))$ 均为有限值。由 Fubini 定理，式(3)中的积分次序可换，即：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+r(\pi,\delta)  &=\int_{\theta \in \Theta}\int_{x \in X}l(\theta,\delta(x))f(x|\theta)dx\cdot \pi(\theta)d\theta  \\
+&=\int_{x \in X} \left[ \int_{\theta \in \Theta}l(\theta,\delta(x))f(x|\theta) \pi(\theta)d\theta \right]dx
+\end{aligned} \tag{6}</script><p>显然，要使式(6)达到最小，应对每个 $x \in X$，选择一 $\delta$ ，使式(6)中括号内的积分（记作 $r’$）极小：</p>
+<script type="math/tex; mode=display">
+r'=\int_{\theta \in \Theta}l(\theta,\delta(x))f(x|\theta) \cdot \pi(\theta)d\theta  \tag{7}</script><p>因为观察值 $x$ 的边缘分布 $m(x)&gt;0$ ，使式(7)为极小，必然会使下式极小：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+r''&=(m(x))^{-1} \cdot\int_{\theta \in \Theta}l(\theta,\delta(x))f(x|\theta) \cdot \pi(\theta)d\theta \\
+&=\int_{\theta \in \Theta}l(\theta,\delta(x))\left[ \frac{f(x|\theta) \cdot \pi(\theta)}{m(x)} \right]d\theta \\
+&=\int_{\theta \in \Theta}l(\theta,\delta(x)) \pi(\theta|x)d\theta
+\end{aligned} \tag{8}</script><p>当 $\theta$、$x$ 为离散型随机变量时，式(8)即：</p>
+<script type="math/tex; mode=display">
+r''=\sum l(\theta,\delta(x)) \pi(\theta|x)   \tag{9}</script><p>对每个观察值 $x​$ ，选择行动 $\delta​$ ，使之对给定 $x​$ 时自然状态 $\theta​$ 的后验分布 $\pi(\theta|x)​$ 的期望损失为最小，或者使式(7)最小化，即可求得贝叶斯规则 $\delta^{\pi}​$ 。</p>
 <h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><p>农民选择作物问题，设某地旱年 $\theta_1$ 占60%，正常年景 $\theta_2$ 占40%；$a_1$ 种植耐旱作物，$a_2$ 种不耐旱作物，结果矩阵见下表。为了更有把握地进行决策，决策者决定收集各状态更准确的信息——了解当年的气象预报。设气象预报的准确性为0.8，且决策者的效用函数为 $u(y)=\frac{1}{0.865}(1-e^{-0.02y})$ 。问应该如何种植作物最优？</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -461,6 +492,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p><strong>解：</strong> </p>
 <p>设 $x_1$ 预报干旱，$x_2$ 预报正常年景，则 $p(x_1|\theta_1)=0.8,\ p(x_2|\theta_2)=0.8$ ，且 $m(x_1)=p(x_1|\theta_1)\pi(\theta_1)+p(x_1|\theta_1)\pi(\theta_2)=0.8 \times 0.6+0.2 \times 0.4=0.56$ . 类似地，$m(x_2)=0.44$。</p>
 <p>同时有，$\pi(\theta_1|x_1)=p(x_1|\theta_1)\pi(\theta_1)/m(x_1)=0.8 \times 0.6/0.56=0.86$ ，$\pi(\theta_1|x_2)=p(x_2|\theta_1)\pi(\theta_1)/m(x_2)=0.2\times 0.6/0.44=0.27$ ，类似地，$\pi(\theta_2|x_1)=0.14$，$\pi(\theta_2|x_2)=0.73$ 。</p>
@@ -468,16 +500,55 @@
 <li>正规型分析</li>
 </ul>
 <p>主要分析4种情况：(1)预报旱年种耐旱作物，预报正常种不耐旱作物；(2)预报旱年种不耐旱作物，预报正常种耐旱作物；(3)不管预报什么年都种耐旱作物；(4)不管预报什么年都种不耐旱作物</p>
-<p>（1）策略 $\delta_1$ : $a_1=\delta_1(x_1), \ a_2=\delta_1(x_2)$<br>$$<br>\begin{aligned}<br>r(\pi,\delta_1) &amp;= \sum_i \sum_j l(\theta_i,\delta_1(x_j))p(x_j|\theta_i)\pi(\theta_i) \<br>&amp;= l(\theta_1,a_1)p(x_1|\theta_1)\pi(\theta_1)+ l(\theta_1,a_2)p(x_2|\theta_1)\pi(\theta_1) \ &amp;+l(\theta_2,a_1)p(x_1|\theta_2)\pi(\theta_2) l(\theta_2,a_2)p(x_2|\theta_2)\pi(\theta_2) \<br>&amp;= 0.62 \times 0.8 \times 0.6+1.0 \times 0.2 \times 0.6+0.19 \times 0.2 \times 0.4+0.0 \times 0.8 \times 0.4  \<br>&amp;=0.4328<br>\end{aligned}<br>$$<br>（2）策略 $\delta_2$ ：$a_1=\delta_2(x_2), \ a_2=\delta_2(x_1)$<br>$$<br>\begin{aligned}<br>r(\pi,\delta_2) &amp;= \sum_i \sum_j l(\theta_i,\delta_2(x_j))p(x_j|\theta_i)\pi(\theta_i) \<br>&amp;= l(\theta_1,a_1)p(x_2|\theta_1)\pi(\theta_1)+ l(\theta_1,a_2)p(x_1|\theta_1)\pi(\theta_1) \ &amp;+l(\theta_2,a_1)p(x_2|\theta_2)\pi(\theta_2) +l(\theta_2,a_2)p(x_1|\theta_2)\pi(\theta_2) \<br>&amp;= 0.62 \times 0.2 \times 0.6+1.0 \times 0.8 \times 0.6+0.19 \times 0.8 \times 0.4+0.0 \times 0.8 \times 0.4  \<br>&amp;=0.6152<br>\end{aligned}<br>$$<br>（3）策略 $\delta_3$ ：$a_1=\delta_3(x_1), \ a_2=\delta_3(x_2)$ ，可得 $r(\pi,\delta_3)=0.45$</p>
+<p>（1）策略 $\delta_1$ : $a_1=\delta_1(x_1), \ a_2=\delta_1(x_2)$</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+r(\pi,\delta_1) &= \sum_i \sum_j l(\theta_i,\delta_1(x_j))p(x_j|\theta_i)\pi(\theta_i) \\
+&= l(\theta_1,a_1)p(x_1|\theta_1)\pi(\theta_1)+ l(\theta_1,a_2)p(x_2|\theta_1)\pi(\theta_1) \\ &+l(\theta_2,a_1)p(x_1|\theta_2)\pi(\theta_2) l(\theta_2,a_2)p(x_2|\theta_2)\pi(\theta_2) \\
+&= 0.62 \times 0.8 \times 0.6+1.0 \times 0.2 \times 0.6+0.19 \times 0.2 \times 0.4+0.0 \times 0.8 \times 0.4  \\
+&=0.4328
+\end{aligned}</script><p>（2）策略 $\delta_2$ ：$a_1=\delta_2(x_2), \ a_2=\delta_2(x_1)$</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+r(\pi,\delta_2) &= \sum_i \sum_j l(\theta_i,\delta_2(x_j))p(x_j|\theta_i)\pi(\theta_i) \\
+&= l(\theta_1,a_1)p(x_2|\theta_1)\pi(\theta_1)+ l(\theta_1,a_2)p(x_1|\theta_1)\pi(\theta_1) \\ &+l(\theta_2,a_1)p(x_2|\theta_2)\pi(\theta_2) +l(\theta_2,a_2)p(x_1|\theta_2)\pi(\theta_2) \\
+&= 0.62 \times 0.2 \times 0.6+1.0 \times 0.8 \times 0.6+0.19 \times 0.8 \times 0.4+0.0 \times 0.8 \times 0.4  \\
+&=0.6152
+\end{aligned}</script><p>（3）策略 $\delta_3$ ：$a_1=\delta_3(x_1), \ a_2=\delta_3(x_2)$ ，可得 $r(\pi,\delta_3)=0.45$</p>
 <p>（4）策略 $\delta_4$ ：$a_2=\delta_4(x_1), \ a_2=\delta_4(x_2)$ ，可得 $r(\pi,\delta_4)=0.6$</p>
 <p>显然，$r(\pi,\delta_1)&lt;r(\pi,\delta_3)&lt;r(\pi,\delta_4)&lt;r(\pi,\delta_2)$ ，$\delta_1 \succ \delta_3 \succ \delta_4 \succ \delta_2$ ，$\delta_1$ 是贝叶斯行动。</p>
 <ul>
 <li>扩展型分析</li>
 </ul>
 <p><strong>给定 $x_1$ ：</strong></p>
-<p>(1) 采用 $a_1$ ：<br>$$<br>\begin{aligned}<br>r’’&amp;=\sum l(\theta,\delta(x)) \pi(\theta|x)  \<br>&amp;=l(\theta_1,a_1)\pi(\theta_1|x_1)+l(\theta_2,a_1)\pi(\theta_2|x_1)  \<br>&amp;=0.62 \times 0.86+0.19 \times 0.14 \<br>&amp;=0.56<br>\end{aligned}<br>$$<br>(2) 采用 $a_2​$ :<br>$$<br>\begin{aligned}<br>r’’&amp;=l(\theta_1,a_2)\pi(\theta_1|x_1)+l(\theta_2,a_2)\pi(\theta_2|x_1)  \<br>&amp;=1.0 \times 0.86+0 \times 0.14 \<br>&amp;=0.86<br>\end{aligned}<br>$$<br>所以在预报旱年的情况下，应种植耐旱作物。</p>
+<p>(1) 采用 $a_1$ ： </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+r''&=\sum l(\theta,\delta(x)) \pi(\theta|x)  \\
+&=l(\theta_1,a_1)\pi(\theta_1|x_1)+l(\theta_2,a_1)\pi(\theta_2|x_1)  \\
+&=0.62 \times 0.86+0.19 \times 0.14 \\
+&=0.56
+\end{aligned}</script><p>(2) 采用 $a_2​$ : </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+r''&=l(\theta_1,a_2)\pi(\theta_1|x_1)+l(\theta_2,a_2)\pi(\theta_2|x_1)  \\
+&=1.0 \times 0.86+0 \times 0.14 \\
+&=0.86
+\end{aligned}</script><p>所以在预报旱年的情况下，应种植耐旱作物。</p>
 <p><strong>给定 $x_2$ ：</strong></p>
-<p>(1) 采用 $a_1$ ：<br>$$<br>\begin{aligned}<br>r’’&amp;=l(\theta_1,a_1)\pi(\theta_1|x_2)+l(\theta_2,a_1)\pi(\theta_2|x_2)  \<br>&amp;=0.62 \times 0.27+0.19 \times 0.73 \<br>&amp;=0.306<br>\end{aligned}<br>$$<br>(2) 采用 $a_2$ ：<br>$$<br>\begin{aligned}<br>r’’&amp;=l(\theta_1,a_2)\pi(\theta_1|x_2)+l(\theta_2,a_2)\pi(\theta_2|x_2)  \<br>&amp;=1.0 \times 0.27+0 \times 0.73 \<br>&amp;=0.27<br>\end{aligned}<br>$$<br>所以在预报正常年景的情况下，应种植不耐旱作物。</p>
+<p>(1) 采用 $a_1$ ： </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+r''&=l(\theta_1,a_1)\pi(\theta_1|x_2)+l(\theta_2,a_1)\pi(\theta_2|x_2)  \\
+&=0.62 \times 0.27+0.19 \times 0.73 \\
+&=0.306
+\end{aligned}</script><p>(2) 采用 $a_2$ ： </p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+r''&=l(\theta_1,a_2)\pi(\theta_1|x_2)+l(\theta_2,a_2)\pi(\theta_2|x_2)  \\
+&=1.0 \times 0.27+0 \times 0.73 \\
+&=0.27
+\end{aligned}</script><p>所以在预报正常年景的情况下，应种植不耐旱作物。</p>
 <p>由此得形式贝叶斯规则 $\delta^{\pi}$ 为：$a_1=\delta^{\pi}(x_1), \ a_2=\delta^{\pi}(x_2)$</p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
 <li><a href="">岳超源. 决策理论与方法[M]. 科学出版社, 2003.</a></li>
@@ -803,7 +874,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -851,12 +922,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -894,21 +960,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

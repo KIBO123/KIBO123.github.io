@@ -347,8 +347,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 参数ascending为升序选项，True为升序，False为降序</span><br><span class="line">movies.sort_values(&apos;duration&apos;)</span><br><span class="line"></span><br><span class="line"># 对DataFrame多列进行组合排序</span><br><span class="line">movies.sort_values([&apos;content_rating&apos;,&apos;duration&apos;])</span><br></pre></td></tr></table></figure>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18022605.png" alt="5"></p>
 <p>在此，sort_values()默认并无改动原数据集的顺序，如需改动，可添加参数<code>inplace=Ture</code>。</p>
-<p>#在DataFrame中根据列值筛选行 </p>
-<ul>
+<h1 id="在DataFrame中根据列值筛选行"><a href="#在DataFrame中根据列值筛选行" class="headerlink" title="在DataFrame中根据列值筛选行"></a>在DataFrame中根据列值筛选行</h1><ul>
 <li>首先要了解什么是布尔值：<code>type(True)</code>;</li>
 <li>根据列值筛选行：（两种方法）</li>
 </ul>
@@ -513,7 +512,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#从DataFrame移除列"><span class="nav-number">1.</span> <span class="nav-text">从DataFrame移除列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对DataFrame或Series进行排序"><span class="nav-number">2.</span> <span class="nav-text">对DataFrame或Series进行排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在DataFrame多种筛选条件结合使用"><span class="nav-number">3.</span> <span class="nav-text">在DataFrame多种筛选条件结合使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#额外小问题"><span class="nav-number">4.</span> <span class="nav-text">额外小问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#读取数据文件时只读取特定行或列"><span class="nav-number">4.1.</span> <span class="nav-text">读取数据文件时只读取特定行或列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对DataFrame每行进行循环迭代"><span class="nav-number">4.2.</span> <span class="nav-text">对DataFrame每行进行循环迭代</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除非数值型列"><span class="nav-number">4.3.</span> <span class="nav-text">删除非数值型列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DataFrame-describe-参数详解"><span class="nav-number">4.4.</span> <span class="nav-text">DataFrame.describe()参数详解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#从DataFrame移除列"><span class="nav-number">1.</span> <span class="nav-text">从DataFrame移除列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对DataFrame或Series进行排序"><span class="nav-number">2.</span> <span class="nav-text">对DataFrame或Series进行排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在DataFrame中根据列值筛选行"><span class="nav-number">3.</span> <span class="nav-text">在DataFrame中根据列值筛选行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在DataFrame多种筛选条件结合使用"><span class="nav-number">4.</span> <span class="nav-text">在DataFrame多种筛选条件结合使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#额外小问题"><span class="nav-number">5.</span> <span class="nav-text">额外小问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#读取数据文件时只读取特定行或列"><span class="nav-number">5.1.</span> <span class="nav-text">读取数据文件时只读取特定行或列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对DataFrame每行进行循环迭代"><span class="nav-number">5.2.</span> <span class="nav-text">对DataFrame每行进行循环迭代</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除非数值型列"><span class="nav-number">5.3.</span> <span class="nav-text">删除非数值型列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DataFrame-describe-参数详解"><span class="nav-number">5.4.</span> <span class="nav-text">DataFrame.describe()参数详解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>
@@ -558,7 +557,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -606,12 +605,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -649,21 +643,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

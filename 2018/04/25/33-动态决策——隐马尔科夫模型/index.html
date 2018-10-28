@@ -395,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.4k
                 </span>
               
 
@@ -411,7 +411,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  10
                 </span>
               
             </div>
@@ -438,9 +438,9 @@
 <p>一个隐马尔科夫模型 (HMM) 是一个五元组：$(Q,V,A,B,\pi)$ .</p>
 <p>其中：</p>
 <ul>
-<li>$Q={ q_1,q_2,\dots,q_N}$ 为状态的有限集合；</li>
-<li>$V={v_1,v_2,\dots,v_M}$ 为观测值的有限集合；</li>
-<li>$A=[a_{ij}]<em>{N \times N}$ , $a</em>{ij}=P(i_{t+1}=q_j|i_t=q_i),i,j=1,\dots ,N$ 为状态转移概率矩阵；</li>
+<li>$Q=\{ q_1,q_2,\dots,q_N\}$ 为状态的有限集合；</li>
+<li>$V=\{v_1,v_2,\dots,v_M\}$ 为观测值的有限集合；</li>
+<li>$A=[a_{ij}]_{N \times N}$ , $a_{ij}=P(i_{t+1}=q_j|i_t=q_i),i,j=1,\dots ,N$ 为状态转移概率矩阵；</li>
 <li>$B=[b_j(k)]_{N \times M}$ , $b_j(k)=P(o_t=v_k|i_t=q_j),k=1,\dots M,j=1,\dots,N$ 为观测概率矩阵；</li>
 <li>$\pi=(\pi_i)$ ，$\pi_i=p(i_1=q_i),i=1,\dots,N$ 为初始状态分布。</li>
 </ul>
@@ -467,22 +467,66 @@
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18042601.png" alt="18042601"></p>
 <p><em>图片来源：</em> <a href="http://www.leexiang.com/hidden-markov-model" target="_blank" rel="noopener">隐马尔可夫模型攻略</a></p>
 <p>如图，我们需要对每一层的每个节点进行概率计算，$\alpha_t(i)$ 即为第 $t$ 层第 $i$ 个节点的前向概率。我们举个简单栗子吧！</p>
-<h2 id="销售模型"><a href="#销售模型" class="headerlink" title="销售模型"></a>销售模型</h2><p>考虑一个销售模型 $\lambda=(A,B,\pi)$，状态集合 $Q=$ {畅销，平销，滞销}，观测集合 $V=$ {大量进货，小量进货}。设 $T=3$，$O=$ (大量进货，小量进货，大量进货)，试用前向算法计算 $P(O|\lambda)$ 。<br>$$<br>A=<br>\begin{bmatrix}<br>0.5 &amp; 0.2 &amp; 0.3 \<br>0.3 &amp; 0.5 &amp; 0.2 \<br>0.2 &amp; 0.3 &amp; 0.5 \<br>\end{bmatrix},<br>B=<br>\begin{bmatrix}<br>0.5 &amp; 0.5 \<br>0.4 &amp; 0.6 \<br>0.7 &amp; 0.3 \<br>\end{bmatrix},<br>\pi=(0.2,0.4,0.4)^T<br>$$<br>解：根据前向算法：</p>
+<h2 id="销售模型"><a href="#销售模型" class="headerlink" title="销售模型"></a>销售模型</h2><p>考虑一个销售模型 $\lambda=(A,B,\pi)$，状态集合 $Q=$ {畅销，平销，滞销}，观测集合 $V=$ {大量进货，小量进货}。设 $T=3$，$O=$ (大量进货，小量进货，大量进货)，试用前向算法计算 $P(O|\lambda)$ 。</p>
+<script type="math/tex; mode=display">
+A=
+\begin{bmatrix}
+0.5 & 0.2 & 0.3 \\
+0.3 & 0.5 & 0.2 \\
+0.2 & 0.3 & 0.5 \\
+\end{bmatrix},
+B=
+\begin{bmatrix}
+0.5 & 0.5 \\
+0.4 & 0.6 \\
+0.7 & 0.3 \\
+\end{bmatrix},
+\pi=(0.2,0.4,0.4)^T</script><p>解：根据前向算法：</p>
 <p>(1) 计算初值：$\alpha_1(1)=\pi_1b_1(o_1)=0.10$ ; $\alpha_1(2)=\pi_2b_2(o_1)=0.16$ ; $\alpha_1(3)=\pi_3b_3(o_1)=0.28$   </p>
-<p>(2) 递推计算：<br>$$<br>\alpha_2(1)=\left[\sum^3_{i=1}\alpha_1(i)a_{i1} \right]b_1(o_2)=0.154 \times 0.5=0.077   \<br>\alpha_2(2)=\left[\sum^3_{i=1}\alpha_1(i)a_{i2} \right]b_2(o_2)=0.184 \times 0.6=0.1104   \<br>\alpha_2(3)=\left[\sum^3_{i=1}\alpha_1(i)a_{i3} \right]b_3(o_2)=0.202 \times 0.3=0.0606   \<br>\alpha_3(1)=\left[\sum^3_{i=1}\alpha_2(i)a_{i1} \right]b_1(o_3)=0.04187   \<br>\alpha_3(2)=\left[\sum^3_{i=1}\alpha_2(i)a_{i2} \right]b_2(o_3)=0.03551   \<br>\alpha_3(3)=\left[\sum^3_{i=1}\alpha_2(i)a_{i3} \right]b_3(o_3)=0.05284   \<br>$$<br>(3) 终止：$P(O|\lambda)=\sum^3_{i=1}\alpha_3(i)=0.13022$</p>
+<p>(2) 递推计算：</p>
+<script type="math/tex; mode=display">
+\alpha_2(1)=\left[\sum^3_{i=1}\alpha_1(i)a_{i1} \right]b_1(o_2)=0.154 \times 0.5=0.077   \\
+\alpha_2(2)=\left[\sum^3_{i=1}\alpha_1(i)a_{i2} \right]b_2(o_2)=0.184 \times 0.6=0.1104   \\
+\alpha_2(3)=\left[\sum^3_{i=1}\alpha_1(i)a_{i3} \right]b_3(o_2)=0.202 \times 0.3=0.0606   \\
+\alpha_3(1)=\left[\sum^3_{i=1}\alpha_2(i)a_{i1} \right]b_1(o_3)=0.04187   \\
+\alpha_3(2)=\left[\sum^3_{i=1}\alpha_2(i)a_{i2} \right]b_2(o_3)=0.03551   \\
+\alpha_3(3)=\left[\sum^3_{i=1}\alpha_2(i)a_{i3} \right]b_3(o_3)=0.05284   \\</script><p>(3) 终止：$P(O|\lambda)=\sum^3_{i=1}\alpha_3(i)=0.13022$</p>
 <p>在这里我们使用了前向算法，还有一种后向算法，在计算过程上和前向算法也类似，在这里不做过多解释，大家可参考文献。在决策中，假设成本和定价固定，每天商家的进货量和销售状态随机，那么当商家每天的进货量为观测集 $O$ 时，我们可以计算出这样进货量的概率。然而给定进货量的多少时，我们是否能预测它的销售状态是畅销、平销还是滞销呢？这就要靠下面方面才可以解决了。</p>
 <h1 id="预测算法"><a href="#预测算法" class="headerlink" title="预测算法"></a>预测算法</h1><h2 id="维特比-Viterbi-算法"><a href="#维特比-Viterbi-算法" class="headerlink" title="维特比 (Viterbi) 算法"></a>维特比 (Viterbi) 算法</h2><p>维特比算法实际是用动态规划解隐马尔科夫模型预测问题，即用动态规划求概率最大路径（最优路径）。这时一条路径对应着一个状态序列。</p>
-<p>首先导入两个变量 $\delta$ 和 $\psi$ 。定义在时刻 $t$ 状态为 $i$ 的所有单个路径 $(i_1,i_2,\dots,i_t)$ 中概率最大值为：<br>$$<br>\delta_t(i)=\max_{i_1,i_2,\dots,i_{t-1}}P(i_t=i,i_{t-1},\dots,i_1,o_t,\dots,o_1|\lambda),i=1,2,\dots,N<br>$$<br>由定义可得变量 $\delta$ 的递推公式：<br>$$<br>\begin{aligned}<br>\delta_{t+1}(i) &amp;= \max_{i_1,i_2,\dots,i_t}P(i_{t+1}=i,i_t,\dots,i_1,o_{t+1},\dots,o_1|\lambda)  \<br>                          &amp;= \max_{1 \leq j \leq N}[\delta_t(j)a_{ji}]b_i(o_{t+1}),  \quad i=1,\dots,N;t=1,\dots,T-1<br>\end{aligned}<br>$$<br>定义在时刻 $t$ 状态为 $i$ 的所有单个路径 $(i_1,i_2,\dots,i_{t-1},i)$ 中概率最大的路径的第 $t-1$ 个结点为：<br>$$<br>\psi_t(i)=\arg\max_{1\leq j \leq N}[\delta_{t-1}(j)a_{ji}]  ,i=1,2,\dots,N<br>$$<br><strong>算法：</strong></p>
+<p>首先导入两个变量 $\delta$ 和 $\psi$ 。定义在时刻 $t$ 状态为 $i$ 的所有单个路径 $(i_1,i_2,\dots,i_t)$ 中概率最大值为：</p>
+<script type="math/tex; mode=display">
+\delta_t(i)=\max_{i_1,i_2,\dots,i_{t-1}}P(i_t=i,i_{t-1},\dots,i_1,o_t,\dots,o_1|\lambda),i=1,2,\dots,N</script><p>由定义可得变量 $\delta$ 的递推公式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\delta_{t+1}(i) &= \max_{i_1,i_2,\dots,i_t}P(i_{t+1}=i,i_t,\dots,i_1,o_{t+1},\dots,o_1|\lambda)  \\
+                          &= \max_{1 \leq j \leq N}[\delta_t(j)a_{ji}]b_i(o_{t+1}),  \quad i=1,\dots,N;t=1,\dots,T-1
+\end{aligned}</script><p>定义在时刻 $t$ 状态为 $i$ 的所有单个路径 $(i_1,i_2,\dots,i_{t-1},i)$ 中概率最大的路径的第 $t-1$ 个结点为：</p>
+<script type="math/tex; mode=display">
+\psi_t(i)=\arg\max_{1\leq j \leq N}[\delta_{t-1}(j)a_{ji}]  ,i=1,2,\dots,N</script><p><strong>算法：</strong></p>
 <p>输入：模型 $\lambda=(A,B,\pi)$ 和观测 $O=(o_1,o_2,\dots,o_T)$ ；</p>
 <p>输出：最优路径 $I^\ast=(i_1^{\ast},i_2^{\ast},\dots,i_T^{\ast})$ .</p>
 <p>(1) 初始化：$\delta_1(i)=\pi_ib_i(o_1),\psi_1(i)=0, \quad i=1,2,\dots,N$</p>
 <p>(2) 递推. 对 $t=2,3,\dots,T$，$\delta_t(i)=\max_{1\leq j \leq N}[\delta_{t-1}(j)a_{ji}]b_i(o_t)$ , $\psi_t(i)=\arg\max_{1\leq j \leq N}[\delta_{t-1}(j)a_{ji}]$</p>
-<p>(3) 终止：$P^{\ast}=\max_{1 \leq i \leq N}\delta_T(i),i^{\ast}<em>T=\arg\max</em>{1\leq i \leq N}[\delta_T(i)]$</p>
+<p>(3) 终止：$P^{\ast}=\max_{1 \leq i \leq N}\delta_T(i),i^{\ast}_T=\arg\max_{1\leq i \leq N}[\delta_T(i)]$</p>
 <p>(4) 最优路径回溯. 对 $t=T-1,T-2,\dots,1$，$i_t^{\ast}=\psi_{t+1}(i^{\ast}_{t+1})$ ，求得最优路径 $I^{\ast}=(i_1^{\ast},i_2^{\ast},\dots,i_T^{\ast})$ .</p>
 <h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>我们还是以上节中的销售模型作为例子，已知观测序列 $O=$(大量进货，小量进货，大量进货)，试求最优状态序列，即最优路径 $I^{\ast}=(i_1^{\ast},i_2^{\ast},i_3^{\ast})$ .</p>
-<p>解：(1) 初始化.。在 $t=1$ 时，对每一个状态 $i$ ，$i=1,2,3$，求状态为 $i$ 观测 $o_1$ 为大量进货的概率，记此概率为 $\delta_1(i)$ ，则<br>$$<br>\delta_1(1)=0.10,\delta_1(2)=0.16,\delta_1(3)=0.28<br>$$</p>
-<p>记 $\psi_1(i)=0,i=1,2,3$ .</p>
-<p>(2) 在 $t=2$ 时，对每一个状态 $i$ ，$i=1,2,3$，求在 $t=1$ 时状态为 $j$ 观测为大量进货并在 $t=2$ 时状态为 $i$ 观测为 $o_2$ 为小量进货的路径的最大概率，记此最大概率为 $\delta_2(i)$ ，记录概率最大路径的前一个状态 $j$ :<br>$$<br>\delta_2(1)=\max_{1\leq j\leq3}[\delta_1(j)a_{j1}]b_1(o_2)=\max_j{0.10 \times 0.5,0.16 \times 0.3,028 \times 0.2} \times 0.5=0.028  \<br>\psi_2(1)=3  \<br>\delta_2(2)=0.0504,\psi_2(2)=3  \<br>\delta_2(3)=0.042,\psi_2(3)=3<br>$$<br>同理，在 $t=3$ 时，<br>$$<br>\delta_3(1)=0.00756,\psi_3(1)=2  \<br>\delta_3(2)=0.01008,\psi_3(2)=2  \<br>\delta_3(3)=0.0147,\psi_3(3)=3<br>$$<br>(3) 以 $P^{\ast}$ 表示最优路径的概率，则<br>$$<br>P^{\ast}=\max_{1 \leq i \leq 3 }\delta_3(i)=0.0147<br>$$<br>最优路径的终点是 $i^{\ast}_3$:<br>$$<br>i_3^{\ast}=\arg \max_i[\delta_3(i)]=3<br>$$<br>(4) 由最优路径的终点 $i_3^{\ast}$，逆向找到 $i_2^{\ast},i_1^{\ast}$ :</p>
+<p>解：(1) 初始化.。在 $t=1$ 时，对每一个状态 $i$ ，$i=1,2,3$，求状态为 $i$ 观测 $o_1$ 为大量进货的概率，记此概率为 $\delta_1(i)$ ，则</p>
+<script type="math/tex; mode=display">
+\delta_1(1)=0.10,\delta_1(2)=0.16,\delta_1(3)=0.28</script><p>记 $\psi_1(i)=0,i=1,2,3$ .</p>
+<p>(2) 在 $t=2$ 时，对每一个状态 $i$ ，$i=1,2,3$，求在 $t=1$ 时状态为 $j$ 观测为大量进货并在 $t=2$ 时状态为 $i$ 观测为 $o_2$ 为小量进货的路径的最大概率，记此最大概率为 $\delta_2(i)$ ，记录概率最大路径的前一个状态 $j$ :</p>
+<script type="math/tex; mode=display">
+\delta_2(1)=\max_{1\leq j\leq3}[\delta_1(j)a_{j1}]b_1(o_2)=\max_j{0.10 \times 0.5,0.16 \times 0.3,028 \times 0.2} \times 0.5=0.028  \\
+\psi_2(1)=3  \\
+\delta_2(2)=0.0504,\psi_2(2)=3  \\
+\delta_2(3)=0.042,\psi_2(3)=3</script><p>同理，在 $t=3$ 时，</p>
+<script type="math/tex; mode=display">
+\delta_3(1)=0.00756,\psi_3(1)=2  \\
+\delta_3(2)=0.01008,\psi_3(2)=2  \\
+\delta_3(3)=0.0147,\psi_3(3)=3</script><p>(3) 以 $P^{\ast}$ 表示最优路径的概率，则</p>
+<script type="math/tex; mode=display">
+P^{\ast}=\max_{1 \leq i \leq 3 }\delta_3(i)=0.0147</script><p>最优路径的终点是 $i^{\ast}_3$:</p>
+<script type="math/tex; mode=display">
+i_3^{\ast}=\arg \max_i[\delta_3(i)]=3</script><p>(4) 由最优路径的终点 $i_3^{\ast}$，逆向找到 $i_2^{\ast},i_1^{\ast}$ :</p>
 <p>在 $t=2$ 时，$i_2^{\ast}=\psi_3(i_3^{\ast})=\psi_3(3)=3 $</p>
 <p>在 $t=1$ 时，$i_1^{\ast}=\psi_2(i_2^{\ast})=\psi_2(3)=3 $</p>
 <p>于是求得最优路径，即最优状态序列 $I^{\ast}=(i_1^{\ast},i_2^{\ast},i_3^{\ast})=(3,3,3)$ .</p>
@@ -816,7 +860,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -864,12 +908,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -907,21 +946,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

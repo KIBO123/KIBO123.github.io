@@ -393,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  1.5k
                 </span>
               
 
@@ -409,7 +409,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  5
                 </span>
               
             </div>
@@ -437,6 +437,7 @@
 <p>所以简单来说，在参数正交化中，我们需要仅仅针对一个参数去进行调节。避免多个参数同时调节，因为多个参数相互作用下往往不能得到更好的效果。</p>
 <h1 id="Setting-up-your-goal"><a href="#Setting-up-your-goal" class="headerlink" title="Setting up your goal"></a>Setting up your goal</h1><h2 id="Single-number-evaluation-metric"><a href="#Single-number-evaluation-metric" class="headerlink" title="Single number evaluation metric"></a>Single number evaluation metric</h2><p>在调参过程中，建立一个单一数值的评估度量是十分重要的，因为它能让你快速判断这一次调节的参数是否优于上一次。</p>
 <p>举个例子，在某次训练中，我们得到的结果如下：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -458,12 +459,14 @@
 </tr>
 </tbody>
 </table>
-<p>$$<br>Precision=\frac{True \ positive}{True\  positive+False\  negative},\ Recall=\frac{True \ positive}{True\  positive+False\  negative}<br>$$</p>
-<p>对于两个分类器来说，准确率和召回率都是越大越好，那么我们如何判断上面的A、B两个分类器，哪个更好呢？</p>
+</div>
+<script type="math/tex; mode=display">
+Precision=\frac{True \ positive}{True\  positive+False\  negative},\ Recall=\frac{True \ positive}{True\  positive+False\  negative}</script><p>对于两个分类器来说，准确率和召回率都是越大越好，那么我们如何判断上面的A、B两个分类器，哪个更好呢？</p>
 <p>通常我们会根据两个指标，将它们综合起来，形成一个新的单一数值来进行评估，如 F1 score：</p>
 <p>$F1=\frac{2}{\frac{1}{P}+\frac{1}{R}}$ ，F1即是准确率和召回率的均值，在这里使用的是调和平均值算法( Harmonic mean )。根据计算结果，我们容易得到A分类器的F1大于B分类器，说明A分类器效果更好。</p>
 <h2 id="Satisficing-and-Optimizing-metric"><a href="#Satisficing-and-Optimizing-metric" class="headerlink" title="Satisficing and Optimizing metric"></a>Satisficing and Optimizing metric</h2><p>大部分时候想要将所有评估指标都综合在一个单一数值指标里面是十分困难的，而在这个时候，我们建议一个能够保证最低要求( Satisficing )又能追求最优效果( Optimizing )的指标则容易地多。</p>
 <p>举个例子，当识别一张图片时，A、B、C三个分类器效果如下：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -490,6 +493,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>显然，我们想要的是准确率尽量大，训练时间尽量得短。但是，对于这两个指标，我们的要求却又不太一样，比如说运行时间，我只需要它识别一张图片不超过100ms就足够了，再快也没用，反正也体会不到50ms和100ms的区别。而准确率呢？必须让它越大越好，哪怕再大0.1%都十分重要。</p>
 <p>因此，我们即可建立一个满意-最优度量( Satisficing-Optimizing metric )。比如，$cost=accuracy-0.5 \times running \ time$ . 在这里，我们需要在运行时间小于100ms的约束条件下，使准确率达到最优。</p>
 <p>更一般的情况下，当你有$N$ 个指标需要考虑，那么选一个需要追求最优的指标，而其他 $N-1$ 个指标均可为其设定最低阈值，只要在阈值之内即可，并不要求它们达到最优。</p>
@@ -834,7 +838,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -882,12 +886,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -925,21 +924,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

@@ -398,7 +398,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.3k
                 </span>
               
 
@@ -414,7 +414,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  8
                 </span>
               
             </div>
@@ -440,7 +440,9 @@
 <h1 id="Detection-algorithms"><a href="#Detection-algorithms" class="headerlink" title="Detection algorithms"></a>Detection algorithms</h1><h2 id="Intersection-Over-Union"><a href="#Intersection-Over-Union" class="headerlink" title="Intersection Over Union"></a>Intersection Over Union</h2><p>我们如何评价一个目标检测算法是否有效？这节要介绍一个评价指标：Intersection Over Union. 下面我们具体看看这个指标怎么计算。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051601.png" alt=""></p>
 <p>在左图中，目标的边界框应为红色框，而我们的检测算法得到的边界框为紫色框。在中间的图中，我们把紫色框和红色框所有的部分都用绿色条纹涂满，表示总的目标检测面积；在右图中，我们把紫色框和红色框交叉的部分用橙色条纹涂满，表示交叉目标检测面积。</p>
-<p>那么，Intersection Over Union 这个指标就是用交叉面积除以总的面积，即橙色面积除以绿色面积：<br>$$<br>Intersection \ Over \ Union=\frac{size \ of \ Intersection}{size \ of \ Union}<br>$$<br>IoU值越大越好，若等于1 说明检测算法的边界框和实际完全重叠。通常，我们以 0.5 作为判断的阈值，IoU大于0.5，说明检测算法的边界框预测结果和实际能够很好的重叠；IoU小于0.5，说明检测算法精确度较差。</p>
+<p>那么，Intersection Over Union 这个指标就是用交叉面积除以总的面积，即橙色面积除以绿色面积：</p>
+<script type="math/tex; mode=display">
+Intersection \ Over \ Union=\frac{size \ of \ Intersection}{size \ of \ Union}</script><p>IoU值越大越好，若等于1 说明检测算法的边界框和实际完全重叠。通常，我们以 0.5 作为判断的阈值，IoU大于0.5，说明检测算法的边界框预测结果和实际能够很好的重叠；IoU小于0.5，说明检测算法精确度较差。</p>
 <p>当然，0.5 只是一个经验值。如果你对算法的要求更严格，那么可以选择更大的阈值，比如说0.6或0.7。但很少人会把阈值定于0.5以下。</p>
 <h2 id="Non-max-Suppression"><a href="#Non-max-Suppression" class="headerlink" title="Non-max Suppression"></a>Non-max Suppression</h2><p>我们知道通常目标检测有一个问题，那就是当我们按网格划分图像时，若目标太大占据多个网格，那么算法可能会对同一个目标检测到多次，而非一次。Non-max supression 就是解决这个问题的方法之一。</p>
 <h3 id="Non-max-Suppression-example"><a href="#Non-max-Suppression-example" class="headerlink" title="Non-max Suppression example"></a>Non-max Suppression example</h3><p>例如，我们想要对下面这张图片的左图进行目标检测，识别出行人、车和摩托车，那么我们添加 $19 \times 19$ 的网格。显然，图中的两辆车会被多个网格检测出来。</p>
@@ -448,7 +450,16 @@
 <p>那么我们看看 Non-max suppression 如何解决这个问题。实际上，non-max suppression 做的就是将对同一个目标的多个检测进行清除，只留下一个可能性最大的检测结果。</p>
 <p>具体来说，我们知道预测结果的第一个输出为 $p_c$ ，也就是出现目标的可能性。那么我们看到上图中间的那张图，左边的车被检测出两次，概率分别为0.7和0.8，且得到两个蓝色边界框；而右边的车被检测出三次，概率分别为0.6，0.7和0.9，其中中间浅蓝色框的概率最大。</p>
 <p>其次，我们看 IoU，可以发现 $p_c$ 最大的结果，其边界框与实际的重叠最大。那么我们即可把其它检测结果删去，得到上图的右边图。这就是 non-max suppression。它字面上的意思其实就是选取目标检测最大可能性的一个预测结果，然后对其它非最大的预测进行屏蔽和清除。</p>
-<h3 id="Non-max-Suppression-algorithm"><a href="#Non-max-Suppression-algorithm" class="headerlink" title="Non-max Suppression algorithm"></a>Non-max Suppression algorithm</h3><p>我们继续看 non-max suppression 算法的一些细节，假设我们只检测车，那么预测的标签为：<br>$$<br>Each \  output \  prediction \  is :<br>\begin{bmatrix}<br>p_c \<br>b_x \<br>b_y \<br>b_h \<br>b_w<br>\end{bmatrix}<br>$$<br>首先，我们确定 $p_c$ 的阈值为0.6 ，将 $p_c&lt;0.6$ 的预测结果丢弃。选择 $p_c$ 最大的预测结果，并计算其他所有留下结果与最大 $p_c$ 结果的IoU。确定 IoU 的阈值为0.5，将 $IoU \geq 0.5$ 的结果丢弃。IoU越大，重叠的部分越大，说明检测到同一目标的可能性越大，因此对于越大IoU的结果，应当丢弃。</p>
+<h3 id="Non-max-Suppression-algorithm"><a href="#Non-max-Suppression-algorithm" class="headerlink" title="Non-max Suppression algorithm"></a>Non-max Suppression algorithm</h3><p>我们继续看 non-max suppression 算法的一些细节，假设我们只检测车，那么预测的标签为：</p>
+<script type="math/tex; mode=display">
+Each \  output \  prediction \  is :
+\begin{bmatrix}
+p_c \\
+b_x \\
+b_y \\
+b_h \\
+b_w
+\end{bmatrix}</script><p>首先，我们确定 $p_c$ 的阈值为0.6 ，将 $p_c&lt;0.6$ 的预测结果丢弃。选择 $p_c$ 最大的预测结果，并计算其他所有留下结果与最大 $p_c$ 结果的IoU。确定 IoU 的阈值为0.5，将 $IoU \geq 0.5$ 的结果丢弃。IoU越大，重叠的部分越大，说明检测到同一目标的可能性越大，因此对于越大IoU的结果，应当丢弃。</p>
 <blockquote>
 <p>Discard all boxes with $p_c \leq 0.6$</p>
 <p>While there are any remaining boxes:</p>
@@ -462,7 +473,27 @@
 <p>我们举个例子，比如说下面这张图，我们添加 $3\times 3$ 的网格，可以发现人的中心点和车的中心点都几乎在同一个网格中。那么对于这个网格，它的预测结果只能是行人、车和摩托车的任意一种，不可能输出两个目标。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051603.png" alt=""></p>
 <p>我们可以采用 Anchor boxes 的思想，那就是预先定义两种候选框 (anchor boxes)，如图中的 anchor box 1 和 anchor box 2. 在这里我们为了方便例子的讲解，因此定义两个 anchor box，通常也可以使用更多的 anchor boxes.</p>
-<p>其次确定输出标签，之前我们的标签存在8个输出，现在我们将8个输出添加一倍用于分别表示两个 anchor box：<br>$$<br>y=<br>\begin{bmatrix}<br>p_c \<br>b_x \<br>b_y \<br>b_h \<br>b_w \<br>c_1 \<br>c_2 \<br>c_3 \<br>p_c \<br>b_x \<br>b_y \<br>b_h \<br>b_w \<br>c_1 \<br>c_2 \<br>c_3<br>\end{bmatrix}<br>$$<br>标签中上面的8个输出与 anchor box 1 绑定，下面的8个输出与 anchor box 2 绑定，我们看图中行人的形状与 anchor box 1 更相近，那么标签中上面的8个输出用于预测行人，图中车的形状与 anchor box 2 更相近，那么下面的8个输出用于预测车的检测。</p>
+<p>其次确定输出标签，之前我们的标签存在8个输出，现在我们将8个输出添加一倍用于分别表示两个 anchor box：</p>
+<script type="math/tex; mode=display">
+y=
+\begin{bmatrix}
+p_c \\
+b_x \\
+b_y \\
+b_h \\
+b_w \\
+c_1 \\
+c_2 \\
+c_3 \\
+p_c \\
+b_x \\
+b_y \\
+b_h \\
+b_w \\
+c_1 \\
+c_2 \\
+c_3 
+\end{bmatrix}</script><p>标签中上面的8个输出与 anchor box 1 绑定，下面的8个输出与 anchor box 2 绑定，我们看图中行人的形状与 anchor box 1 更相近，那么标签中上面的8个输出用于预测行人，图中车的形状与 anchor box 2 更相近，那么下面的8个输出用于预测车的检测。</p>
 <h3 id="Anchor-box-algorithm"><a href="#Anchor-box-algorithm" class="headerlink" title="Anchor box algorithm"></a>Anchor box algorithm</h3><p>总结一下，在之前我们是对包含目标中心点的网格去预测目标结果，但有了两个 anchor boxes，我们对预测的网格，不仅要求包含目标中心点，还要求 anchor box 与目标形状有很高的IoU。</p>
 <blockquote>
 <p>Previously:</p>
@@ -475,8 +506,27 @@
 </ul>
 </blockquote>
 <p>那么预测结果的维度为 $3\times 3 \times 16$，当然你也可以看成是 $3\times 3 \times 2 \times 8$。</p>
-<h3 id="Anchor-box-example"><a href="#Anchor-box-example" class="headerlink" title="Anchor box example"></a>Anchor box example</h3><p>我们再回到上面那个例子，对第8个网格，显然人和车的中心点都在该网格中，那么我们对它的预测应为：<br>$$<br>y=<br>\begin{bmatrix}<br>1 \<br>b_x \<br>b_y \<br>b_h \<br>b_w \<br>1 \<br>0 \<br>0 \<br>1 \<br>b_x \<br>b_y \<br>b_h \<br>b_w \<br>0 \<br>1 \<br>0<br>\end{bmatrix}<br>$$</p>
-<p>如果有一个网格，在这个网格上只有车没有行人，那么预测结果应为第1个输出为0，随后7个输出任意，我们不给予考虑，第9个输出为1，其余输出分别为边界框和目标类型。</p>
+<h3 id="Anchor-box-example"><a href="#Anchor-box-example" class="headerlink" title="Anchor box example"></a>Anchor box example</h3><p>我们再回到上面那个例子，对第8个网格，显然人和车的中心点都在该网格中，那么我们对它的预测应为：</p>
+<script type="math/tex; mode=display">
+y=
+\begin{bmatrix}
+1 \\
+b_x \\
+b_y \\
+b_h \\
+b_w \\
+1 \\
+0 \\
+0 \\
+1 \\
+b_x \\
+b_y \\
+b_h \\
+b_w \\
+0 \\
+1 \\
+0
+\end{bmatrix}</script><p>如果有一个网格，在这个网格上只有车没有行人，那么预测结果应为第1个输出为0，随后7个输出任意，我们不给予考虑，第9个输出为1，其余输出分别为边界框和目标类型。</p>
 <p>Anchor box 算法也不是万能，还可能出现一个网格中存在3个目标，或者一个网格中两个目标的 anchor box 相同等意外情况，这些情况对于 Anchor box 算法来说，也是不能给出很好的方案。但这些情况并不经常发生，对于训练效果或许影响不大。</p>
 <h2 id="YOLO-Algorithm"><a href="#YOLO-Algorithm" class="headerlink" title="YOLO Algorithm"></a>YOLO Algorithm</h2><p>我们之前讲了目标检测的大部分算法，在这里我们将之前学的所有部分结合起来，理清整个YOLO目标检测算法的思路。</p>
 <h3 id="Train"><a href="#Train" class="headerlink" title="Train"></a>Train</h3><p>首先我们要建立训练集，训练集要给样本进行数据标注，也就是贴标签，我们还是分为行人、车和摩托车3类。同时，使用两种 anchor box，那么标签的维度为 $3\times 3 \times 16$，也可写成 $3\times 3 \times 2 \times 8$。当然，在实际情况下，我们更可能将图片分割为 $19\times 19$，同时使用五种 anchor box，那么标签的维度就为 $19\times 19 \times 40$，或 $19\times 19 \times 5 \times 8$ 。</p>
@@ -810,7 +860,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -858,12 +908,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -901,21 +946,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

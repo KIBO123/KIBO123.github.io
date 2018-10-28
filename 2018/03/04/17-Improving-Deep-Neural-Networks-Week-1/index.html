@@ -400,7 +400,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.3k
                 </span>
               
 
@@ -416,7 +416,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  10
                 </span>
               
             </div>
@@ -460,6 +460,7 @@
 <li>We less talk about Bias-Variance Trade-off in deep learning.</li>
 <li>Train set error: tell you about the bias problem; Dev set error: variance problem. e.g.</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -487,6 +488,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h2 id="Basic-“Recipe”-for-Machine-Learning"><a href="#Basic-“Recipe”-for-Machine-Learning" class="headerlink" title="Basic “Recipe” for Machine Learning"></a>Basic “Recipe” for Machine Learning</h2><p>通常在机器学习中，我们常常会以 “Bias-Variance Trade-off” 作为评价整个模型的指标。也就是说，针对一个模型，它在训练集中得到的结果如何？是否出现High Bias ？如果Bias 很小，OK。那么在验证集中得到的结果又如何？是否出现High Variance？</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180304/18030301.png" alt=""></p>
 <p>由于在过去( pre-deep learning era )，没有太好的方法在减少Bias的同时，又减少Variance，两者往往会出现冲突。因为最好的办法只有在Bias和Variance之间尽量取得平衡(Bias-Variance Trade-off)，两者之间都不太大。</p>
@@ -496,8 +498,11 @@
 <ul>
 <li>Logistic Regression</li>
 </ul>
-<p>$$<br>\begin{array}{l}<br>\mathop \min \limits_{\omega ,b} J(\omega ,b)\<br>J(\omega ,b) = \frac{1}{m}\sum\limits_{i = 1}^m L( \hat{y}^{(i)},y^{(i)}) + \frac{\lambda }{2m}\left| \omega  \right|_2^2<br>\end{array}  \tag{1}<br>$$</p>
-<p>其中，$J(\omega ,b)$ 为cost function ,  $\omega  \in R^{n_x},b \in R$,   $\lambda $  为正则化参数。</p>
+<script type="math/tex; mode=display">
+\begin{array}{l}
+\mathop \min \limits_{\omega ,b} J(\omega ,b)\\
+J(\omega ,b) = \frac{1}{m}\sum\limits_{i = 1}^m L( \hat{y}^{(i)},y^{(i)}) + \frac{\lambda }{2m}\left\| \omega  \right\|_2^2
+\end{array}  \tag{1}</script><p>其中，$J(\omega ,b)$ 为cost function ,  $\omega  \in R^{n_x},b \in R$,   $\lambda $  为正则化参数。</p>
 <p>通常，正则项有多种形式，在上述公式中为 L2 正则项。</p>
 <p>L2 Regularization:   $ \lVert \omega \rVert_2^2=\sum\limits_{j=1}^{n_x} \omega_j^2=\omega^T\omega $</p>
 <p>L1 Regularization :   $\frac{\lambda }{m}\sum\limits_{j = 1}^{n_x} {\left| {\omega _j} \right|}  = \frac{\lambda }{m}{\lVert \omega  \rVert_1}$</p>
@@ -505,11 +510,23 @@
 <ul>
 <li>Neural Network</li>
 </ul>
-<p>$$<br>\begin{array}{l}<br>J(\omega ^{[1]},b^{[1]}, \ldots ,\omega ^{[L]},b^{[L]}) = \frac{1}{m}\sum\limits_{i = 1}^m L( \hat{y} ^{(i)},y^{(i)}) + \frac{\lambda }{2m} \sum\limits_{L = 1}^L \left| \omega ^{[L]}\right|^2\<br>\left| \omega ^{[L]} \right|<em>F^2 = \sum\limits</em>{i = 1}^{n^{[L - 1]}} \sum\limits_{j = 1}^{n^{[L]}} (\omega _{ij}^{[L]})^2<br>\end{array}      \tag{2}<br>$$</p>
-<p>其中，$\omega :(n^{[L]},n^{[L - 1]})$ ，该正则项为 “Frobenius norm”。</p>
-<p>根据上面的 cost function，我们如何实现梯度下降呢？<br>$$<br>\begin{array}{l}<br>\frac{\partial J}{\partial \omega ^\left[ L \right]} = d\omega ^\left[ L \right] = (from \; backprop) + \frac{\lambda }{m}\omega ^\left[ L \right]\<br>\omega ^{\left[ L \right]}: = \omega ^\left[ L \right]- \alpha d\omega ^\left[ L \right]<br>\end{array}          \tag{3}<br>$$<br>上两式相互结合，可得：<br>$$<br>\begin{array}{c}<br>\omega ^\left[ L \right]: = \omega ^\left[ L \right] - \alpha \left[ (from\;backprop) + \frac{\lambda }{m}\omega ^\left[ L \right] \right]\ = \omega ^\left[ L \right] - \frac{\alpha \lambda }{m}\omega ^\left[ L \right] - \alpha (from\;backprop)<br>\end{array}              \tag{4}<br>$$<br>从上述结果即可得到，将 $\omega ^\left[ L \right]$提取出来， $(1 - \frac{\alpha \lambda }{m})$总是小于1的，因此这就是L2正则项为什么会权值衰减 (weight decay) 的原因。</p>
+<script type="math/tex; mode=display">
+\begin{array}{l}
+J(\omega ^{[1]},b^{[1]}, \ldots ,\omega ^{[L]},b^{[L]}) = \frac{1}{m}\sum\limits_{i = 1}^m L( \hat{y} ^{(i)},y^{(i)}) + \frac{\lambda }{2m} \sum\limits_{L = 1}^L \left\| \omega ^{[L]}\right\|^2\\
+\left\| \omega ^{[L]} \right\|_F^2 = \sum\limits_{i = 1}^{n^{[L - 1]}} \sum\limits_{j = 1}^{n^{[L]}} (\omega _{ij}^{[L]})^2
+\end{array}      \tag{2}</script><p>其中，$\omega :(n^{[L]},n^{[L - 1]})$ ，该正则项为 “Frobenius norm”。</p>
+<p>根据上面的 cost function，我们如何实现梯度下降呢？</p>
+<script type="math/tex; mode=display">
+\begin{array}{l}
+\frac{\partial J}{\partial \omega ^\left[ L \right]} = d\omega ^\left[ L \right] = (from \; backprop) + \frac{\lambda }{m}\omega ^\left[ L \right]\\
+\omega ^{\left[ L \right]}: = \omega ^\left[ L \right]- \alpha d\omega ^\left[ L \right]
+\end{array}          \tag{3}</script><p>上两式相互结合，可得：</p>
+<script type="math/tex; mode=display">
+\begin{array}{c}
+\omega ^\left[ L \right]: = \omega ^\left[ L \right] - \alpha \left[ (from\;backprop) + \frac{\lambda }{m}\omega ^\left[ L \right] \right]\\ = \omega ^\left[ L \right] - \frac{\alpha \lambda }{m}\omega ^\left[ L \right] - \alpha (from\;backprop)
+\end{array}              \tag{4}</script><p>从上述结果即可得到，将 $\omega ^\left[ L \right]$提取出来， $(1 - \frac{\alpha \lambda }{m})$总是小于1的，因此这就是L2正则项为什么会权值衰减 (weight decay) 的原因。</p>
 <blockquote>
-<p>What you should remember – the implications of L2-regularization on:</p>
+<p>What you should remember — the implications of L2-regularization on:</p>
 <ul>
 <li>The cost computation: A regularization term is added to the cost</li>
 <li>The backpropagation function: There are extra terms in the gradients with respect to weight matrices</li>
@@ -891,7 +908,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -939,12 +956,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -982,21 +994,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

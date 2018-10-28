@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.9k
                 </span>
               
 
@@ -415,7 +415,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  10
                 </span>
               
             </div>
@@ -447,8 +447,16 @@
 </ol>
 <p>文章中采用了两个实验来调查经理的库存决策，其中发现两种订货模式：(1) 高利润产品的订货量总是小于收益最大化方案；(2) 低利润产品的订货量总是大于收益最大化方案。</p>
 <h1 id="Descriptive-Models-of-Newsvendor-Decision-Making"><a href="#Descriptive-Models-of-Newsvendor-Decision-Making" class="headerlink" title="Descriptive Models of Newsvendor Decision Making"></a>Descriptive Models of Newsvendor Decision Making</h1><p>设决策者销售时段前的初始订货量为 $q$ ，在一个销售时段内的随机需求量为 $D$ ，均值为 $\mu$ 。令 $F$ 为需求分布函数，则 $f$ 为需求密度函数。为简化模型，假设 $F$ 是连续可导且严格递增的。而且，假设决策人对分布函数的估计无差。那么，决策者每订货一个单位的成本为 $c$ ，售价为 $p$  ，$p&gt;c$  . 那么当$q&gt;D$ 时，在销售时段结束后每单位的退回价为 $s$ ，且 $s&lt;c$ 。</p>
-<p>设 $\pi(q,D)$ 为净收益，则<br>$$<br>\pi(q,D)=(p-s) \min(q,D)-(c-s)q<br>$$<br>期望收益为：<br>$$<br>E[\pi(q,D)]= \int_0^q f(x) \pi(q,x)dx+(1-F(q))\pi(q,q)<br>$$<br>令最大期望收益方案的订货量为 $q_n$，即 $q_n=\arg \max E[\pi(q,D)]$ ，可解得：<br>$$<br>F(q_n)=\frac{p-c}{p-s}  \tag{1}<br>$$<br>证明可见附录。</p>
-<p>这个比例 $(p-c)/(p-s)$ 称为临界分位数，文章将其作为产品的分类标准，即将高利润产品定义为：<br>$$<br>\frac{p-c}{p-s} \geq \frac{1}{2}   \tag{2}<br>$$<br>反之则为低利润产品。</p>
+<p>设 $\pi(q,D)$ 为净收益，则</p>
+<script type="math/tex; mode=display">
+\pi(q,D)=(p-s) \min(q,D)-(c-s)q</script><p>期望收益为：</p>
+<script type="math/tex; mode=display">
+E[\pi(q,D)]= \int_0^q f(x) \pi(q,x)dx+(1-F(q))\pi(q,q)</script><p>令最大期望收益方案的订货量为 $q_n$，即 $q_n=\arg \max E[\pi(q,D)]$ ，可解得：</p>
+<script type="math/tex; mode=display">
+F(q_n)=\frac{p-c}{p-s}  \tag{1}</script><p>证明可见附录。</p>
+<p>这个比例 $(p-c)/(p-s)$ 称为临界分位数，文章将其作为产品的分类标准，即将高利润产品定义为：</p>
+<script type="math/tex; mode=display">
+\frac{p-c}{p-s} \geq \frac{1}{2}   \tag{2}</script><p>反之则为低利润产品。</p>
 <p>文章中还对风险中性、风险偏好、风险厌恶、前景理论、损失厌恶、浪费厌恶、缺货厌恶、低估机会成本等多种情况下的决策模型进行解释和求解，在这里不一一叙述。下图为以收益最大化决策方案订货量为基准，其他决策模型的订货量与基准的比较，“+”表示订货量比基准大，“-”表示订货量比基准小，“+/-”表示订货量可能比基准大，也可能比基准小。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180414/18041301.png" alt=""></p>
 <h1 id="Newsvendor-Experiments"><a href="#Newsvendor-Experiments" class="headerlink" title="Newsvendor Experiments"></a>Newsvendor Experiments</h1><p>前面的模型都是建立在别人的理论基础上的，每个模型似乎得到的决策方案都不尽相同，那么哪种会更符合企业经理的决策呢？文章又通过两个实验来验证在不同边际利润下决策者的决策方案，并解释这些方案与利润最大化方案的区别在哪里。</p>
@@ -471,7 +479,9 @@
 <li>受测者对于高利润产品的订货量均值为176.68，对于低利润产品的订货量均值为134.06，平均来说，高利润产品的订货量远大于低利润产品。</li>
 <li>对于高利润产品，其平均订货量与收益最大化订货量相差48个单位，期望收益相差 5% ；对于低利润产品，其平均订货量与收益最大化订货量相差59个单位，期望收益相差 61%。</li>
 </ol>
-<p>文章还定义了调整分数 (adjustment score)，来对结果更深入地进行分析：<br>$$<br>Adjustment \ Score=\frac{q_t-q_{t-1}}{d_{t-1}-q_{t-1}}  \tag{3}<br>$$<br>式中，$t$ 为销售阶段，$q$ 为订货量，$d$ 为需求量。</p>
+<p>文章还定义了调整分数 (adjustment score)，来对结果更深入地进行分析：</p>
+<script type="math/tex; mode=display">
+Adjustment \ Score=\frac{q_t-q_{t-1}}{d_{t-1}-q_{t-1}}  \tag{3}</script><p>式中，$t$ 为销售阶段，$q$ 为订货量，$d$ 为需求量。</p>
 <p>当调整分数为正时，存在两种情况：(1)上一阶段中，若需求量大于订货量，则这一阶段的订货量要大于上一阶段订货量；(2)上一阶段中，若需求量小于订货量，则这一阶段的订货量要小于上一阶段订货量。</p>
 <p>显然，当调整分数为正时，很好理解，打个比方，去年货订得比需求多，卖不完，那么今年订少点，去年订的货不够卖，今年订多点。我们把这样的调整称为正向调整。</p>
 <p>当调整分数为负时，也有两种情况，但和正向调整思路相反，我们把这样的调整称为负向调整。</p>
@@ -497,8 +507,21 @@
 <h1 id="General-Discussion"><a href="#General-Discussion" class="headerlink" title="General Discussion"></a>General Discussion</h1><p>文章中主要的结论就是，在行为决策中，决策者的决策方案往往会和期望最大化原则背道而驰。在文章的两个实验中，可见决策者在对不同边际利润下的产品会做出不同的选择，如对于高利润产品，决策者的订货量会低于收益最大化订货量，而对于低利润产品，决策者的订货量会高于收益最大化订货量。</p>
 <p>这个结果在大多数决策原则下是不能够解释的。当然，这个结果和前景理论会有相似的地方，但也不能完全被前景理论所解释。</p>
 <p>在文献中，报童问题通常是采用期望收益最大化原则进行求解，而在本文中第一次研究了报童问题的行为决策方案。决策者通常会对模型求解出来的最优方案做出修正，本研究对此做出解释，这是值得大家关注的。事实上，行为决策的出现说明了传统收益最大化的原则，其假设上是有缺陷的，在研究上应该采用更新的技术去对过去的理论进行完善和补充。</p>
-<h1 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h1><p><strong>式 (1) 证明：</strong><br>$$<br>\begin{aligned}<br>E[\pi(q,x)] &amp;= p \int_0^qxf(x)dx+pq \int_q^{\infty}f(x)dx+s \int_0^q(q-x)f(x)dx-cq  \<br>                    &amp;=p \int_0^qxf(x)dx+pq \big[1-\int_0^q f(x)dx \big]+s \int_0^q qf(x)dx-s \int_0^q xf(x)dx-cq  \<br>                    &amp;=(p-s)\int_0^q xf(x)dx-(p-s)qF(q)+(p-c)q   \<br>                    &amp;=(p-s)\big[qF(q)-\int_0^q F(x)dx\big]-(p-s)qF(q)+(p-c)q<br>\end{aligned}<br>$$<br>$E[\pi(q,x)]$ 对 $q$ 求导，得：<br>$$<br>\begin{aligned}<br>\frac{\partial E[\pi(q,x)]}{\partial q} &amp;=(p-s)qf(q)-(p-s)F(q)-(p-s)qf(q)+(p-c)  \<br>                                                                  &amp;=(p-c)-(p-s)F(q) \<br> \end{aligned}<br>$$<br>令导数为 0 ，可解得：<br>$$<br>F(q)=\frac{p-c}{p-s}<br>$$</p>
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<h1 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h1><p><strong>式 (1) 证明：</strong></p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+E[\pi(q,x)] &= p \int_0^qxf(x)dx+pq \int_q^{\infty}f(x)dx+s \int_0^q(q-x)f(x)dx-cq  \\
+                    &=p \int_0^qxf(x)dx+pq \big[1-\int_0^q f(x)dx \big]+s \int_0^q qf(x)dx-s \int_0^q xf(x)dx-cq  \\
+                    &=(p-s)\int_0^q xf(x)dx-(p-s)qF(q)+(p-c)q   \\
+                    &=(p-s)\big[qF(q)-\int_0^q F(x)dx\big]-(p-s)qF(q)+(p-c)q
+\end{aligned}</script><p>$E[\pi(q,x)]$ 对 $q$ 求导，得：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\frac{\partial E[\pi(q,x)]}{\partial q} &=(p-s)qf(q)-(p-s)F(q)-(p-s)qf(q)+(p-c)  \\
+                                                                  &=(p-c)-(p-s)F(q) \\
+ \end{aligned}</script><p>令导数为 0 ，可解得：</p>
+<script type="math/tex; mode=display">
+F(q)=\frac{p-c}{p-s}</script><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
 <li><a href="">Schweitzer M E, Cachon G P. Decision bias in the newsvendor problem with a known demand distribution: Experimental evidence[J]. Management Science, 2000, 46(3): 404-420.</a></li>
 </ol>
 
@@ -822,7 +845,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -870,12 +893,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -913,21 +931,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

@@ -395,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  1.4k
                 </span>
               
 
@@ -411,7 +411,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  6
                 </span>
               
             </div>
@@ -438,16 +438,54 @@
 <p>设 $f(x)$ 为多目标决策问题向量目标函数，其分量 $f_j(x),j=1,2,\dots,n$ 均越大越优，对 $x^\ast \in X$ ，若在 $X$ 中不存在 $x$ 使 $f_j(x) \geq f_j(x^\ast)$ ，对 $j=1,2,3\dots,n$ ，且至少对一个 $j$ 严格不等式成立，则称 $x^\ast$ 为向量优化问题的非劣解。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18042701.png" alt=""></p>
 <p>如图，对于 $f_1(x)$ 和 $f_2(x)$ 来说，分别存在相应的最优解。因此，两个最优解之间的边界就是非劣前沿，可行域 $X$ 中与之对应的部分就是非劣解集。</p>
-<h2 id="KKT条件"><a href="#KKT条件" class="headerlink" title="KKT条件"></a>KKT条件</h2><p>对多目标优化问题<br>$$<br>\max {f_1(x),\dots,f_n(x)}<br>$$<br>受约束于：<br>$$<br>g_1(x) \leq 0  \<br>\dots  \<br>g_2(x)\leq0<br>$$<br>若满足约束条件的非劣解 $x^\ast$ 是正则点，则存在向量 $\mu$ ，它的各分量 $\mu_i \geq 0,i=1,\dots,m$ ，并存在向量 $\lambda$ ，它的各分量 $\lambda_j \geq 0,j=1,\dots,n$ ，它使<br>$$<br>x^\ast \in X  \<br>\mu_ig_i(x^\ast)=0 ,i=1,\dots,m  \<br>\sum^n_{j=1} \lambda_j \nabla f_j (x^\ast)-\sum^m_{i=1} \mu_i \nabla g_i (x^\ast)=0<br>$$<br>上述公式统称为KKT条件，KKT条件是多目标优化问题最优解 $x^\ast$ 的必要条件。若 $f(x)$ 是凹函数，$X$ 是凸集，则KKT条件是最优解 $x^\ast$ 的充分条件。</p>
+<h2 id="KKT条件"><a href="#KKT条件" class="headerlink" title="KKT条件"></a>KKT条件</h2><p>对多目标优化问题</p>
+<script type="math/tex; mode=display">
+\max \{f_1(x),\dots,f_n(x)\}</script><p>受约束于：</p>
+<script type="math/tex; mode=display">
+g_1(x) \leq 0  \\
+\dots  \\
+g_2(x)\leq0</script><p>若满足约束条件的非劣解 $x^\ast$ 是正则点，则存在向量 $\mu$ ，它的各分量 $\mu_i \geq 0,i=1,\dots,m$ ，并存在向量 $\lambda$ ，它的各分量 $\lambda_j \geq 0,j=1,\dots,n$ ，它使</p>
+<script type="math/tex; mode=display">
+x^\ast \in X  \\
+\mu_ig_i(x^\ast)=0 ,i=1,\dots,m  \\
+\sum^n_{j=1} \lambda_j \nabla f_j (x^\ast)-\sum^m_{i=1} \mu_i \nabla g_i (x^\ast)=0</script><p>上述公式统称为KKT条件，KKT条件是多目标优化问题最优解 $x^\ast$ 的必要条件。若 $f(x)$ 是凹函数，$X$ 是凸集，则KKT条件是最优解 $x^\ast$ 的充分条件。</p>
 <h1 id="非劣解的生成"><a href="#非劣解的生成" class="headerlink" title="非劣解的生成"></a>非劣解的生成</h1><p>知道了非劣解和KKT条件，我们则可以通过KKT条件对非劣解进行推导，求解主要有多种方法：线性加权法、 $\varepsilon$ 约束法 、序贯式解法和理想点法，在这里主要介绍前两种。</p>
-<h2 id="线性加权法"><a href="#线性加权法" class="headerlink" title="线性加权法"></a>线性加权法</h2><p> 对多目标函数 $f_j(x),j=1,\dots,n$ 加权 $w_j$ ，则多目标优化问题可以变换为加权单目标优化问题：<br>$$<br>\max f(x,w)=\sum^n_{j=1}w_jf_j(x)  \tag{1}<br>$$<br>受约束于：$x \in X$</p>
-<p>则优化问题的KKT条件为：<br>$$<br>x^\ast  \in X  \<br>\mu_ig_i(x^\ast)=0,i=1,\dots,m  \<br>\nabla \left[ \sum^n_{j=1}w_jf_j(x^\ast)\right]-\sum^m_{i=1}\mu_i \nabla g_i(x^\ast)=0 \  \tag{2}<br>$$<br> 由于：<br>$$<br>\nabla \left[ \sum^n_{j=1}w_jf_j(x^\ast)\right]=\sum^m_{j=1}w_j \nabla f_j(x^\ast)=0  \tag{3}<br>$$<br>将上式代入KKT条件，得：<br>$$<br>\sum^m_{j=1}w_j \nabla f_j(x^\ast)-\sum^m_{i=1}\mu_i \nabla g_i(x^\ast)=0   \tag{4}<br>$$<br>只要把式 (4) 中的 $w_j$ 看作 $\lambda_j$ ，$j=1,\dots,n$ ，即把权向量 $w$ 看作向量 $\lambda$ ，则式 (4) 就是多目标优化问题的非劣解的KKT条件。因此加权的单目标问题的最优解和原来的多目标问题的非劣解都满足相同的KKT条件。只要权向量的所有分量 $w_j \geq 0 ,j=1,\dots,n$ ，就能保证加权后的单目标优化问题的最优解是原来的多目标优化问题的非劣解。</p>
-<h2 id="varepsilon-约束法"><a href="#varepsilon-约束法" class="headerlink" title="$\varepsilon$ 约束法"></a>$\varepsilon$ 约束法</h2><p>对多目标优化问题，可以选择某个目标，比如说第 $k$ 个，求 $f_k(x)$ 的极大值，形成如下单目标优化问题<br>$$<br>\max f_k(x)   \tag{5}<br>$$<br>受约束于：<br>$$<br>x \in X    \<br>f_j(x) \geq \varepsilon_j ,j=1,\dots,n,j \neq k    \tag{6}<br>$$</p>
-<p>这一单目标优化问题可以用通常的数学规划方式求解，它的最优解在一定条件下是原来的多目标优化问题的非劣解。</p>
-<p>此时，KKT条件的第三个条件可写为：<br>$$<br>\lambda_k \nabla f_k(x^\ast)+\sum^n_{j=1,j \neq k}\lambda_j \nabla f_j(x^\ast) - \sum^m_{i=1}\mu_i \nabla g_i(x^\ast)=0    \tag{7}<br>$$<br>式中$\lambda_j \geq 0(i=1,\dots,n)$，$\mu_i \geq 0(i=1,\dots,m)$ 。设 $\lambda_k &gt;0$ ，则式 (7) 就是如下的单目标优化问题的KKT第三条件：<br>$$<br>\max \lambda_k f_k(x)  \tag{8}<br>$$<br>受约束于：<br>$$<br>g_i(x) \leq 0 ,i=1,\dots,m  \<br>f_j(x) \geq \varepsilon_j ,j=1,\dots,n,j \neq k  \tag{9}<br>$$<br>由于 $\lambda_k &gt;0$ ，因此用 $\lambda_k$ 除目标函数不会改变单目标优化问题的解；为了使式 (9) 符合KKT条件的标准形式，与式 (7) 等号左边第二项对应的约束条件应写作：<br>$$<br>-f_j(x)+\varepsilon_j \leq 0  \tag{10}<br>$$<br>上面的单目标优化问题即：<br>$$<br>\max f_k(x)  \<br>g_i(x) \leq 0  ,i=1,\dots,m \<br>-f_j(x)+\varepsilon_j \leq 0,j=1,\dots,n ,j \neq k  \tag{11}<br>$$<br>式 (10) 中的 $\varepsilon_j$ 是与 $x$ 无关的常数，这样式 (7) 等号左边第二项为：<br>$$</p>
-<ul>
-<li>\sum^n_{j=1,j \neq k} \lambda_j \nabla(-f_j(x^\ast)+\varepsilon_j)=\sum^n_{j=1,j \neq k} \lambda_j \nabla f_j(x^\ast)   \tag{12}<br>$$<br>$\varepsilon_j$ 的选择必须使相应的单目标优化问题有解，而且所有由目标构成的约束条件在 $x=x^\ast$ 处都应当是起作用的，即：<br>$$<br>f_j(x^\ast) =\varepsilon_j,j=1,\dots,n,j \neq k  \tag{13}<br>$$<br>用约束法求得的最优解 $x^0$ 有如下性质：</li>
-</ul>
+<h2 id="线性加权法"><a href="#线性加权法" class="headerlink" title="线性加权法"></a>线性加权法</h2><p> 对多目标函数 $f_j(x),j=1,\dots,n$ 加权 $w_j$ ，则多目标优化问题可以变换为加权单目标优化问题：</p>
+<script type="math/tex; mode=display">
+\max f(x,w)=\sum^n_{j=1}w_jf_j(x)  \tag{1}</script><p>受约束于：$x \in X$</p>
+<p>则优化问题的KKT条件为：</p>
+<script type="math/tex; mode=display">
+x^\ast  \in X  \\
+\mu_ig_i(x^\ast)=0,i=1,\dots,m  \\
+\nabla \left[ \sum^n_{j=1}w_jf_j(x^\ast)\right]-\sum^m_{i=1}\mu_i \nabla g_i(x^\ast)=0 \\  \tag{2}</script><p> 由于：</p>
+<script type="math/tex; mode=display">
+\nabla \left[ \sum^n_{j=1}w_jf_j(x^\ast)\right]=\sum^m_{j=1}w_j \nabla f_j(x^\ast)=0  \tag{3}</script><p>将上式代入KKT条件，得：</p>
+<script type="math/tex; mode=display">
+\sum^m_{j=1}w_j \nabla f_j(x^\ast)-\sum^m_{i=1}\mu_i \nabla g_i(x^\ast)=0   \tag{4}</script><p>只要把式 (4) 中的 $w_j$ 看作 $\lambda_j$ ，$j=1,\dots,n$ ，即把权向量 $w$ 看作向量 $\lambda$ ，则式 (4) 就是多目标优化问题的非劣解的KKT条件。因此加权的单目标问题的最优解和原来的多目标问题的非劣解都满足相同的KKT条件。只要权向量的所有分量 $w_j \geq 0 ,j=1,\dots,n$ ，就能保证加权后的单目标优化问题的最优解是原来的多目标优化问题的非劣解。</p>
+<h2 id="varepsilon-约束法"><a href="#varepsilon-约束法" class="headerlink" title="$\varepsilon$ 约束法"></a>$\varepsilon$ 约束法</h2><p>对多目标优化问题，可以选择某个目标，比如说第 $k$ 个，求 $f_k(x)$ 的极大值，形成如下单目标优化问题</p>
+<script type="math/tex; mode=display">
+\max f_k(x)   \tag{5}</script><p>受约束于：</p>
+<script type="math/tex; mode=display">
+x \in X    \\ 
+f_j(x) \geq \varepsilon_j ,j=1,\dots,n,j \neq k    \tag{6}</script><p>这一单目标优化问题可以用通常的数学规划方式求解，它的最优解在一定条件下是原来的多目标优化问题的非劣解。</p>
+<p>此时，KKT条件的第三个条件可写为：</p>
+<script type="math/tex; mode=display">
+\lambda_k \nabla f_k(x^\ast)+\sum^n_{j=1,j \neq k}\lambda_j \nabla f_j(x^\ast) - \sum^m_{i=1}\mu_i \nabla g_i(x^\ast)=0    \tag{7}</script><p>式中$\lambda_j \geq 0(i=1,\dots,n)$，$\mu_i \geq 0(i=1,\dots,m)$ 。设 $\lambda_k &gt;0$ ，则式 (7) 就是如下的单目标优化问题的KKT第三条件：</p>
+<script type="math/tex; mode=display">
+\max \lambda_k f_k(x)  \tag{8}</script><p>受约束于：</p>
+<script type="math/tex; mode=display">
+g_i(x) \leq 0 ,i=1,\dots,m  \\
+f_j(x) \geq \varepsilon_j ,j=1,\dots,n,j \neq k  \tag{9}</script><p>由于 $\lambda_k &gt;0$ ，因此用 $\lambda_k$ 除目标函数不会改变单目标优化问题的解；为了使式 (9) 符合KKT条件的标准形式，与式 (7) 等号左边第二项对应的约束条件应写作：</p>
+<script type="math/tex; mode=display">
+-f_j(x)+\varepsilon_j \leq 0  \tag{10}</script><p>上面的单目标优化问题即：</p>
+<script type="math/tex; mode=display">
+\max f_k(x)  \\
+g_i(x) \leq 0  ,i=1,\dots,m \\
+-f_j(x)+\varepsilon_j \leq 0,j=1,\dots,n ,j \neq k  \tag{11}</script><p>式 (10) 中的 $\varepsilon_j$ 是与 $x$ 无关的常数，这样式 (7) 等号左边第二项为：</p>
+<script type="math/tex; mode=display">
+- \sum^n_{j=1,j \neq k} \lambda_j \nabla(-f_j(x^\ast)+\varepsilon_j)=\sum^n_{j=1,j \neq k} \lambda_j \nabla f_j(x^\ast)   \tag{12}</script><p> $\varepsilon_j$ 的选择必须使相应的单目标优化问题有解，而且所有由目标构成的约束条件在 $x=x^\ast$ 处都应当是起作用的，即：</p>
+<script type="math/tex; mode=display">
+f_j(x^\ast) =\varepsilon_j,j=1,\dots,n,j \neq k  \tag{13}</script><p>用约束法求得的最优解 $x^0$ 有如下性质：</p>
 <p>(1) $\exists k \in J$ ，$x^0$ 是以 $f_k(x)$ 为目标函数的约束问题的唯一解；</p>
 <p>(2) $\forall k \in J$，$x^0$ 都是以 $f_k(x)$ 为目标函数的约束问题的解，则 $x^0$ 是原多目标优化问题的非劣解；</p>
 <p>(3) 对任何给定的非劣解 $x^\ast$ ，总能找到一个 $\varepsilon$ ，$\forall k \in J$，$x^*$ 是它们相应的约束问题的解。</p>
@@ -777,7 +815,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -825,12 +863,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -868,21 +901,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

@@ -397,7 +397,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.6k
                 </span>
               
 
@@ -413,7 +413,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  10
                 </span>
               
             </div>
@@ -445,7 +445,31 @@
 <p>在上面的输入中，共有9个单词，分别定义为 $x^{\langle t \rangle},t=1,2,\dots,T_x $ 。在这里，$T_x=9$。同理，输出 $y$ 定义为序列  $ y^{\langle t \rangle},t=1,2,\dots,T_y $ 。$ T_x $ 和 $ T_y $ 可以相等，也可以不相等。</p>
 <p>这是第一个训练样本，如果有多个训练样本，我们用 $x^{(i) \langle t \rangle},t=1,2,\dots,T_x^{(i)}$ 表示第 $i$ 个训练样本中的第 $t$ 个单词。$T_x^{(i)}$ 为输入集第 $i$ 个训练样本中的长度。输出 $y$ 同理表示。</p>
 <p>接下来，我们如何将输入 $x$ 中的每个单词表示成计算机能看懂的东西呢？首先我们需要构建一个词汇表 (Vocabulary)，也可称为字典，实际上就是一个单词组成的列表。在这个词汇表中，例如第一个单词为<code>a</code>，第二个为<code>Aaron</code>，一直延续下去，<code>and</code>出现在367位，<code>Harry</code>排在4075， <code>Potter</code>排在6830，最后一个词 <code>Zulu</code>为10,000。显然，在这里构建的字典长度为10,000。这在现在的自然语言处理领域是十分小的，通常在大部分商业用途中，采用的是30,000至50,000的字典长度。</p>
-<p>那么，我们根据每个单词在字典中出现的位置，将每个单词转化为向量形式，如：<br>$$<br>x^{\langle 1\rangle }=<br>\begin{bmatrix}<br>0  \<br>0 \<br>\vdots \<br>0 \<br>1 (4075) \<br>0 \<br>\vdots \<br>0<br>\end{bmatrix},<br>x^{\langle 2 \rangle}=<br>\begin{bmatrix}<br>0  \<br>0 \<br>\vdots \<br>0 \<br>1 (6830) \<br>0 \<br>\vdots \<br>0<br>\end{bmatrix},<br>\dots<br>$$<br>每个单词的向量维度均为10,000，当你的字典长度为10,000时。</p>
+<p>那么，我们根据每个单词在字典中出现的位置，将每个单词转化为向量形式，如：</p>
+<script type="math/tex; mode=display">
+x^{\langle 1\rangle }=
+\begin{bmatrix}
+0  \\
+0 \\
+\vdots \\
+0 \\
+1 (4075) \\
+0 \\
+\vdots \\
+0
+\end{bmatrix},
+x^{\langle 2 \rangle}=
+\begin{bmatrix}
+0  \\
+0 \\
+\vdots \\
+0 \\
+1 (6830) \\
+0 \\
+\vdots \\
+0
+\end{bmatrix},
+\dots</script><p>每个单词的向量维度均为10,000，当你的字典长度为10,000时。</p>
 <p>而对于输出 $y$ 的标签，若单词 $ x^{\langle t \rangle} $ 为人名时，则 $ y^{\langle t \rangle}=1 $ ，否则为0。当然，这不是最优的表示方式，因为有可能一个人名是由多个单词组成的，这种表示方式并不能让你知道人名在句中是何时开始，何时结束。在这里我们姑且这么表示。</p>
 <h2 id="Recurrent-Neural-Network-Model"><a href="#Recurrent-Neural-Network-Model" class="headerlink" title="Recurrent Neural Network Model"></a>Recurrent Neural Network Model</h2><h3 id="Why-not-standard-network"><a href="#Why-not-standard-network" class="headerlink" title="Why not standard network?"></a>Why not standard network?</h3><p>往常，我们可能会采用标准的神经网络架构进行训练，比如说上面的例子，一句话中包含9个单词，那么输入 $x$ 的维度为 $9 \times 10000$ ，通过中间的多个隐含层（全连接层），最终输出 $y$ 的维度为 $9\times 1$ 。这样的标准神经网络并不好，主要有两个问题：</p>
 <ol>
@@ -466,13 +490,35 @@
 <p><em>He said, “Teddy bears are on sale!”</em></p>
 </blockquote>
 <p>当神经网络想要预测 <em>Teddy</em> 是否为姓名的一部分时，显然上一句是姓名，而下一句却不是。前面两个单词并不能起到任何帮助，除非结合考虑了句子后面部分的信息。这是这种网络架构的缺陷之一。在接下来的课程中，我们会讲到 BRNN (Bidirectional Recurrent Neural Network)，它可以解决这个问题。</p>
-<h3 id="Forward-Propagation"><a href="#Forward-Propagation" class="headerlink" title="Forward Propagation"></a>Forward Propagation</h3><p>我们看看前向传递是如何进行的。如下：<br>$$<br>a^{\langle 0\rangle}=\overrightarrow{0}  \<br>a^{\langle 1\rangle}=g_1(w_{aa}a^{\langle 0\rangle}+w_{ax}x^{\langle 1\rangle}+b_a) \<br>\hat{y}^{\langle 1\rangle}=g_2(w_{ya}a^{\langle 1\rangle}+b_y)  \<br>\dots  \<br>a^{\langle t\rangle}=g_1(w_{aa}a^{\langle t-1\rangle}+w_{ax}x^{\langle t\rangle}+b_a) \<br>\hat{y}^{\langle t\rangle}=g_2(w_{ya}a^{\langle t\rangle}+b_y)<br>$$<br> 其中，激活函数 $g_1​$ 通常采用 tanh 或 ReLU，而激活函数 $g_2​$ 取决于你的输出 $y​$ 的形式，若是一个二分类问题，通常采用 sigmoid 激活函数，若是其他分类问题，也可采用其他激活函数。</p>
-<h3 id="Simplified-RNN-notation"><a href="#Simplified-RNN-notation" class="headerlink" title="Simplified RNN notation"></a>Simplified RNN notation</h3><p>我们可以将上式进行简化，写成如下形式：<br>$$<br>a^{\langle t\rangle}=g(w_a[a^{\langle t-1\rangle},x^{\langle t\rangle}]+b_a)  \<br>[w_{aa}|w_{ax}]=w_a  \<br>[w_{aa}|w_{ax}]<br>\begin{bmatrix}<br>a^{\langle t-1\rangle} \<br>x^{\langle t\rangle}<br>\end{bmatrix}<br>=w_{aa}a^{\langle t-1\rangle}+w_{ax}x^{\langle t\rangle}<br>$$<br>假设初始向量 $a^{\langle 0 \rangle}​$ 维度为100，输入 $x​$ 的维度为10000，则 $w_{aa}​$ 矩阵维度应为 $100 \times 100​$ ，而 $w_{ax}​$ 矩阵维度应为 $100 \times 10000​$， 将这两个参数矩阵合为 $w_a​$ ，维度为 $100 \times 10100​$。</p>
-<p>而将 $ a^{\langle t-1 \rangle} $ 和 $ x^{\langle t \rangle} $ 上下堆起来，则形成一个维度为10100的向量。 同理，对于输出 $ \hat{y} $ 也可简化为：<br>$$<br>\hat{y}^{\langle t\rangle }=g(w_ya^{\langle t\rangle }+b_y)<br>$$<br>以上就是一个基本的RNN，下面一节我们会讲到反向传播的推导。</p>
+<h3 id="Forward-Propagation"><a href="#Forward-Propagation" class="headerlink" title="Forward Propagation"></a>Forward Propagation</h3><p>我们看看前向传递是如何进行的。如下：</p>
+<script type="math/tex; mode=display">
+a^{\langle 0\rangle}=\overrightarrow{0}  \\
+a^{\langle 1\rangle}=g_1(w_{aa}a^{\langle 0\rangle}+w_{ax}x^{\langle 1\rangle}+b_a) \\
+\hat{y}^{\langle 1\rangle}=g_2(w_{ya}a^{\langle 1\rangle}+b_y)  \\
+\dots  \\
+a^{\langle t\rangle}=g_1(w_{aa}a^{\langle t-1\rangle}+w_{ax}x^{\langle t\rangle}+b_a) \\
+\hat{y}^{\langle t\rangle}=g_2(w_{ya}a^{\langle t\rangle}+b_y)</script><p> 其中，激活函数 $g_1​$ 通常采用 tanh 或 ReLU，而激活函数 $g_2​$ 取决于你的输出 $y​$ 的形式，若是一个二分类问题，通常采用 sigmoid 激活函数，若是其他分类问题，也可采用其他激活函数。</p>
+<h3 id="Simplified-RNN-notation"><a href="#Simplified-RNN-notation" class="headerlink" title="Simplified RNN notation"></a>Simplified RNN notation</h3><p>我们可以将上式进行简化，写成如下形式：</p>
+<script type="math/tex; mode=display">
+a^{\langle t\rangle}=g(w_a[a^{\langle t-1\rangle},x^{\langle t\rangle}]+b_a)  \\
+[w_{aa}|w_{ax}]=w_a  \\
+[w_{aa}|w_{ax}]
+\begin{bmatrix}
+a^{\langle t-1\rangle} \\
+x^{\langle t\rangle} 
+\end{bmatrix}
+=w_{aa}a^{\langle t-1\rangle}+w_{ax}x^{\langle t\rangle}</script><p>假设初始向量 $a^{\langle 0 \rangle}​$ 维度为100，输入 $x​$ 的维度为10000，则 $w_{aa}​$ 矩阵维度应为 $100 \times 100​$ ，而 $w_{ax}​$ 矩阵维度应为 $100 \times 10000​$， 将这两个参数矩阵合为 $w_a​$ ，维度为 $100 \times 10100​$。</p>
+<p>而将 $ a^{\langle t-1 \rangle} $ 和 $ x^{\langle t \rangle} $ 上下堆起来，则形成一个维度为10100的向量。 同理，对于输出 $ \hat{y} $ 也可简化为：</p>
+<script type="math/tex; mode=display">
+\hat{y}^{\langle t\rangle }=g(w_ya^{\langle t\rangle }+b_y)</script><p>以上就是一个基本的RNN，下面一节我们会讲到反向传播的推导。</p>
 <h2 id="Backpropagation-through-time"><a href="#Backpropagation-through-time" class="headerlink" title="Backpropagation through time"></a>Backpropagation through time</h2><p>一般在编程框架上，比如说tensorflow，都会自动进行反向传播的计算。在这里，我们大概讲一下反向传播的过程，并不涉及到反向传播的推导。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18062402.png" alt=""></p>
 <p>如上图是一个RNN正向传播的过程。首先，根据参数 $w_a$ 和 $b_a$ 计算每一步隐含层中的激活值，其次再根据参数 $w_y$ 和 $b_y$ 计算预测每一步的输出。</p>
-<p>为了计算反向传播调整参数值，我们需要建立损失函数。损失函数通常定义为交叉熵损失，即：<br>$$<br>L^{<t>}(\hat{y}^{\langle t \rangle},y^{\langle t \rangle})=-y^{\langle t \rangle}\log \hat{y}^{\langle t \rangle}-(1-y^{\langle t \rangle})\log (1-\hat{y}^{\langle t \rangle})<br>$$<br>上式为第 $t​$ 步的损失值，总的损失值即为所有时间步的损失值之和：<br>$$<br>L(\hat{y},y)=\sum^{T_y}_{t=1}L^{&lt;t \rangle}(\hat{y}^{&lt;t \rangle},y^{&lt;t \rangle})<br>$$<br>根据以上的损失函数，使用梯度下降，随时间步反向不断更新参数矩阵，从而使得损失函数最小化，这就是随着时间的反向传播 (Backpropagation through time)。</t></p>
+<p>为了计算反向传播调整参数值，我们需要建立损失函数。损失函数通常定义为交叉熵损失，即：</p>
+<script type="math/tex; mode=display">
+L^{<t>}(\hat{y}^{\langle t \rangle},y^{\langle t \rangle})=-y^{\langle t \rangle}\log \hat{y}^{\langle t \rangle}-(1-y^{\langle t \rangle})\log (1-\hat{y}^{\langle t \rangle})</script><p>上式为第 $t​$ 步的损失值，总的损失值即为所有时间步的损失值之和：</p>
+<script type="math/tex; mode=display">
+L(\hat{y},y)=\sum^{T_y}_{t=1}L^{<t \rangle}(\hat{y}^{<t \rangle},y^{<t \rangle})</script><p>根据以上的损失函数，使用梯度下降，随时间步反向不断更新参数矩阵，从而使得损失函数最小化，这就是随着时间的反向传播 (Backpropagation through time)。</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
 <li><a href="https://www.coursera.org/learn/nlp-sequence-models/home/week/1" target="_blank" rel="noopener">Sequence Models - Week 1</a></li>
 </ol>
@@ -799,7 +845,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -847,12 +893,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -890,21 +931,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

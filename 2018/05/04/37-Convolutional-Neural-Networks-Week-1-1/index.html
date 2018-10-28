@@ -401,7 +401,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.4k
                 </span>
               
 
@@ -417,7 +417,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  8
                 </span>
               
             </div>
@@ -449,12 +449,34 @@
 <h2 id="Edge-Detection-Example"><a href="#Edge-Detection-Example" class="headerlink" title="Edge Detection Example"></a>Edge Detection Example</h2><p>卷积运算是卷积神经网络最基础的一步，在这一节我们通过边缘检测 (edge detection) 这个例子来讲解卷积运算的步骤。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180504/18050402.png" alt=""></p>
 <p>我们可以看看上面这幅图，如果要让计算机识别出图中到底有什么，那么主要有两步，第一步就是检测图片的垂直边缘，那么从竖直方向，可以发现一道道竖直的栏杆和人的轮廓；第二部就是检测图片的水平边缘，从水平方向看，可以看到水平的护栏和自行车的轮廓等。那么这些边缘是怎么检测出来的？我们可以看看具体的运算。</p>
-<h3 id="Vertical-edge-detection"><a href="#Vertical-edge-detection" class="headerlink" title="Vertical edge detection"></a>Vertical edge detection</h3><p>$$<br>\begin{bmatrix}<br> 3 &amp; 0 &amp; 1 &amp; 2 &amp; 7 &amp; 4  \<br> 1 &amp; 5 &amp; 8 &amp; 9 &amp; 3 &amp; 1  \<br> 2 &amp; 7 &amp; 2 &amp; 5 &amp; 1 &amp; 3  \<br> 0 &amp; 1 &amp; 3 &amp; 1 &amp; 7 &amp; 8  \<br> 4 &amp; 2 &amp; 1 &amp; 6 &amp; 2 &amp; 8  \<br> 2 &amp; 4 &amp; 5 &amp; 2 &amp; 3 &amp; 9  \<br>\end{bmatrix}<br>$$</p>
-<p>假设有一张 $6 \times 6$ 像素的灰色图片，其灰值矩阵如上所示。因为只有灰色，没有RGB三色调，所以矩阵维度为 $6 \times 6 \times 1$ 。为了检测该灰图的垂直边缘，那么我们可以构建一个 $3\times 3$ 的矩阵做卷积运算，这个矩阵称为<strong>滤波器 (filter)</strong>，可对垂直边缘进行检测。如下：<br>$$<br>\begin{bmatrix}<br>1 &amp; 0 &amp; -1  \<br>1 &amp; 0 &amp; -1  \<br>1 &amp; 0 &amp; -1  \<br>\end{bmatrix}<br>$$<br>有一些研究论文中也有把它称为<strong>核 (kernel)</strong> ，其实都一样。那么我们便通过这个滤波器对原始的灰值矩阵进行卷积，卷积符号在数学上用星号 <strong>“*”</strong> 表示，这里有点歧义，在 python 中星号是表示元素乘法运算或矩阵点积运算，稍微注意一下就行。</p>
+<h3 id="Vertical-edge-detection"><a href="#Vertical-edge-detection" class="headerlink" title="Vertical edge detection"></a>Vertical edge detection</h3><script type="math/tex; mode=display">
+\begin{bmatrix}
+ 3 & 0 & 1 & 2 & 7 & 4  \\
+ 1 & 5 & 8 & 9 & 3 & 1  \\
+ 2 & 7 & 2 & 5 & 1 & 3  \\
+ 0 & 1 & 3 & 1 & 7 & 8  \\
+ 4 & 2 & 1 & 6 & 2 & 8  \\
+ 2 & 4 & 5 & 2 & 3 & 9  \\
+\end{bmatrix}</script><p>假设有一张 $6 \times 6$ 像素的灰色图片，其灰值矩阵如上所示。因为只有灰色，没有RGB三色调，所以矩阵维度为 $6 \times 6 \times 1$ 。为了检测该灰图的垂直边缘，那么我们可以构建一个 $3\times 3$ 的矩阵做卷积运算，这个矩阵称为<strong>滤波器 (filter)</strong>，可对垂直边缘进行检测。如下：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+1 & 0 & -1  \\
+1 & 0 & -1  \\
+1 & 0 & -1  \\
+\end{bmatrix}</script><p>有一些研究论文中也有把它称为<strong>核 (kernel)</strong> ，其实都一样。那么我们便通过这个滤波器对原始的灰值矩阵进行卷积，卷积符号在数学上用星号 <strong>“*”</strong> 表示，这里有点歧义，在 python 中星号是表示元素乘法运算或矩阵点积运算，稍微注意一下就行。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180504/18050403.png" alt=""></p>
-<p>卷积运算很简单，如上图我们先提取灰值矩阵左上角3行3列的元素与滤波器做简单的乘法运算（非点积运算），然后求和，即：<br>$$<br>3 \times 1 +1 \times 1+2 \times 1 +0\times 0+5 \times 0+7 \times 0+1 \times (-1)+8 \times (-1) +2\times (-1)=-5<br>$$<br>其次，在灰值矩阵中往右移一列，同理继续做卷积运算，见下图：</p>
+<p>卷积运算很简单，如上图我们先提取灰值矩阵左上角3行3列的元素与滤波器做简单的乘法运算（非点积运算），然后求和，即：</p>
+<script type="math/tex; mode=display">
+3 \times 1 +1 \times 1+2 \times 1 +0\times 0+5 \times 0+7 \times 0+1 \times (-1)+8 \times (-1) +2\times (-1)=-5</script><p>其次，在灰值矩阵中往右移一列，同理继续做卷积运算，见下图：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180504/18050404.png" alt=""></p>
-<p>那么依次将整个灰值矩阵遍历完之后，我们便可得到一个 $4 \times 4$ 的输出矩阵：<br>$$<br>\begin{bmatrix}<br>-5 &amp; -4 &amp; 0 &amp; 8 \<br>-10 &amp; -2 &amp; 2 &amp; 3 \<br>0 &amp; -2 &amp; -4 &amp; -7\<br>-3 &amp; -2 &amp; -3 &amp; -16 \<br>\end{bmatrix}<br>$$<br><strong><em>提示一下：</em></strong> 在实际编程中，不同的语言会用不同的函数名表示卷积运算，比如python中为 <code>conv_forward()</code> ，而 tensorflow 为 <code>tf.nn.conv2d()</code> 。</p>
+<p>那么依次将整个灰值矩阵遍历完之后，我们便可得到一个 $4 \times 4$ 的输出矩阵：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+-5 & -4 & 0 & 8 \\
+-10 & -2 & 2 & 3 \\
+0 & -2 & -4 & -7\\
+-3 & -2 & -3 & -16 \\
+\end{bmatrix}</script><p><strong><em>提示一下：</em></strong> 在实际编程中，不同的语言会用不同的函数名表示卷积运算，比如python中为 <code>conv_forward()</code> ，而 tensorflow 为 <code>tf.nn.conv2d()</code> 。</p>
 <p>为什么这样的矩阵就能检测垂直边缘呢？在这个例子中我们并不好理解，那么接下来有一个更简单明了的例子。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180504/18050405.png" alt=""></p>
 <p>如图，我们看这样一个 $6 \times 6$ 灰值矩阵，左3列灰值均为10，右3列灰值为0，那么原始图像很明显，就是一半白一半灰，中间有一条垂直的分界线。同理，我们的滤波器在图像中也可以表现出来，就是白灰黑各三段。通过卷积运算，我们可以得到垂直边缘检测矩阵，其图像十分清晰明了，中间的白色部分显然就是原始图像的垂直分界线。</p>
@@ -463,10 +485,26 @@
 <h2 id="More-Edge-Detection"><a href="#More-Edge-Detection" class="headerlink" title="More Edge Detection"></a>More Edge Detection</h2><p> 本节对边缘检测进一步讲解，如正边缘 (positive edge) 和负边缘 (negative edge) 的区别，其他类型的滤波器，及滤波器的参数学习等等。</p>
 <h3 id="Vertical-edge-detection-examples"><a href="#Vertical-edge-detection-examples" class="headerlink" title="Vertical edge detection examples"></a>Vertical edge detection examples</h3><p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180504/18050406.png" alt=""></p>
 <p>什么是正边缘和负边缘？我们定义为从白到黑的边缘为正边缘，从黑到白的边缘为负边缘。就如上图，如果我们把左上角的图成180度倒转，那么中间分界线由从白变灰变为从灰变白，相应地滤波器中间带从正30变为-30，即从白变黑。</p>
-<h3 id="Vertical-and-Horizontal-Edge-Detection"><a href="#Vertical-and-Horizontal-Edge-Detection" class="headerlink" title="Vertical and Horizontal Edge Detection"></a>Vertical and Horizontal Edge Detection</h3><p>我们再看看其他类型的边缘检测器。之前介绍了垂直边缘检测器，那么水平边缘检测器也十分简单，如下矩阵：<br>$$<br>\begin{bmatrix}<br>1&amp;1&amp;1 \<br>0&amp;0&amp;0 \<br>-1&amp;-1&amp;-1<br>\end{bmatrix}<br>$$<br><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180504/18050407.png" alt=""></p>
+<h3 id="Vertical-and-Horizontal-Edge-Detection"><a href="#Vertical-and-Horizontal-Edge-Detection" class="headerlink" title="Vertical and Horizontal Edge Detection"></a>Vertical and Horizontal Edge Detection</h3><p>我们再看看其他类型的边缘检测器。之前介绍了垂直边缘检测器，那么水平边缘检测器也十分简单，如下矩阵：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+1&1&1 \\
+0&0&0 \\
+-1&-1&-1 
+\end{bmatrix}</script><p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180504/18050407.png" alt=""></p>
 <p>从上图我们可以看到，原始灰值矩阵包含4个小方块，各存在2小段正边缘和负边缘，通过水平边缘检测器的卷积运算，得到的矩阵中间两行从正到负，说明是左边的正边缘是从白到黑过渡，而右边的负边缘是从黑到白过渡。而在右边矩阵中间，我们看到出现10的灰值，这是过渡区域。过渡区域的大小和图像的大小有关，如果你的图像足够大，那么你就不会看到类似的过渡区域了。总的来说，不同的边缘检测器可以让你检测到不同方向的边缘。</p>
-<p>在许多计算机视觉的文献中，还有许多类型的滤波器，比如说 Sobel filter 和 Scharr filter，分别如下：<br>$$<br>\begin{bmatrix}<br>1&amp;0&amp;-1 \<br>2&amp;0&amp;-2 \<br>1&amp;0&amp;-1<br>\end{bmatrix},<br>\begin{bmatrix}<br>3&amp;0&amp;-3 \<br>10&amp;0&amp;-10 \<br>3&amp;0&amp;-3<br>\end{bmatrix}<br>$$</p>
-<p>Sobel filter，其优点是增加了中间行的权重，即增大了图片中部像素的权重，使得边缘检测的结果更加鲁棒。Scharr filter 和 Sobel filter 类似，区别很轻微。这两个滤波器都是用于垂直边缘检测的，将它们旋转90度，就成了水平边缘检测器了。</p>
+<p>在许多计算机视觉的文献中，还有许多类型的滤波器，比如说 Sobel filter 和 Scharr filter，分别如下：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+1&0&-1 \\
+2&0&-2 \\
+1&0&-1 
+\end{bmatrix},
+\begin{bmatrix}
+3&0&-3 \\
+10&0&-10 \\
+3&0&-3 
+\end{bmatrix}</script><p>Sobel filter，其优点是增加了中间行的权重，即增大了图片中部像素的权重，使得边缘检测的结果更加鲁棒。Scharr filter 和 Sobel filter 类似，区别很轻微。这两个滤波器都是用于垂直边缘检测的，将它们旋转90度，就成了水平边缘检测器了。</p>
 <h3 id="Learning-to-detect-edges"><a href="#Learning-to-detect-edges" class="headerlink" title="Learning to detect edges"></a>Learning to detect edges</h3><p>随着深度学习的发展，我们甚至可以不再需要自己选择滤波器，而是将滤波器的每个元素当成参数，让其在反向传播中自己学习。</p>
 <p>在反向传播中，滤波器的学习就不局限于垂直边缘和水平边缘的方向了，它可以学习去检测各个方向（如45度，70度等），只要能达到最优。那么如何通过反向传播进行参数学习呢？我们在后续见。</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
@@ -797,7 +835,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -845,12 +883,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -888,21 +921,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

@@ -400,7 +400,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  3.3k
                 </span>
               
 
@@ -416,7 +416,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  13
                 </span>
               
             </div>
@@ -447,16 +447,33 @@
 <h3 id="GRU-simplified"><a href="#GRU-simplified" class="headerlink" title="GRU (simplified)"></a>GRU (simplified)</h3><p>我们继续以上节课的一个例子来讲解：</p>
 <p><em>“The cat, which already ate …, was full.”</em></p>
 <p> 我们需要记住前面的 <em>“cat”</em> 是单数，才能确定后面的谓语用 <em>“was”</em> 还是 <em>“were”</em>。当我们将这句话的词从左到右依次输入时，GRU会产生一个新的变量 $c$ ，表示 memery cell。menery cell 的作用就是对部门过去的信息进行记忆。$c^{\langle t \rangle}$ 表示第 $t$ 个时间步下的激活值，在GRU中， $c^{\langle t \rangle}=a^{\langle t \rangle}$ 。而在LSTM中，$c^{\langle t \rangle}$ 和 $a^{\langle t \rangle}$ 是不相同的两个值。为了统一，在GRU中也添加 $c^{\langle t \rangle}$ ，但实际上它就等于 $a^{\langle t \rangle}$。</p>
-<p>另外考虑变量 $\tilde{c}^{\langle t \rangle}=\tanh (w_c[c^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_c)$ ，同时GRU还有一个重要的思想，那就是门 $\Gamma_u$，$u$ 表示更新门 (uodate gate)：<br>$$<br>\Gamma_u=\sigma (w_u[c^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_u)   \tag{1}<br>$$<br>由于门$\Gamma_u​$ 计算的激活函数为sigmoid，因此其值域在0到1之间，而在大部门时间中，$\Gamma_u​$ 总是接近于0，或接近于1。 当我们把 $c^{\langle t \rangle}​$ 更新为 $\tilde{c}^{\langle t \rangle}​$ 时，那么门的思想就会确定这个信息是否值得记忆并进行对 $c^{\langle t \rangle}​$ 的进一步更新。</p>
-<p>也就是说过去的信息<em>“cat”</em> 会储存在 $\tilde{c}^{\langle t \rangle}$ ，而门会判断过去的信息，是否值得记忆，是否有效，并作出是否更新的决定。如果是重要信息，比如说 <em>“cat”</em>，那么 $\Gamma_u$ 会接近于1；如果是句中其他无关的词，那么 $\Gamma_u$ 接近于0。然后根据 $\Gamma_u$ 继续更新 $c^{\langle t \rangle}$，如下：<br>$$<br>c^{\langle t \rangle}=\Gamma_u <em> \tilde{c}^{\langle t \rangle}+(1-\Gamma_u)</em>c^{\langle t-1 \rangle}   \tag{2}<br>$$<br>  显然，<em>“cat”</em> 的信息被保留住了，当 $\Gamma_u=1​$ ，则 $c^{\langle t \rangle}=\tilde{c}^{\langle t \rangle}​$ ，$c^{\langle t \rangle}​$ 得到了更新，即捕捉住了 <em>“cat”</em> 的特征；而句子中间的其他无关词语， $\Gamma_u=0​$ ，则 $c^{\langle t \rangle}=c^{\langle t-1 \rangle}​$，句中其他无关词语的信息都没有被记忆，$c^{\langle t \rangle}​$ 也没有得到更新，还是保留着原来 <em>“cat”</em> 的特征，因此句子后面的谓语就可以根据前面得到的特征选择合理形式进行输出。</p>
+<p>另外考虑变量 $\tilde{c}^{\langle t \rangle}=\tanh (w_c[c^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_c)$ ，同时GRU还有一个重要的思想，那就是门 $\Gamma_u$，$u$ 表示更新门 (uodate gate)：</p>
+<script type="math/tex; mode=display">
+\Gamma_u=\sigma (w_u[c^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_u)   \tag{1}</script><p>由于门$\Gamma_u​$ 计算的激活函数为sigmoid，因此其值域在0到1之间，而在大部门时间中，$\Gamma_u​$ 总是接近于0，或接近于1。 当我们把 $c^{\langle t \rangle}​$ 更新为 $\tilde{c}^{\langle t \rangle}​$ 时，那么门的思想就会确定这个信息是否值得记忆并进行对 $c^{\langle t \rangle}​$ 的进一步更新。</p>
+<p>也就是说过去的信息<em>“cat”</em> 会储存在 $\tilde{c}^{\langle t \rangle}$ ，而门会判断过去的信息，是否值得记忆，是否有效，并作出是否更新的决定。如果是重要信息，比如说 <em>“cat”</em>，那么 $\Gamma_u$ 会接近于1；如果是句中其他无关的词，那么 $\Gamma_u$ 接近于0。然后根据 $\Gamma_u$ 继续更新 $c^{\langle t \rangle}$，如下：</p>
+<script type="math/tex; mode=display">
+c^{\langle t \rangle}=\Gamma_u * \tilde{c}^{\langle t \rangle}+(1-\Gamma_u)*c^{\langle t-1 \rangle}   \tag{2}</script><p>  显然，<em>“cat”</em> 的信息被保留住了，当 $\Gamma_u=1​$ ，则 $c^{\langle t \rangle}=\tilde{c}^{\langle t \rangle}​$ ，$c^{\langle t \rangle}​$ 得到了更新，即捕捉住了 <em>“cat”</em> 的特征；而句子中间的其他无关词语， $\Gamma_u=0​$ ，则 $c^{\langle t \rangle}=c^{\langle t-1 \rangle}​$，句中其他无关词语的信息都没有被记忆，$c^{\langle t \rangle}​$ 也没有得到更新，还是保留着原来 <em>“cat”</em> 的特征，因此句子后面的谓语就可以根据前面得到的特征选择合理形式进行输出。</p>
 <p>我们同样可以作图来表示GRU，见下图：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180711/18062902.jpg" alt=""></p>
 <p>通过门的判断，将句子单词从左往右依次输入时，当遇到一个比较关键的词则会将其记住，而遇到不那么关键的词就选择性过滤，继续保持原关键词的信息，直至遇到下一个关键词。</p>
 <p>那么 $c^{\langle t \rangle}=\Gamma_u \ast \tilde{c}^{\langle t \rangle}+(1-\Gamma_u) \ast c^{\langle t-1 \rangle}​$ 有了这样的一道门，即使 $\Gamma_u​$ 接近于0，也不需要担心梯度消失的问题，因为当 $\Gamma_u=0​$ 时，$c^{\langle t \rangle}=c^{\langle t-1 \rangle}​$ ，维持原信息不变；而 $\Gamma_u=1​$ 时，$c^{\langle t \rangle}=\tilde{c}^{\langle t \rangle}​$，进一步更新迭代。</p>
-<p>在以上各式中，$c^{\langle t \rangle}$ 可以是一个向量，同理如 $\tilde{c}^{\langle t \rangle},\Gamma_u$ 等都可以是向量，与 $c^{\langle t \rangle}$ 的维度相同。“*” 表示矩阵的內积运算。以上就是一个简化版的 GRU，接下来我们看看一个完整的GRU。<br>$$<br>\tilde{c}^{\langle t \rangle}=\tanh (w_c \big [ \Gamma_t \ast c^{\langle t-1 \rangle},x^{\langle t \rangle}\big]+b_c)  \<br>\Gamma_u=\sigma (w_u[c^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_u)   \<br>\Gamma_r=\sigma (w_r[c^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_r)   \<br>c^{\langle t \rangle}=\Gamma_u \ast \tilde{c}^{\langle t \rangle}+(1-\Gamma_u) \ast c^{\langle t-1 \rangle} \<br>a^{\langle t \rangle}= c^{\langle t \rangle}<br>$$<br>完整的GRU中，在第1个式子中添加了一个门 $\Gamma_r$ ，$r$ 可看作为相关性，那么 $\Gamma_r$ 表示输入 $c^{\langle t-1 \rangle}$ 与输出 $\tilde{c}^{\langle t \rangle}$ 的关系。</p>
+<p>在以上各式中，$c^{\langle t \rangle}$ 可以是一个向量，同理如 $\tilde{c}^{\langle t \rangle},\Gamma_u$ 等都可以是向量，与 $c^{\langle t \rangle}$ 的维度相同。“*” 表示矩阵的內积运算。以上就是一个简化版的 GRU，接下来我们看看一个完整的GRU。</p>
+<script type="math/tex; mode=display">
+\tilde{c}^{\langle t \rangle}=\tanh (w_c \big [ \Gamma_t \ast c^{\langle t-1 \rangle},x^{\langle t \rangle}\big]+b_c)  \\
+\Gamma_u=\sigma (w_u[c^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_u)   \\
+\Gamma_r=\sigma (w_r[c^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_r)   \\
+c^{\langle t \rangle}=\Gamma_u \ast \tilde{c}^{\langle t \rangle}+(1-\Gamma_u) \ast c^{\langle t-1 \rangle} \\
+a^{\langle t \rangle}= c^{\langle t \rangle}</script><p>完整的GRU中，在第1个式子中添加了一个门 $\Gamma_r$ ，$r$ 可看作为相关性，那么 $\Gamma_r$ 表示输入 $c^{\langle t-1 \rangle}$ 与输出 $\tilde{c}^{\langle t \rangle}$ 的关系。</p>
 <p>为什么需要 $\Gamma_r$ ？为什么不用上面的简化版？在经过多年研究者的实验中，结果发现完整的GRU能使上下文存在更长范围的联系，同时能够解决梯度消失问题，效果更佳。</p>
 <p>GRU是一种比较普遍的RNN单元架构，还有另一种较为普遍的版本就是LSTM (Long Short Term Memory)，这种单元我们在下节讲解。</p>
-<h2 id="Long-Short-Term-Memory-LSTM"><a href="#Long-Short-Term-Memory-LSTM" class="headerlink" title="Long Short Term Memory (LSTM)"></a>Long Short Term Memory (LSTM)</h2><h3 id="GRU-and-LSTM"><a href="#GRU-and-LSTM" class="headerlink" title="GRU and LSTM"></a>GRU and LSTM</h3><p>GRU (the gated recurrnt unit)， 即使在很长的序列中也能学习到句中的前后联系。LSTM 同样可以达到类似的效果，甚至相较于GRU更为强大。LSTM 最初由 Sepp Hochreiter 和 Jurgen Schmidhuber 于1997年提出，它对序列建模影响很大[4]。 接下来不妨看看LSTM的结构。<br>$$<br>\tilde{c}^{\langle t \rangle}=\tanh (w_c [  a^{\langle t-1 \rangle},x^{\langle t \rangle} ]+b_c)  \<br>\Gamma_u=\sigma (w_u[a^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_u)   \<br>\Gamma_f=\sigma (w_f[a^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_f)   \<br>\Gamma_o=\sigma (w_o[a^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_o)   \<br>c^{\langle t \rangle}=\Gamma_u \ast \tilde{c}^{\langle t \rangle}+ \Gamma_f \ast c^{\langle t-1 \rangle}  \<br>a^{\langle t \rangle}=\Gamma_o \ast c^{\langle t \rangle}<br>$$<br>回顾一下GRU结构，我们可以很容易发现 GRU 只有两个门: $\Gamma_u$ (update gate) 和 $\Gamma_r$ (relevant gate)。 LSTM存在三个门： $\Gamma_u$ (update gate) ， $\Gamma_f$ (forget gate) 和  $\Gamma_o$ (output gate)。在更新迭代 $c^{\langle t \rangle}$ 时，我们用遗忘门 $\Gamma_f$ 替代了 $(1-\Gamma_u)$ ，这个遗忘门可以选择性对过去的信息 $c^{\langle t-1 \rangle}$ 进行记忆或遗忘。另外添加了 $\Gamma_o$ 计算 $a^{\langle t \rangle}$，$a^{\langle t \rangle}$ 不再是单纯等于 $c^{\langle t \rangle}$。显然，LSTM 就像是 GRU 的进化版。我们看看如何用图对LSTM 进行表示。</p>
+<h2 id="Long-Short-Term-Memory-LSTM"><a href="#Long-Short-Term-Memory-LSTM" class="headerlink" title="Long Short Term Memory (LSTM)"></a>Long Short Term Memory (LSTM)</h2><h3 id="GRU-and-LSTM"><a href="#GRU-and-LSTM" class="headerlink" title="GRU and LSTM"></a>GRU and LSTM</h3><p>GRU (the gated recurrnt unit)， 即使在很长的序列中也能学习到句中的前后联系。LSTM 同样可以达到类似的效果，甚至相较于GRU更为强大。LSTM 最初由 Sepp Hochreiter 和 Jurgen Schmidhuber 于1997年提出，它对序列建模影响很大[4]。 接下来不妨看看LSTM的结构。</p>
+<script type="math/tex; mode=display">
+\tilde{c}^{\langle t \rangle}=\tanh (w_c [  a^{\langle t-1 \rangle},x^{\langle t \rangle} ]+b_c)  \\
+\Gamma_u=\sigma (w_u[a^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_u)   \\
+\Gamma_f=\sigma (w_f[a^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_f)   \\
+\Gamma_o=\sigma (w_o[a^{\langle t-1 \rangle},x^{\langle t \rangle}]+b_o)   \\
+c^{\langle t \rangle}=\Gamma_u \ast \tilde{c}^{\langle t \rangle}+ \Gamma_f \ast c^{\langle t-1 \rangle}  \\
+a^{\langle t \rangle}=\Gamma_o \ast c^{\langle t \rangle}</script><p>回顾一下GRU结构，我们可以很容易发现 GRU 只有两个门: $\Gamma_u$ (update gate) 和 $\Gamma_r$ (relevant gate)。 LSTM存在三个门： $\Gamma_u$ (update gate) ， $\Gamma_f$ (forget gate) 和  $\Gamma_o$ (output gate)。在更新迭代 $c^{\langle t \rangle}$ 时，我们用遗忘门 $\Gamma_f$ 替代了 $(1-\Gamma_u)$ ，这个遗忘门可以选择性对过去的信息 $c^{\langle t-1 \rangle}$ 进行记忆或遗忘。另外添加了 $\Gamma_o$ 计算 $a^{\langle t \rangle}$，$a^{\langle t \rangle}$ 不再是单纯等于 $c^{\langle t \rangle}$。显然，LSTM 就像是 GRU 的进化版。我们看看如何用图对LSTM 进行表示。</p>
 <h3 id="LSTM-in-pictures"><a href="#LSTM-in-pictures" class="headerlink" title="LSTM in pictures"></a>LSTM in pictures</h3><p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180711/18070901.png" alt=""></p>
 <p>从上图中，我们注意到所有门的值，都是通过 $a^{\langle t-1 \rangle}$ 和 $x^{\langle t \rangle}$ 计算得来，包括 $\tilde{c}^{\langle t \rangle}$。图中上方表示 $c^{\langle t-1 \rangle}$ 的直线，都是从左到右直接传递，这是 LSTM 和 GRU 为什么在经过多个时间步后，仍能很好地记住特定关键词信息的原因。</p>
 <p>这就是 LSTM，它还有其他变体，例如门的输入并不只依赖于 $a^{\langle t-1 \rangle}$ 和 $x^{\langle t \rangle}$ ，还可能包括 $c^{\langle t-1 \rangle}$ 的影响，因此  $c^{\langle t-1 \rangle}$ 也参与到门的输入当中，这种变体称为 peephole connection。</p>
@@ -477,7 +494,9 @@
 <h2 id="Deep-RNNs"><a href="#Deep-RNNs" class="headerlink" title="Deep RNNs"></a>Deep RNNs</h2><p>我们已经看过了RNN的多个版本，但如果想要学习更为复杂的功能，可以建立多层单元并将其堆叠起来，形成更深的RNN模型。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180711/18070904.png" alt=""></p>
 <p>例如建立一个包含3个隐含层的RNN。如图，3个隐含层分别为 $a^{[1]}$，$a^{[2]}$ 和 $a^{[3]}$。我们将隐含层展开，每一层都包含4个时间步。</p>
-<p>我们举个例子，看 $a^{[2]\langle 3 \rangle}$ 是如何计算的？ $a^{[2]\langle 3 \rangle}$ 有两个输入，第一个输入来自第一层，而另一个输入来自同一层的上一个时间步，那么将这两个输入合并，得：<br>$$<br> a^{[2]\langle 3 \rangle}=g(w_a^{[2]}[ a^{[2]\langle 2 \rangle}, a^{[1]\langle 3 \rangle}]+b_a^{[2]})<br>$$<br>在同一层中的所有时间步，使用的参数都是相同的，比如说第2层中所有时间步，其参数都是 $w_a^{[2]}$ 和 $b_a^{[2]}$。对于RNN来说，3个隐含层已经是足够了。因为考虑到每一层的时间步，即使是层数很少，其整个网络也可能很大。</p>
+<p>我们举个例子，看 $a^{[2]\langle 3 \rangle}$ 是如何计算的？ $a^{[2]\langle 3 \rangle}$ 有两个输入，第一个输入来自第一层，而另一个输入来自同一层的上一个时间步，那么将这两个输入合并，得：</p>
+<script type="math/tex; mode=display">
+ a^{[2]\langle 3 \rangle}=g(w_a^{[2]}[ a^{[2]\langle 2 \rangle}, a^{[1]\langle 3 \rangle}]+b_a^{[2]})</script><p>在同一层中的所有时间步，使用的参数都是相同的，比如说第2层中所有时间步，其参数都是 $w_a^{[2]}$ 和 $b_a^{[2]}$。对于RNN来说，3个隐含层已经是足够了。因为考虑到每一层的时间步，即使是层数很少，其整个网络也可能很大。</p>
 <p>那么在经过隐含层之后，即分别输出预测值 $y^{\langle 1 \rangle},y^{\langle 2 \rangle},y^{\langle 3 \rangle}$ 和 $y^{\langle 4 \rangle}$ 了。在每个单元中，无需是标准RNN，也可以是GRU或者LSTM，当然也可以建立双向RNN结构。由于深度RNN训练时十分消耗计算资源，哪怕层数不多，但时间范围可能很长，因此RNN一般不会构建太深，不像卷积神经网络。</p>
 <p>以上就是这周关于RNN的所有内容，下周的课程会接触到自然语言处理。</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
@@ -809,7 +828,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -857,12 +876,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -900,21 +914,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

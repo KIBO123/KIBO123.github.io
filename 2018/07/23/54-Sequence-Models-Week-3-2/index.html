@@ -396,7 +396,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  3.4k
                 </span>
               
 
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  13
                 </span>
               
             </div>
@@ -455,6 +455,7 @@
 <p>我们知道 Beam Search 的目标函数是寻找概率最大的翻译结果，即 $\arg\max_y P(y|x)$。在第一种情况中，当 $P(y^\ast|x)&gt;P(\hat{y}|x)$ 时，Beam Search 却选择了 $\hat{y}$ 的翻译结果，说明 Beam Search没有成功搜索到最优结果，这是来自 Beam Search的误差。</p>
 <p>而在第二种情况中，当 $P(y^\ast|x) \leq P(\hat{y}|x)$ 时，由于我们已经知道 $y^\ast$ 的结果优于 $\hat{y}$，更优的结果应该有更大的概率。然而RNN模型却计算得到 $P(y^\ast|x)&lt;P(\hat{y}|x)$，因此这是来自RNN的误差，它没有预测准确。</p>
 <p>在这里我们忽略了 Length normalization后的结果，实际上在评估这些概率时，应该考虑 length normalization。对于整个验证集，我们可以进行如下误差分析过程：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -505,6 +506,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>在表中 <strong>At faule</strong> 一列，<strong>B</strong> 表示由 Beam Search 引发的误差，<strong>R</strong> 表示由 RNN 模型引发的误差。最后，我们分别计算由 <strong>B</strong> 和由 <strong>R</strong> 带来误差的比例。如果由 <strong>B</strong> 带来的误差比例更大，那么我们可以尝试增大 beam width；如果由 <strong>R</strong> 带来的误差比例更大，那么我们可以对RNN模型进行修改，比如说添加正则项，增大训练集，或换一种网络架构等等。</p>
 <p>针对不同问题，使用不同的解决办法，可以更好地提高我们的模型结果。</p>
 <h2 id="Bleu-Score-optional"><a href="#Bleu-Score-optional" class="headerlink" title="Bleu Score (optional)"></a>Bleu Score (optional)</h2><p>对于机器翻译，当前尚存在一些难题。其中之一就是比如说在翻译法语时，可能出现多个同样好的翻译结果。通常我们会采用精确度来评价一个模型的好坏，但当出现多个同样好的结果时如何计算精确度？可以通过 BLEU score来衡量。</p>
@@ -528,6 +530,7 @@
 <li>MT output: The cat the cat on the mat.</li>
 </ul>
 <p>假设机器翻译输出了一个稍微比较好的翻译 (MT output)，那么依次的 bigrams 分别为：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -564,13 +567,25 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>其中，表中“Count”列指的是各个 bigrams 在MT中出现的次数，而“Countclip”列指的是各个 bigrams 在 Reference 1和 Reference 2 中出现的次数。那么 bigrams 的精确率 (Bleu score) 就是 $\frac{4}{6}$，即两列的和之比，分子为“Countclip”列之和，分母为“Count”列之和。</p>
-<h3 id="Bleu-score-on-unigrams"><a href="#Bleu-score-on-unigrams" class="headerlink" title="Bleu score on unigrams"></a>Bleu score on unigrams</h3><p>“unigrams”指的是单个词，我们把关于 unigrams 的精确率记为 $P_1$，$P$ 表示精确率，下标 $1$ 表示单个词 unigrams。<br>$$<br>P_1=\frac{\sum_{unigram \in \hat{y}}CountClip(unigram)}{\sum_{unigram \in \hat{y}}Count(unigram)}<br>$$<br>进一步推广到 n-grams，也是同理，其精确率 $P_n$ 为：<br>$$<br>P_n=\frac{\sum_{n_grams \in \hat{y}}CountClip(n_grams)}{\sum_{n_grams \in \hat{y}}Count(n_grams)}<br>$$</p>
-<h3 id="Bleu-details"><a href="#Bleu-details" class="headerlink" title="Bleu details"></a>Bleu details</h3><p>$p_n$ = Bleu score on n-grams only</p>
+<h3 id="Bleu-score-on-unigrams"><a href="#Bleu-score-on-unigrams" class="headerlink" title="Bleu score on unigrams"></a>Bleu score on unigrams</h3><p>“unigrams”指的是单个词，我们把关于 unigrams 的精确率记为 $P_1$，$P$ 表示精确率，下标 $1$ 表示单个词 unigrams。</p>
+<script type="math/tex; mode=display">
+P_1=\frac{\sum_{unigram \in \hat{y}}CountClip(unigram)}{\sum_{unigram \in \hat{y}}Count(unigram)}</script><p>进一步推广到 n-grams，也是同理，其精确率 $P_n$ 为：</p>
+<script type="math/tex; mode=display">
+P_n=\frac{\sum_{n\_grams \in \hat{y}}CountClip(n\_grams)}{\sum_{n\_grams \in \hat{y}}Count(n\_grams)}</script><h3 id="Bleu-details"><a href="#Bleu-details" class="headerlink" title="Bleu details"></a>Bleu details</h3><p>$p_n$ = Bleu score on n-grams only</p>
 <p>当MT的输出和Reference 的翻译完全一样时，那么Bleu score就等于1。我们将多个精确率结合起来，计算最后的 Bleu score：</p>
 <p>Combined Bleu score:  $BP \cdot \exp({\frac{1}{4} \sum^4_{n=1}p_n}) $ </p>
-<p>其中 BP 是一个惩罚项，表示 brevity penalty。因为当我们的输出翻译越短时，更容易得到更高的精确率，然而我们未必需要那么短的输出，那么 BP 就是针对输出翻译太短的一个惩罚项。BP惩罚项具体如下：<br>$$<br>BP=<br>\left{<br>\begin{aligned}<br>1   \qquad, \  &amp; if \ MT_output_length &gt; reference_output_length \<br>exp(\frac{1-MT_output_length}{reference_output_length}) ,\ &amp; otherwise</p>
-<p>\end{aligned}<br>\right.<br>$$<br>当机器输出的长度大于人类翻译长度时，$BP=1$，否则小于1。</p>
+<p>其中 BP 是一个惩罚项，表示 brevity penalty。因为当我们的输出翻译越短时，更容易得到更高的精确率，然而我们未必需要那么短的输出，那么 BP 就是针对输出翻译太短的一个惩罚项。BP惩罚项具体如下：</p>
+<script type="math/tex; mode=display">
+BP=
+\left\{
+\begin{aligned}
+1   \qquad, \  & if \ MT\_output\_length > reference\_output\_length \\
+exp(\frac{1-MT\_output\_length}{reference\_output\_length}) ,\ & otherwise
+
+\end{aligned}
+\right.</script><p>当机器输出的长度大于人类翻译长度时，$BP=1$，否则小于1。</p>
 <p>Bleu score 通常用于评价许多系统，如文本生成、机器翻译和图片配标题等，在深度学习中是一个非常有用的指标。</p>
 <h2 id="Attention-Model-Intuition"><a href="#Attention-Model-Intuition" class="headerlink" title="Attention Model Intuition"></a>Attention Model Intuition</h2><p>注意力模型，在深度学习中是一个影响力很大的思想，它对 RNN 中的 Encoder-Decoder 架构做了一定的改进，使得效果更为显著。我们这节主要讲它是如何works 的？</p>
 <p>给定一个很长的法语句子如下：</p>
@@ -584,11 +599,17 @@
 <p>那么关键来了，在生成第一个输出中，应该关注于法语句子的哪一部份？显然主要应该关注于第一个输入单词，其次再关注临近的几个词，没必要完全关注整个句子。那么对于临近关注的几个词，我们分别计算一个关注权重 (attention weight)，即 $\alpha^{\langle t,t’ \rangle}$。其中，$t$ 为第 $t$ 个生成的输出，$t’$ 为第 $t’$ 个输入词。例如说 $\alpha^{\langle 1,2 \rangle}$，它指的是生成第 1 个输出 <em>Jane</em> 时需要对第 2 个输入词 <em>“visite”</em> 关注的程度。依次在生成每个输出时，都存在对临近输入词的关注权重 $\alpha$，与输入词形成 $C$，再传递到激活值 $S$ 中得到输出。以此类推，直到最后输出 <code>EOS</code>，结束整个句子的翻译。</p>
 <p>大概的步骤就是这样，在下节中我们会给出更为详细的公式解释。</p>
 <h2 id="Attention-Model"><a href="#Attention-Model" class="headerlink" title="Attention Model"></a>Attention Model</h2><h3 id="Attention-model"><a href="#Attention-model" class="headerlink" title="Attention model"></a>Attention model</h3><p>上节中我们看到注意力模型其在生成翻译时，的确更像人类一样，不断关注输入的一小部分来翻译。那么这节我们对给出更多关注注意力模型的具体细节。</p>
-<p>正如我们之前的架构，首先是双向RNN，当然可以使用 GRU或LSTM单元，LSTM会更常用一些。在双向 RNN中，每一个时间步总会有一个前向一个后向的传播，我们用 $a^{\langle t’ \rangle}$ 表示时间步 $t’$ 下第 $t’$ 个输入词的特征向量，那么 $a^{\langle t’ \rangle}=(\overrightarrow{a}^{\langle t’ \rangle},\overleftarrow{a}^{\langle t’ \rangle})$。将 $a^{\langle t’ \rangle}$ 与关注权重 $\alpha^{\langle t,t’ \rangle}$ 结合，得到 $c^{\langle t \rangle}$，输入到激活层得 $s^{\langle t \rangle}$，最后输出预测词 $y^{\langle t \rangle}$。我们以第1个输出 $y^{\langle 1 \rangle}$ 为例：<br>$$<br>a^{\langle t’ \rangle}=(\overrightarrow{a}^{\langle t’ \rangle},\overleftarrow{a}^{\langle t’ \rangle}) \<br>\sum_{t’} \alpha^{\langle 1, t’ \rangle}=1 \<br>c^{\langle 1 \rangle}=\sum_{t’} \alpha^{\langle 1, t’ \rangle}a^{\langle t’ \rangle}<br>$$<br>在这里，对于每个输出的关注权重之和为1，如 $\sum_{t’} \alpha^{\langle 1,t’ \rangle}=1$ .</p>
+<p>正如我们之前的架构，首先是双向RNN，当然可以使用 GRU或LSTM单元，LSTM会更常用一些。在双向 RNN中，每一个时间步总会有一个前向一个后向的传播，我们用 $a^{\langle t’ \rangle}$ 表示时间步 $t’$ 下第 $t’$ 个输入词的特征向量，那么 $a^{\langle t’ \rangle}=(\overrightarrow{a}^{\langle t’ \rangle},\overleftarrow{a}^{\langle t’ \rangle})$。将 $a^{\langle t’ \rangle}$ 与关注权重 $\alpha^{\langle t,t’ \rangle}$ 结合，得到 $c^{\langle t \rangle}$，输入到激活层得 $s^{\langle t \rangle}$，最后输出预测词 $y^{\langle t \rangle}$。我们以第1个输出 $y^{\langle 1 \rangle}$ 为例：</p>
+<script type="math/tex; mode=display">
+a^{\langle t' \rangle}=(\overrightarrow{a}^{\langle t' \rangle},\overleftarrow{a}^{\langle t' \rangle}) \\
+\sum_{t'} \alpha^{\langle 1, t' \rangle}=1 \\
+c^{\langle 1 \rangle}=\sum_{t'} \alpha^{\langle 1, t' \rangle}a^{\langle t' \rangle}</script><p>在这里，对于每个输出的关注权重之和为1，如 $\sum_{t’} \alpha^{\langle 1,t’ \rangle}=1$ .</p>
 <p>我们从整个神经网络架构看，不看下面的双向 RNN 部分，而看上面部分从 $c​$ 输入到 $y​$ 输出，就是一个标准的RNN。</p>
 <h3 id="Computing-attention-alpha-langle-t-t’-rangle"><a href="#Computing-attention-alpha-langle-t-t’-rangle" class="headerlink" title="Computing attention $\alpha^{\langle t,t’ \rangle}$"></a>Computing attention $\alpha^{\langle t,t’ \rangle}$</h3><p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1807/180727/18072702.png" alt=""></p>
 <p> $\alpha^{\langle t,t’ \rangle}$ = amount of attention $y^{\langle t \rangle}$ should pay to  $a^{\langle t’ \rangle}$</p>
-<p>我们已经知道了 $\alpha^{\langle t,t’ \rangle}$ 的含义，那么其计算如下：<br>$$<br>\alpha^{\langle t,t’ \rangle}=\frac{\exp(e^{\langle t,t’ \rangle})}{\sum^{T_x}_{t’=1}\exp(e^{\langle t,t’ \rangle})}<br>$$<br>$e^{\langle t,t’ \rangle}$ 为参数，我们可以通过上一时间步的输出激活值 $s^{\langle t-1 \rangle}$ 和当前时间步的输入激活值 $a^{\langle t’ \rangle}$ 来得到，即将它们同时输入到一个小型隐含层，通过 gradient descent 得到 $e^{\langle t,t’ \rangle}$，见上图左下角。</p>
+<p>我们已经知道了 $\alpha^{\langle t,t’ \rangle}$ 的含义，那么其计算如下：</p>
+<script type="math/tex; mode=display">
+\alpha^{\langle t,t' \rangle}=\frac{\exp(e^{\langle t,t' \rangle})}{\sum^{T_x}_{t'=1}\exp(e^{\langle t,t' \rangle})}</script><p>$e^{\langle t,t’ \rangle}$ 为参数，我们可以通过上一时间步的输出激活值 $s^{\langle t-1 \rangle}$ 和当前时间步的输入激活值 $a^{\langle t’ \rangle}$ 来得到，即将它们同时输入到一个小型隐含层，通过 gradient descent 得到 $e^{\langle t,t’ \rangle}$，见上图左下角。</p>
 <p>整个网络架构图见上图右下角，这个架构图更清晰。Attention Model 的一个缺点就是想要运行这个网络需要花上成倍的时间和成本。如果你的输入长度为 $T_x$，而输出长度为 $T_y$，那么所有参数的量即为 $T_x \times T_y$，计算成本相当大。</p>
 <p>我们介绍了注意力模型在机器翻译的应用，它同样可以用在 image captioning 上。</p>
 <h3 id="Attention-examples"><a href="#Attention-examples" class="headerlink" title="Attention examples"></a>Attention examples</h3><p>在本周课程的编程练习中，机器翻译问题相对较难，我们可以尝试用 Attention 来解决 Date normalization 问题。</p>
@@ -927,7 +948,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -975,12 +996,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -1018,21 +1034,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

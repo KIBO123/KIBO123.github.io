@@ -397,7 +397,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  868
                 </span>
               
 
@@ -413,7 +413,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  4
                 </span>
               
             </div>
@@ -439,7 +439,11 @@
 <h1 id="Multi-class-classification"><a href="#Multi-class-classification" class="headerlink" title="Multi-class classification"></a>Multi-class classification</h1><h2 id="Softmax-Regression"><a href="#Softmax-Regression" class="headerlink" title="Softmax Regression"></a>Softmax Regression</h2><p>对于二分类问题，Logistic Regression 是一个很好的方法。而对于多分类问题，我们更常采用的是 Softmax Regression。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18032402.png" alt=""></p>
 <p>对于上面一个神经网络，我们需要将输出 $\hat{y}$ 分为4类（即4分类问题），设定前面一层 ( layer $l$ ) 的4个节点分别代表每一类出现的概率，并把该层叫做 Softmax layer。</p>
-<p>Softmax Regression 中最重要的就是 Softmax activation function，而我们便是将该 Softmax activation function 用在 Softmax layer 上。<br>$$<br>for \ layer \ l:z^{[l]}=\omega^{[l]}a^{[l-1]}+b^{[l]}   \<br>Activation function:  \<br>t = e^{(z^{[l]})}  , a^{[l]}=\frac{e^{[z^{[l]}]}}{\sum_{j=1}^4 t_i}<br>$$<br>因此 $a^{[l]}_i=\frac{t_i}{\sum^4_{j=1}t_i}$ ，在softmax激活函数中，输入和输出是相同维度的向量，在上面的例子中，$z^{[l]},t,a^{[l]}$ 均为 $(4\times 1)$ 的向量 。举个比较简单的例子吧，见下图：</p>
+<p>Softmax Regression 中最重要的就是 Softmax activation function，而我们便是将该 Softmax activation function 用在 Softmax layer 上。</p>
+<script type="math/tex; mode=display">
+for \ layer \ l:z^{[l]}=\omega^{[l]}a^{[l-1]}+b^{[l]}   \\
+Activation function:  \\
+t = e^{(z^{[l]})}  , a^{[l]}=\frac{e^{[z^{[l]}]}}{\sum_{j=1}^4 t_i}</script><p>因此 $a^{[l]}_i=\frac{t_i}{\sum^4_{j=1}t_i}$ ，在softmax激活函数中，输入和输出是相同维度的向量，在上面的例子中，$z^{[l]},t,a^{[l]}$ 均为 $(4\times 1)$ 的向量 。举个比较简单的例子吧，见下图：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18032404.png" alt=""></p>
 <p>针对上图的例子，显然结果为第1类，因为第1类出现的概率为84.2%。下图给出一些 Softmax 多分类的一些例子，都只有一层隐含层，因此呈线性分类。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18032403.png" alt=""></p>
@@ -449,10 +453,11 @@
 <ul>
 <li>Loss function</li>
 </ul>
-<p>$$<br>L(\hat{y},y)=-\sum^4_{j=1}y_j \log \hat{y}_j<br>$$</p>
-<p>损失函数如上所示，举个例子解释一下这个损失函数，假设一个样本其实际结果为第2类，即向量表示为： $y^{i \ T}=(0,1,0,0)$ ，那么带入到损失函数中，得 $L(\hat{y},y)=-\log \hat{y}_2$ ，为了保证损失函数尽量小，那么 $\hat{y}_2$ 的概率值就得尽可能大。</p>
-<p>对于整个训练集来说， Cost function 为：<br>$$<br>J(\omega^{[l]},b^{[l]},\dots)=\frac{1}{m}\sum^m_{i=1}L(\hat{y}^{(i)},y^{(i)})<br>$$</p>
-<ul>
+<script type="math/tex; mode=display">
+L(\hat{y},y)=-\sum^4_{j=1}y_j \log \hat{y}_j</script><p>损失函数如上所示，举个例子解释一下这个损失函数，假设一个样本其实际结果为第2类，即向量表示为： $y^{i \ T}=(0,1,0,0)$ ，那么带入到损失函数中，得 $L(\hat{y},y)=-\log \hat{y}_2$ ，为了保证损失函数尽量小，那么 $\hat{y}_2$ 的概率值就得尽可能大。</p>
+<p>对于整个训练集来说， Cost function 为：</p>
+<script type="math/tex; mode=display">
+J(\omega^{[l]},b^{[l]},\dots)=\frac{1}{m}\sum^m_{i=1}L(\hat{y}^{(i)},y^{(i)})</script><ul>
 <li>Gradient descent with softmax</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Backprop: dz^[l] = y_hat - y</span><br></pre></td></tr></table></figure>
@@ -475,7 +480,9 @@
 <li>Running speed</li>
 <li>Truly open(open source with good governance)</li>
 </ul>
-<h2 id="Tensorflow"><a href="#Tensorflow" class="headerlink" title="Tensorflow"></a>Tensorflow</h2><p>以一个例子说明 Tensorflow 框架，求如下 cost function 最小化下的参数：<br>$$<br>cost = \omega^2-10\omega+25<br>$$<br>显然，我们知道当 $\omega=5$ 时，$cost=0$ 为最小。</p>
+<h2 id="Tensorflow"><a href="#Tensorflow" class="headerlink" title="Tensorflow"></a>Tensorflow</h2><p>以一个例子说明 Tensorflow 框架，求如下 cost function 最小化下的参数：</p>
+<script type="math/tex; mode=display">
+cost = \omega^2-10\omega+25</script><p>显然，我们知道当 $\omega=5$ 时，$cost=0$ 为最小。</p>
 <ul>
 <li>Code example:</li>
 </ul>
@@ -821,7 +828,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -869,12 +876,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -912,21 +914,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

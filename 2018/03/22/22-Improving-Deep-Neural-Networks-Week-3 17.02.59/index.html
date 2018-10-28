@@ -397,7 +397,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  1.2k
                 </span>
               
 
@@ -413,7 +413,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  4
                 </span>
               
             </div>
@@ -436,7 +436,9 @@
       
         <p>这周课程是第二门课程的最后一周，本文主要关注于调参，对调参的一些细节以及需要注意的技巧都加以描述，欢迎大家关注！</p>
 <a id="more"></a>
-<h1 id="Hyperparameter-tuning"><a href="#Hyperparameter-tuning" class="headerlink" title="Hyperparameter tuning"></a>Hyperparameter tuning</h1><h2 id="Tuning-process"><a href="#Tuning-process" class="headerlink" title="Tuning process"></a>Tuning process</h2><p>从前面的课程，我们知道调参是训练好一个神经网络关键的一步。但是面对众多的超参数，哪个超参数更为重要，更需要优先考虑呢？另外在调参过程中，我们应该如何更好地去设置它们呢？<br>$$<br>\alpha&gt;(\beta=# hidden \ units=mini_batch \ size)&gt;(# layers=learning\ rate\ decay)<br>$$<br>从调参优先度来看，最重要的应该是学习率$\alpha$ ，其次应是momentum term的$\beta$ ，隐含层节点数和mini-batch size等，最后才考虑层数，权重衰减等。</p>
+<h1 id="Hyperparameter-tuning"><a href="#Hyperparameter-tuning" class="headerlink" title="Hyperparameter tuning"></a>Hyperparameter tuning</h1><h2 id="Tuning-process"><a href="#Tuning-process" class="headerlink" title="Tuning process"></a>Tuning process</h2><p>从前面的课程，我们知道调参是训练好一个神经网络关键的一步。但是面对众多的超参数，哪个超参数更为重要，更需要优先考虑呢？另外在调参过程中，我们应该如何更好地去设置它们呢？</p>
+<script type="math/tex; mode=display">
+\alpha>(\beta=\# hidden \ units=mini\_batch \ size)>(\# layers=learning\ rate\ decay)</script><p>从调参优先度来看，最重要的应该是学习率$\alpha$ ，其次应是momentum term的$\beta$ ，隐含层节点数和mini-batch size等，最后才考虑层数，权重衰减等。</p>
 <p>另外如Adam算法中的$\beta_1,\beta_2,\varepsilon$ 等采用默认数值即可，无需可以调节。</p>
 <p>针对第2个问题，如何更好地设置参数？尽可能多地尝试很重要，但尝试也有技巧！</p>
 <ul>
@@ -801,7 +803,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -849,12 +851,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -892,21 +889,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

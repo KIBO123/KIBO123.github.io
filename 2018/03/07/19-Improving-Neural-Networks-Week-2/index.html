@@ -398,7 +398,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  1.3k
                 </span>
               
 
@@ -414,7 +414,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  5
                 </span>
               
             </div>
@@ -439,7 +439,7 @@
 <a id="more"></a>
 <h1 id="Optimization-algorithms"><a href="#Optimization-algorithms" class="headerlink" title="Optimization algorithms"></a>Optimization algorithms</h1><h2 id="Mini-batch-gradient-descent"><a href="#Mini-batch-gradient-descent" class="headerlink" title="Mini-batch gradient descent"></a>Mini-batch gradient descent</h2><p>当训练集数量很大（例如 5,000,000 条数据），mini-batch gradient descent 可加快训练的速度。那么mini-batch gradient descent 该如何实现呢？</p>
 <p>首先，将整个 training set 划分为多份小训练集（每个小训练集 1,000 条数据），这些小的训练集称为 mini-batches，那么整个 training set 共有 5,000 个 mini-batches. 顾名思义，mini-batch gradient descent 就是对 mini-batches 进行梯度下降，而非对整个 training set 求梯度下降。</p>
-<p><strong>注：</strong> 在之前，我们用小括号 $x^{(i)}$ 表示第 $i$ 个训练样本，用中括号 $z^{[l]}$ 表示神经网络第 $l$ 层的节点值。现在，我们用大括号 $x^$ 表示第 $t$ 个 mini-batches训练集. </p>
+<p><strong>注：</strong> 在之前，我们用小括号 $x^{(i)}$ 表示第 $i$ 个训练样本，用中括号 $z^{[l]}$ 表示神经网络第 $l$ 层的节点值。现在，我们用大括号 $x^{\{t\}}$ 表示第 $t$ 个 mini-batches训练集. </p>
 <p> mini-batch gradient descent 过程如图：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18030801.jpg" alt=""></p>
 <p><strong>“1 epoch”</strong> : a single pass through training set, that means it has been taken 5,000 gradient descent steps.</p>
@@ -451,8 +451,8 @@
 <ul>
 <li>Choosing your mini-batch size</li>
 </ul>
-<p>If mini-batch size = <strong>m</strong> : Batch gradient descent  $(X^1, Y^1)=(X, Y)$  </p>
-<p>If mini-batch size = <strong>1</strong> : Stochastic gradient descent  $(X^1, Y^1)=(x^{(1)}, y^{(1)})$ (Every example is its own mini-batch)</p>
+<p>If mini-batch size = <strong>m</strong> : Batch gradient descent  $(X^{\{1\}}, Y^{\{1\}})=(X, Y)$  </p>
+<p>If mini-batch size = <strong>1</strong> : Stochastic gradient descent  $(X^{\{1\}}, Y^{\{1\}})=(x^{(1)}, y^{(1)})$ (Every example is its own mini-batch)</p>
 <p>三种梯度下降方式的比较（椭圆为 cost function ）：</p>
 <ol>
 <li>Batch gradient descent: 几乎没有噪音，步伐较大，能平滑直接地朝椭圆中心下降，但当训练集太大时，每次迭代都将消耗太长时间（见图中蓝线）。</li>
@@ -465,7 +465,10 @@
 <p>(2) 使用 mini-batch gradient descent，典型的 mini-batch size 通常采用2的次方，如64，128，256，512等;</p>
 <p>(3) Make sure mini-batch fit in CPU / GPU memory.</p>
 <h2 id="Exponentially-weighted-averages"><a href="#Exponentially-weighted-averages" class="headerlink" title="Exponentially weighted averages"></a>Exponentially weighted averages</h2><p> 指数加权移动平均，相信大家都应该知道，这一节就不多记了。</p>
-<p>指数加权移动平均公式：<br>$$<br>V_0=0  \<br>V_t=\beta V_{t-1}+(1-\beta) \theta_t<br>$$<br>当 $\beta​$ 越大时，指数加权移动平均线波动越小，越平缓，反之波动越大。如图：</p>
+<p>指数加权移动平均公式：</p>
+<script type="math/tex; mode=display">
+V_0=0  \\
+V_t=\beta V_{t-1}+(1-\beta) \theta_t</script><p>当 $\beta​$ 越大时，指数加权移动平均线波动越小，越平缓，反之波动越大。如图：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18030804.png" alt=""></p>
 <p>$\beta=0.9$，为红线；$\beta=0.98$，为绿线；$\beta=0.5$，为黄线；</p>
 <h2 id="Understanding-exponentially-weighted-averages"><a href="#Understanding-exponentially-weighted-averages" class="headerlink" title="Understanding exponentially weighted averages"></a>Understanding exponentially weighted averages</h2><ul>
@@ -802,7 +805,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -850,12 +853,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -893,21 +891,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

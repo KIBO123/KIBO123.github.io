@@ -396,7 +396,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  1.9k
                 </span>
               
 
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  7
                 </span>
               
             </div>
@@ -451,6 +451,7 @@
 </blockquote>
 <h2 id="Avoidable-bias"><a href="#Avoidable-bias" class="headerlink" title="Avoidable bias"></a>Avoidable bias</h2><p>什么是可避免的误差？它和我们上节所说的 Bias Optimal Error有什么区别？我们以一个例子来解释。</p>
 <p>针对识别猫图像的例子，人类识别、训练集识别和验证集识别的结果分别如下：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -477,6 +478,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>情况 1</li>
 </ul>
@@ -493,6 +495,7 @@
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18040801.png" alt="18040801"></p>
 <p>见上图，对于一张X光照片，要根据照片中的骨骼进行诊断。一般人可能不太懂，会有3%的诊断误差，而一般医生会有1%的诊断误差，有经验的医生会有0.7%的诊断误差。如果是一个团队且有经验的医生，那么诊断为0.5%。那么，我们选哪个作为人类水平的误差？</p>
 <p>首先，我们可以确认贝叶斯误差总是小于或等于0.5%的。通常情况下，我们习惯于将人类水平误差估计贝叶斯误差，比如说识别猫图（只要是正常人，不管大人小孩都能很简单得判断猫，不同人群的识别误差几乎无差异）。但是在这种情况下，由于不同人群的医学水平是不一样的，诊断误差也不一样。那么人类水平误差选哪个？这个还需要通过训练集和验证集的误差来判断。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -523,6 +526,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>情况 1 </li>
 </ul>
@@ -882,7 +886,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -930,12 +934,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -973,21 +972,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

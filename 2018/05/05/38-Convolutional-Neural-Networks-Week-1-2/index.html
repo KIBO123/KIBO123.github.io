@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.7k
                 </span>
               
 
@@ -415,7 +415,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  10
                 </span>
               
             </div>
@@ -454,30 +454,98 @@
 <h2 id="Strided-Convolutions"><a href="#Strided-Convolutions" class="headerlink" title="Strided Convolutions"></a>Strided Convolutions</h2><p>Strided Convolutions 不太好翻译，网上众说纷纭，类似反卷积、条纹卷积之类的，其实按意义上来译的话，应该是跨步卷积，也就是带有步长的卷积。在这里我们姑且就直接按英文看吧。</p>
 <p>Strided Convolutions 也是卷积神经网络的一种基本运算方式。我们举个简单例子，如果我们想将一个 $7\times 7$ 的图像矩阵用一个 $3\times 3$ 的滤波器进行卷积，除了像之前一样卷积一次移动一步之外，可以进行多步地移动。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180509/18050801.png" alt=""></p>
-<p>二步卷积运算即：<br>$$<br>\begin{bmatrix}<br>2 &amp; 3 &amp; 7 &amp; 4 &amp; 6 &amp; 2 &amp; 9  \<br>6 &amp; 6 &amp; 9 &amp; 8 &amp; 7 &amp; 4 &amp; 3  \<br>3 &amp; 4 &amp; 8 &amp; 3 &amp; 8 &amp; 9 &amp; 7  \<br>7 &amp; 8 &amp; 3 &amp; 6 &amp; 6 &amp; 3 &amp; 4  \<br>4 &amp; 2 &amp; 1 &amp; 8 &amp; 3 &amp; 4 &amp; 6  \<br>3 &amp; 2 &amp; 4 &amp; 1 &amp; 9 &amp; 8 &amp; 3  \<br>0 &amp; 1 &amp; 3 &amp; 9 &amp; 2 &amp; 1 &amp; 4  \<br>\end{bmatrix}<br>\ast<br>\begin{bmatrix}<br>3 &amp; 4 &amp; 4   \<br>1 &amp; 0 &amp; 2  \<br>-1 &amp; 0 &amp; 3  \<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>91 &amp; 100 &amp; 83   \<br>69 &amp; 91 &amp; 127  \<br>44 &amp; 72 &amp; 74  \<br>\end{bmatrix}<br>$$<br>我们设步长为 $s$ ，那么在 Strided Convolution 之后输出的图像维度为 $(\frac{n+2p-f}{s}+1)\times (\frac{n+2p-f}{s}+1) $ 。当步长无法整除时，则向下（绝对值接近 0 的方向）四舍五入取最接近的整数值，即 $\lfloor \frac{n+2p-f}{s}+1\rfloor\times \lfloor \frac{n+2p-f}{s}+1 \rfloor $。</p>
-<p>###Technical note on cross-correlation vs. convolution</p>
-<p>在一些数学书或信号处理教程中，有一个概念和卷积十分相似，那就是互相关 (cross-correlation)。互相关和卷积运算比较，它多了一步，就是在卷积的乘法和加法之前，将滤波器矩阵以斜对角线进行翻转 (filp)，例如：<br>$$<br>\begin{bmatrix}<br>3 &amp; 4 &amp; 5  \<br>1 &amp; 0 &amp; 2  \<br>-1 &amp; 9 &amp; 7  \<br>\end{bmatrix}<br>\rightarrow<br>\begin{bmatrix}<br>7 &amp; 2 &amp; 5  \<br>9 &amp; 0 &amp; 4  \<br>-1 &amp; 1 &amp; 3  \<br>\end{bmatrix}<br>$$<br>然后再用翻转的滤波器矩阵进行卷积运算，这就是互相关。但大多数深度学习文献中，就直接将互相关称为卷积运算。</p>
+<p>二步卷积运算即：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+2 & 3 & 7 & 4 & 6 & 2 & 9  \\
+6 & 6 & 9 & 8 & 7 & 4 & 3  \\
+3 & 4 & 8 & 3 & 8 & 9 & 7  \\
+7 & 8 & 3 & 6 & 6 & 3 & 4  \\
+4 & 2 & 1 & 8 & 3 & 4 & 6  \\
+3 & 2 & 4 & 1 & 9 & 8 & 3  \\
+0 & 1 & 3 & 9 & 2 & 1 & 4  \\
+\end{bmatrix} 
+\ast
+\begin{bmatrix}
+3 & 4 & 4   \\
+1 & 0 & 2  \\
+-1 & 0 & 3  \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+91 & 100 & 83   \\
+69 & 91 & 127  \\
+44 & 72 & 74  \\
+\end{bmatrix}</script><p>我们设步长为 $s$ ，那么在 Strided Convolution 之后输出的图像维度为 $(\frac{n+2p-f}{s}+1)\times (\frac{n+2p-f}{s}+1) $ 。当步长无法整除时，则向下（绝对值接近 0 的方向）四舍五入取最接近的整数值，即 $\lfloor \frac{n+2p-f}{s}+1\rfloor\times \lfloor \frac{n+2p-f}{s}+1 \rfloor $。</p>
+<h3 id="Technical-note-on-cross-correlation-vs-convolution"><a href="#Technical-note-on-cross-correlation-vs-convolution" class="headerlink" title="Technical note on cross-correlation vs. convolution"></a>Technical note on cross-correlation vs. convolution</h3><p>在一些数学书或信号处理教程中，有一个概念和卷积十分相似，那就是互相关 (cross-correlation)。互相关和卷积运算比较，它多了一步，就是在卷积的乘法和加法之前，将滤波器矩阵以斜对角线进行翻转 (filp)，例如：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+3 & 4 & 5  \\
+1 & 0 & 2  \\
+-1 & 9 & 7  \\
+\end{bmatrix} 
+\rightarrow
+\begin{bmatrix}
+7 & 2 & 5  \\
+9 & 0 & 4  \\
+-1 & 1 & 3  \\
+\end{bmatrix}</script><p>然后再用翻转的滤波器矩阵进行卷积运算，这就是互相关。但大多数深度学习文献中，就直接将互相关称为卷积运算。</p>
 <p>互相关和卷积还满足结合律，即：$(A \ast B) \ast C = A \ast (B \ast C)$ 。尽管互相关和卷积只差了一步，但在大部分文献上都称为卷积运算，这并不影响我们看文献，也不影响我们进行卷积计算。因此，在本门课程中，同样不区分互相关和卷积。</p>
 <h2 id="Convolutions-Over-Volume"><a href="#Convolutions-Over-Volume" class="headerlink" title="Convolutions Over Volume"></a>Convolutions Over Volume</h2><p>我们之前举的例子都是灰色图片，因此转化为灰值矩阵也是二维的。那么我们本节看看如何对一张彩色图片（即多维图像矩阵）进行卷积。</p>
 <h3 id="Convolutions-on-RGB-images"><a href="#Convolutions-on-RGB-images" class="headerlink" title="Convolutions on RGB images"></a>Convolutions on RGB images</h3><p>假设有一张像素维度为 $6\times 6\times 3$ 的彩色图像，前两个维度代表图像的高度和宽度，最后一个维度表示红绿蓝三种色调。那么为了检测这张彩色图像的边缘或其他特征，滤波器的维度同样必须扩展至和图像矩阵一致，即 $3\times 3\times 3$ 。在卷积之后，输出的图像矩阵维度还是 $4\times 4$ 的，下图会比较简单明了：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180509/18050901.png" alt=""></p>
 <p>在卷积中，原始图像矩阵提取和滤波器维度一致的部分，与滤波器进行元素相乘并求和，然后再移动一步重复进行计算，直到原始图像矩阵的最后一部分计算完为止。</p>
-<p>如果你只想检测红色色调的边缘，那么你的滤波器每一层可设置为：<br>$$<br>\begin{bmatrix}<br>1 &amp; 0 &amp; -1 \<br>1 &amp; 0 &amp; -1 \<br>1 &amp; 0 &amp; -1 \<br>\end{bmatrix},<br>\begin{bmatrix}<br>0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 \<br>\end{bmatrix},<br>\begin{bmatrix}<br>0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 \<br>\end{bmatrix}<br>\rightarrow<br>(3 \times 3 \times 3)<br>$$<br>同样的，如果你想检测所有色调的垂直边缘，那么滤波器的后面两层都与第一层一样。</p>
+<p>如果你只想检测红色色调的边缘，那么你的滤波器每一层可设置为：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+1 & 0 & -1 \\
+1 & 0 & -1 \\
+1 & 0 & -1 \\
+\end{bmatrix},
+\begin{bmatrix}
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+\end{bmatrix},
+\begin{bmatrix}
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+\end{bmatrix}
+\rightarrow
+(3 \times 3 \times 3)</script><p>同样的，如果你想检测所有色调的垂直边缘，那么滤波器的后面两层都与第一层一样。</p>
 <h3 id="Multiple-filters"><a href="#Multiple-filters" class="headerlink" title="Multiple filters"></a>Multiple filters</h3><p>如果我们想要同时对一张图像进行垂直边缘检测、水平边缘检测或其他各种角度的边缘检测，那应该如何进行卷积呢？很简单，可以设置多个滤波器，让原始图像与多个滤波器同时进行卷积运算，如图：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180509/18050902.png" alt=""></p>
 <p>见上图，黄色滤波器用于检测垂直边缘，而橙色滤波器用于检测水平边缘，那么我们得到两个二维的输出矩阵，将它们重叠形成一个三维的 $4\times 4\times 2$ 的矩阵，便是我们需要的结果。</p>
 <p>总结一下，在 no padding 和 单步长的情况下，设 $n_c$ 色调种类，$n_c’$ 为滤波器的数量，那么原始图像矩阵维度为 $n\times  n \times n_c$，滤波器维度为 $f \times f \times n_c$，输出矩阵维度为 $(n-f+1)\times (n-f+1) \times n_c’$ 。</p>
 <h2 id="One-Layer-of-a-Convolutional-Network"><a href="#One-Layer-of-a-Convolutional-Network" class="headerlink" title="One Layer of a Convolutional Network"></a>One Layer of a Convolutional Network</h2><h3 id="Example-of-a-layer"><a href="#Example-of-a-layer" class="headerlink" title="Example of a layer"></a>Example of a layer</h3><p>我们前面讲了很多关于卷积的知识，但是卷积运算是怎么嵌入到神经网络中呢？我们就上个例子继续讲解吧。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180509/18050903.png" alt=""></p>
-<p>如上图，我们把原始图像矩阵作为输入，将滤波器作为训练参数进行卷积，输出的矩阵再添加偏差 $b​$ ，并使用ReLU函数进行激活，得到最终的输出。<br>$$<br>z^{[1]}=w^{[1]}a^{[0]}+b^{[1]}  \<br>a^{[1]}=g(z^{[1]})<br>$$<br>训练过程和普通神经网络的训练是相差无几的，只是添加了一个卷积运算。</p>
+<p>如上图，我们把原始图像矩阵作为输入，将滤波器作为训练参数进行卷积，输出的矩阵再添加偏差 $b​$ ，并使用ReLU函数进行激活，得到最终的输出。</p>
+<script type="math/tex; mode=display">
+z^{[1]}=w^{[1]}a^{[0]}+b^{[1]}  \\
+a^{[1]}=g(z^{[1]})</script><p>训练过程和普通神经网络的训练是相差无几的，只是添加了一个卷积运算。</p>
 <h3 id="Number-of-parameters-in-one-layer"><a href="#Number-of-parameters-in-one-layer" class="headerlink" title="Number of parameters in one layer"></a>Number of parameters in one layer</h3><p>用一个具体例子进一步解释卷积神经网络。假设在神经网络的某一层中，有10个 $3\times 3\times 3$ 的滤波器，那么这层会包含多少个参数？事实上，对于每个 $3 \times 3 \times 3$ 的滤波器，就包含了27个参数，同时加上一个偏差参数 $b$ ，即28个参数。那么有10个滤波器，即共有280个参数。</p>
 <p>值得注意的是，当你有10个 $3\times 3\times 3$ 的滤波器，那么无论输入的图像矩阵有多大，你的参数个数总保持为280个，这10个滤波器可用于检测垂直边缘、水平边缘以及其他各种特征。那么当图像很大时，如像素矩阵为 $5000\times 5000$ ，或是更大，相对来说280个参数也是十分少了，这在一定程度上也防止了过拟合的发生。</p>
 <h3 id="Summary-of-notation"><a href="#Summary-of-notation" class="headerlink" title="Summary of notation"></a>Summary of notation</h3><p>最后，我们来总结一下在整个卷积神经网络中，会涉及到的具体参数有哪些？</p>
 <ul>
 <li>If layer $l$ is a conbolution layer:</li>
 </ul>
-<p>$$<br>\begin{aligned}<br>f^{[l]}&amp;=filter \ size \<br>p^{[l]}&amp;=padding  \<br>s^{[l]}&amp;=strided  \<br>n_c^{[l]}&amp;=number \ of \ filters  \<br>Input&amp;: n_H^{[l-1]} \times n_W^{[l-1]} \times n_c^{[l-1]} \<br>Output&amp;:  n_H^{[l]} \times n_W^{[l]} \times n_c^{[l]} \<br>n_H^{[l]} &amp;= \lfloor \frac{n_H^{[l-1]}+2p^{[l]}-f^{[l]}}{s^{[l]}}+1 \rfloor \<br>n_W^{[l]} &amp;= \lfloor \frac{n_W^{[l-1]}+2p^{[l]}-f^{[l]}}{s^{[l]}}+1 \rfloor \<br>Each \ filter\  is&amp;: f^{[l]} \times f^{[l]} \times n_c^{[l-1]}  \<br>Activations&amp;:a^{[l]} \rightarrow  n_H^{[l]} \times n_W^{[l]} \times n_c^{[l]} \<br>                     &amp; A^{[l]} \rightarrow m \times n_H^{[l]} \times  n_W^{[l]} \times n_c^{[l]} (m \ examples)\<br> Weight &amp;: f^{[l]} \times  f^{[l]} \times n_c^{[l-1]} \times n_c^{[l]}  \<br> bias &amp;: n_c^{[l]}<br> \end{aligned}<br>$$</p>
-<p>以上就是在卷积神经网络中第 $l$ 层所涉及到的所有参数，当然可能在不同的教程或代码中，这些参数会有不同的表示方法，比如说有人会把色调（即图像矩阵的第3个维度）放到第1个维度中。这都没什么太大区别，只要稍微注意即可。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f^{[l]}&=filter \ size \\
+p^{[l]}&=padding  \\
+s^{[l]}&=strided  \\
+n_c^{[l]}&=number \ of \ filters  \\
+Input&: n_H^{[l-1]} \times n_W^{[l-1]} \times n_c^{[l-1]} \\
+Output&:  n_H^{[l]} \times n_W^{[l]} \times n_c^{[l]} \\
+n_H^{[l]} &= \lfloor \frac{n_H^{[l-1]}+2p^{[l]}-f^{[l]}}{s^{[l]}}+1 \rfloor \\
+n_W^{[l]} &= \lfloor \frac{n_W^{[l-1]}+2p^{[l]}-f^{[l]}}{s^{[l]}}+1 \rfloor \\
+Each \ filter\  is&: f^{[l]} \times f^{[l]} \times n_c^{[l-1]}  \\
+Activations&:a^{[l]} \rightarrow  n_H^{[l]} \times n_W^{[l]} \times n_c^{[l]} \\
+                     & A^{[l]} \rightarrow m \times n_H^{[l]} \times  n_W^{[l]} \times n_c^{[l]} (m \ examples)\\
+ Weight &: f^{[l]} \times  f^{[l]} \times n_c^{[l-1]} \times n_c^{[l]}  \\
+ bias &: n_c^{[l]}
+ \end{aligned}</script><p>以上就是在卷积神经网络中第 $l$ 层所涉及到的所有参数，当然可能在不同的教程或代码中，这些参数会有不同的表示方法，比如说有人会把色调（即图像矩阵的第3个维度）放到第1个维度中。这都没什么太大区别，只要稍微注意即可。</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
 <li><a href="https://www.coursera.org/learn/convolutional-neural-networks/home/week/1" target="_blank" rel="noopener">Convolutional neural networks - Week 1</a></li>
 </ol>
@@ -759,7 +827,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Foundations-of-CNN"><span class="nav-number">1.</span> <span class="nav-text">Foundations of CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Padding"><span class="nav-number">1.1.</span> <span class="nav-text">Padding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Padding-1"><span class="nav-number">1.1.1.</span> <span class="nav-text">Padding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Valid-and-Same-convolutions"><span class="nav-number">1.1.2.</span> <span class="nav-text">Valid and Same convolutions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Strided-Convolutions"><span class="nav-number">1.2.</span> <span class="nav-text">Strided Convolutions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Convolutions-Over-Volume"><span class="nav-number">1.3.</span> <span class="nav-text">Convolutions Over Volume</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Convolutions-on-RGB-images"><span class="nav-number">1.3.1.</span> <span class="nav-text">Convolutions on RGB images</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multiple-filters"><span class="nav-number">1.3.2.</span> <span class="nav-text">Multiple filters</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#One-Layer-of-a-Convolutional-Network"><span class="nav-number">1.4.</span> <span class="nav-text">One Layer of a Convolutional Network</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-of-a-layer"><span class="nav-number">1.4.1.</span> <span class="nav-text">Example of a layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Number-of-parameters-in-one-layer"><span class="nav-number">1.4.2.</span> <span class="nav-text">Number of parameters in one layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Summary-of-notation"><span class="nav-number">1.4.3.</span> <span class="nav-text">Summary of notation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Foundations-of-CNN"><span class="nav-number">1.</span> <span class="nav-text">Foundations of CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Padding"><span class="nav-number">1.1.</span> <span class="nav-text">Padding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Padding-1"><span class="nav-number">1.1.1.</span> <span class="nav-text">Padding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Valid-and-Same-convolutions"><span class="nav-number">1.1.2.</span> <span class="nav-text">Valid and Same convolutions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Strided-Convolutions"><span class="nav-number">1.2.</span> <span class="nav-text">Strided Convolutions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Technical-note-on-cross-correlation-vs-convolution"><span class="nav-number">1.2.1.</span> <span class="nav-text">Technical note on cross-correlation vs. convolution</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Convolutions-Over-Volume"><span class="nav-number">1.3.</span> <span class="nav-text">Convolutions Over Volume</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Convolutions-on-RGB-images"><span class="nav-number">1.3.1.</span> <span class="nav-text">Convolutions on RGB images</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multiple-filters"><span class="nav-number">1.3.2.</span> <span class="nav-text">Multiple filters</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#One-Layer-of-a-Convolutional-Network"><span class="nav-number">1.4.</span> <span class="nav-text">One Layer of a Convolutional Network</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-of-a-layer"><span class="nav-number">1.4.1.</span> <span class="nav-text">Example of a layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Number-of-parameters-in-one-layer"><span class="nav-number">1.4.2.</span> <span class="nav-text">Number of parameters in one layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Summary-of-notation"><span class="nav-number">1.4.3.</span> <span class="nav-text">Summary of notation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>
@@ -804,7 +872,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -852,12 +920,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -895,21 +958,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

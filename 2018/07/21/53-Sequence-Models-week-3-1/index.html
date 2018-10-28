@@ -398,7 +398,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.9k
                 </span>
               
 
@@ -414,7 +414,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  11
                 </span>
               
             </div>
@@ -457,7 +457,9 @@
 <li><em>In september, Jane will visit Africa.</em></li>
 <li><em>Her Africa friend welcomed Jane in September.</em></li>
 </ul>
-<p>最好的结果是第一个翻译，尽管其余翻译也不算太差，但显然并不是平常人们说话的习惯。因此我们最好不要以概率分布进行随机抽样的方式得到翻译结果，而是选择最大概率的翻译结果：<br>$$<br>\arg\max _{ y^{\langle 1 \rangle} ,\dots, y^{\langle T_y \rangle}  }P(y^{\langle 1 \rangle},\cdots,y^{\langle T_y \rangle}|x)<br>$$<br>因此我们要干的就是通过算法找出使得 $P(y^{\langle 1 \rangle},\cdots,y^{\langle T_y \rangle}|x)$ 最大的 $y$，关于这个问题最常用的算法就是 Beam Search。在课程中还提到一种方法，贪婪搜索 (greedy search)，它又有什么优缺点呢？</p>
+<p>最好的结果是第一个翻译，尽管其余翻译也不算太差，但显然并不是平常人们说话的习惯。因此我们最好不要以概率分布进行随机抽样的方式得到翻译结果，而是选择最大概率的翻译结果：</p>
+<script type="math/tex; mode=display">
+\arg\max _{ y^{\langle 1 \rangle} ,\dots, y^{\langle T_y \rangle}  }P(y^{\langle 1 \rangle},\cdots,y^{\langle T_y \rangle}|x)</script><p>因此我们要干的就是通过算法找出使得 $P(y^{\langle 1 \rangle},\cdots,y^{\langle T_y \rangle}|x)$ 最大的 $y$，关于这个问题最常用的算法就是 Beam Search。在课程中还提到一种方法，贪婪搜索 (greedy search)，它又有什么优缺点呢？</p>
 <h3 id="Why-not-a-greedy-search"><a href="#Why-not-a-greedy-search" class="headerlink" title="Why not a greedy search?"></a>Why not a greedy search?</h3><p>根据条件语言模型，在生成第一个单词中，贪婪搜索会选择可能性最大的一个，随后在生成第二个单词中，贪婪搜索继续选择可能性最大的一个，以此类推，直到最后一个单词。</p>
 <p>然而我们想要的是从所有完整的句子中选择可能性最大的，而非依次从每个单词中选择可能性最大的，因为这未必凑效，举个例子：</p>
 <ul>
@@ -470,13 +472,23 @@
 <p>贪婪搜索在生成的第一个单词中，挑选出可能性最大的一个。而 Beam Search 在生成的第一个单词中，可以挑选出多个可能性最大的单词，具体个数由超参数 $B$ 指定。</p>
 <p>在 Beam Search的第1步中，将法语句子输入到 encoder network 中，到 decoder network 时经过 softmax 层输出 $y^{\langle 1  \rangle}$，即10,000个词各自的概率。假设出现概率最大的三个词分别为：<em>“in”, “jane”, “september”</em> 。Beam Search 的第1步就是将这三个出现概率最大的词记住。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1807/180722/18072204.png" alt=""></p>
-<p>其次在第2步中，分别构建3个网络，针对上一步得到的三个词去计算第二个输出 $y^{\langle 2 \rangle}$ 出现单词的概率：<br>$$<br>P(y^{\langle 1 \rangle},y^{\langle 2 \rangle}|x)=P(y^{\langle 1 \rangle}|x)\cdot P(y^{\langle 2 \rangle}|x,y^{\langle 1 \rangle})<br>$$<br>那么，第1步的三个词分别对应着第2步中各自的10,000个单词，因此总共存在30,000种可能，我们继续从这30,000种可能中选择最大概率的3种单词组合。假设在第2步中得到的最大概率的3种单词组合分别为：<em>“in september”, “jane in”, “jane visits”</em> 。注意，这三个组合都是从第1步中的前两个单词 <em>“in”</em> 和 <em>“jane”</em> 处得到的，那么第1步中的 <em>“september”</em> 之后出现的单词组合就不再考虑了。那么 Beam Search 将这三个组合记住，继续输入到第3步中。</p>
+<p>其次在第2步中，分别构建3个网络，针对上一步得到的三个词去计算第二个输出 $y^{\langle 2 \rangle}$ 出现单词的概率：</p>
+<script type="math/tex; mode=display">
+P(y^{\langle 1 \rangle},y^{\langle 2 \rangle}|x)=P(y^{\langle 1 \rangle}|x)\cdot P(y^{\langle 2 \rangle}|x,y^{\langle 1 \rangle})</script><p>那么，第1步的三个词分别对应着第2步中各自的10,000个单词，因此总共存在30,000种可能，我们继续从这30,000种可能中选择最大概率的3种单词组合。假设在第2步中得到的最大概率的3种单词组合分别为：<em>“in september”, “jane in”, “jane visits”</em> 。注意，这三个组合都是从第1步中的前两个单词 <em>“in”</em> 和 <em>“jane”</em> 处得到的，那么第1步中的 <em>“september”</em> 之后出现的单词组合就不再考虑了。那么 Beam Search 将这三个组合记住，继续输入到第3步中。</p>
 <p>第3步与第2步相似，根据前一步的3个单词组合，计算第3个输出 $y^{\langle 3 \rangle}$ 的所有单词组合的概率，同样存在 30,000 种可能，继续挑选最大概率的3种可能。假设在这一步中我们得到：<em>“in september jane”, “jane is visiting”, “jane visits africa”</em> 。</p>
 <p>依次类推，直到最后输出最大概率的完整翻译为止：</p>
 <p><em>“jane visits africa in september. <code>&lt;EOS&gt;</code>“</em></p>
 <p>Beam Search 能够得到的翻译结果，相对来说会比贪婪搜索更为精确，贪婪搜索实际上就是 Beam Search的一种特殊情况，即超参数 $B=1$。另外还有一些细节可以使 Beam Search 效果更好，在下节讲述。</p>
-<h2 id="Refinements-to-Beam-Search"><a href="#Refinements-to-Beam-Search" class="headerlink" title="Refinements to Beam Search"></a>Refinements to Beam Search</h2><h3 id="Length-normalization"><a href="#Length-normalization" class="headerlink" title="Length normalization"></a>Length normalization</h3><p>Length normalizaiton 可以是 Beam Search 算法得到更好的结果，我们来看看。首先，Beam Search 的目标是要使如下概率最大化：<br>$$<br>\arg \max_y \prod^{T_y}_{t=1} P(y^{\langle t \rangle}|x,y^{\langle 1 \rangle},\dots,y^{\langle t-1 \rangle})<br>$$<br>事实上就是众多条件概率的累乘，根据全概率公式：<br>$$<br>  P(y^{\langle 1 \rangle}\dots,y^{\langle T_y \rangle}|x)=P(y^{\langle 1 \rangle}|x)P(y^{\langle 2 \rangle}|x,y^{\langle 1 \rangle}) \cdots P(y^{\langle t \rangle}|x,y^{\langle 1 \rangle},\dots,y^{\langle t-1 \rangle})<br>$$<br>由于这些概率都是小于1的，那么多个概率的累乘会变得更小，其小数部分不利于计算机的精确储存。因此我们对目标函数取对数（对数函数为单调递增函数，对取最大化目标函数无影响）：<br>$$<br>\arg \max_y \sum^{T_y}_{t=1} \log P(y^{\langle t \rangle}|x,y^{\langle 1 \rangle},\dots,y^{\langle t-1 \rangle})<br>$$<br>然而有一个问题就是对于累乘的目标函数，假设你的句子很长，那么得到的概率会很小，因为连乘了很多项小于1的概率。显然这对结果会造成一定的影响，因为目标函数是取最大化的概率，那么目标往往会更倾向于较短的翻译（更短的输出），因为不需要连乘太多项，从而增大一定的概率，但是这样的翻译结果却未必是好的。</p>
-<p>而对于累积的目标函数也同样，由于概率都是小于1的，那么取对数之后都将变为负数，且概率越小，负得越大。有一个办法可以尝试，那就是对目标函数进行标准化：<br>$$<br>\frac{1}{T_y^\alpha} \sum^{T_y}_{t=1}  \log P(y^{\langle t \rangle}|x,y^{\langle 1 \rangle},\dots,y^{\langle t-1 \rangle})<br>$$<br>通过标准化，可以在一定程度上减少输出长翻译所带来的惩罚。在上式标准化中，存在一个超参数 $\alpha$，通常会取0.7。若 $\alpha=1$，那就是根据输出长度 $T_y$ 进行的标准化；若 $\alpha=0$，那么就是完全没标准化了。因此可以对 $\alpha$ 进行调参取得更好的结果。</p>
+<h2 id="Refinements-to-Beam-Search"><a href="#Refinements-to-Beam-Search" class="headerlink" title="Refinements to Beam Search"></a>Refinements to Beam Search</h2><h3 id="Length-normalization"><a href="#Length-normalization" class="headerlink" title="Length normalization"></a>Length normalization</h3><p>Length normalizaiton 可以是 Beam Search 算法得到更好的结果，我们来看看。首先，Beam Search 的目标是要使如下概率最大化：</p>
+<script type="math/tex; mode=display">
+\arg \max_y \prod^{T_y}_{t=1} P(y^{\langle t \rangle}|x,y^{\langle 1 \rangle},\dots,y^{\langle t-1 \rangle})</script><p>事实上就是众多条件概率的累乘，根据全概率公式：</p>
+<script type="math/tex; mode=display">
+  P(y^{\langle 1 \rangle}\dots,y^{\langle T_y \rangle}|x)=P(y^{\langle 1 \rangle}|x)P(y^{\langle 2 \rangle}|x,y^{\langle 1 \rangle}) \cdots P(y^{\langle t \rangle}|x,y^{\langle 1 \rangle},\dots,y^{\langle t-1 \rangle})</script><p>由于这些概率都是小于1的，那么多个概率的累乘会变得更小，其小数部分不利于计算机的精确储存。因此我们对目标函数取对数（对数函数为单调递增函数，对取最大化目标函数无影响）：</p>
+<script type="math/tex; mode=display">
+\arg \max_y \sum^{T_y}_{t=1} \log P(y^{\langle t \rangle}|x,y^{\langle 1 \rangle},\dots,y^{\langle t-1 \rangle})</script><p>然而有一个问题就是对于累乘的目标函数，假设你的句子很长，那么得到的概率会很小，因为连乘了很多项小于1的概率。显然这对结果会造成一定的影响，因为目标函数是取最大化的概率，那么目标往往会更倾向于较短的翻译（更短的输出），因为不需要连乘太多项，从而增大一定的概率，但是这样的翻译结果却未必是好的。</p>
+<p>而对于累积的目标函数也同样，由于概率都是小于1的，那么取对数之后都将变为负数，且概率越小，负得越大。有一个办法可以尝试，那就是对目标函数进行标准化：</p>
+<script type="math/tex; mode=display">
+\frac{1}{T_y^\alpha} \sum^{T_y}_{t=1}  \log P(y^{\langle t \rangle}|x,y^{\langle 1 \rangle},\dots,y^{\langle t-1 \rangle})</script><p>通过标准化，可以在一定程度上减少输出长翻译所带来的惩罚。在上式标准化中，存在一个超参数 $\alpha$，通常会取0.7。若 $\alpha=1$，那就是根据输出长度 $T_y$ 进行的标准化；若 $\alpha=0$，那么就是完全没标准化了。因此可以对 $\alpha$ 进行调参取得更好的结果。</p>
 <p>在这里，输出翻译的长度 $T_y$ 相当于进行 Beam Search的步数。也就是说，Beam Search 在每一步搜索出的三种可能中都多加一个词的长度，直到搜索出一个完整的翻译句子。最终最大概率的结果称为 normalized log likelihood objective。 </p>
 <h3 id="Beam-search-discussion"><a href="#Beam-search-discussion" class="headerlink" title="Beam search discussion"></a>Beam search discussion</h3><p>最后还有一个细节，那就是如何选择超参数 $B$ ？$B$ 越大，说明考虑的可能性越多，你搜索到的结果也会更好，然而计算成本也很大，计算速度会变慢。$B$ 越小，得到的结果可能差一点，但是考虑的可能性小了，计算速度会更快。</p>
 <p>我们之前采用了 $B=3$，事实上这是比较小的，通常会采取 $B=10$ 的情况。在某些文章，甚至会采用 $B$ 从 1000 至 3000 的情况。</p>
@@ -814,7 +826,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -862,12 +874,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -905,21 +912,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

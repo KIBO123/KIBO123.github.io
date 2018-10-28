@@ -401,7 +401,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.9k
                 </span>
               
 
@@ -417,7 +417,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  10
                 </span>
               
             </div>
@@ -446,11 +446,54 @@
 <p>事实上在真正的自动驾驶中，我们要检测的不仅是车，还有行人、摩托车，甚至其它物体等。另外在分类问题中，通常只有一个大的目标在图像中央；而在检测问题中，可能是多个目标分散在图像各处。那么我们之前所学的图像识别技术只能用于分类，想要用于目标检测，还有更多的要学。</p>
 <h3 id="Classification-with-localization"><a href="#Classification-with-localization" class="headerlink" title="Classification with localization"></a>Classification with localization</h3><p>我们再进行图像分类时，总是把一张图片输入到多层卷积神经网络中，然后得到的特征再输入到 Softmax 分类，从而得到预测结果。根据我们设定的类别，预测的结果可能是行人，可能是车，或摩托车，也可能只是背景，即什么目标都没有。这是标准的图像识别过程，要想对目标进行定位，还需要设计其它输出单元。</p>
 <p>首先我们在图像上建立一个坐标系，以图像左上角为原点 (0, 0)，右下角为点 (1, 1)。其次，定位检测目标的边界框，设边界框的中心为点 $(b_x,b_y)$ ，高度为 $b_h$ ，宽度为 $b_w$ 。那么通过这四个参数，我们即可对目标进行定位。</p>
-<p>我们将这四个参数添加到输出标签 $y$ 中，并定义 $p_c$ ：若 $p_c=1$ ，存在目标 ；若 $p_c=0$ ，不存在目标。那么设定输出标签 $y$ 为：<br>$$<br>y=<br>\begin{bmatrix}<br>p_c \<br>b_x \<br>b_y \<br>b_h \<br>b_w \<br>c_1 \<br>c_2 \<br>c_3<br>\end{bmatrix}<br>$$<br>$c_1,c_2,c_3$ 分别代表行人、车和摩托车。在这里我们假设图像中只有一个目标。</p>
+<p>我们将这四个参数添加到输出标签 $y$ 中，并定义 $p_c$ ：若 $p_c=1$ ，存在目标 ；若 $p_c=0$ ，不存在目标。那么设定输出标签 $y$ 为：</p>
+<script type="math/tex; mode=display">
+y=
+\begin{bmatrix}
+p_c \\
+b_x \\
+b_y \\
+b_h \\
+b_w \\
+c_1 \\
+c_2 \\
+c_3 
+\end{bmatrix}</script><p>$c_1,c_2,c_3$ 分别代表行人、车和摩托车。在这里我们假设图像中只有一个目标。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180514/18051406.png" alt=""></p>
-<p>那么我们看两个例子，上图中左图是一辆车，而右图是一片雪景，没有目标，那么这两张图片标签 $y^{(1)},y^{(2)}$ 分别为：<br>$$<br>y^{(1)}=<br>\begin{bmatrix}<br>1 \<br>b_x \<br>b_y \<br>b_h \<br>b_w \<br>0 \<br>1 \<br>0<br>\end{bmatrix},<br>y^{(2)}=<br>\begin{bmatrix}<br>0 \<br>? \<br>? \<br>? \<br>? \<br>? \<br>? \<br>?<br>\end{bmatrix}<br>$$<br>$y^{(1)}$ 结果很显然表示一辆车，而 $y^{(2)}$ 的结果中，除了第1个输出为0，表示不存在目标，其它输出我们可以不管，无论是输出什么我们也不考虑。</p>
-<p>最后我们考虑神经网络的损失函数：<br>$$<br>L(\hat{y},y)=</p>
-<p>\left{<br>\begin{aligned}<br>(\hat{y}_1-y_1)^2+(\hat{y}_2-y_2)^2+\dots+(\hat{y}_8-y_8)^2 \  &amp; ,if \ y_1=1  \<br>(\hat{y}_1-y_1)^2 \ &amp;,if \ y_1=0<br>\end{aligned}<br>\right.<br>$$<br>当第1个输出结果为0时，因为其它输出不在考虑，所以也不需要计算损失偏差。</p>
+<p>那么我们看两个例子，上图中左图是一辆车，而右图是一片雪景，没有目标，那么这两张图片标签 $y^{(1)},y^{(2)}$ 分别为：</p>
+<script type="math/tex; mode=display">
+y^{(1)}=
+\begin{bmatrix}
+1 \\
+b_x \\
+b_y \\
+b_h \\
+b_w \\
+0 \\
+1 \\
+0 
+\end{bmatrix},
+y^{(2)}=
+\begin{bmatrix}
+0 \\
+? \\
+? \\
+? \\
+? \\
+? \\
+? \\
+? 
+\end{bmatrix}</script><p>$y^{(1)}$ 结果很显然表示一辆车，而 $y^{(2)}$ 的结果中，除了第1个输出为0，表示不存在目标，其它输出我们可以不管，无论是输出什么我们也不考虑。</p>
+<p>最后我们考虑神经网络的损失函数：</p>
+<script type="math/tex; mode=display">
+L(\hat{y},y)=
+
+\left\{
+\begin{aligned}
+(\hat{y}_1-y_1)^2+(\hat{y}_2-y_2)^2+\dots+(\hat{y}_8-y_8)^2 \  & ,if \ y_1=1  \\
+(\hat{y}_1-y_1)^2 \ &,if \ y_1=0
+\end{aligned} 
+\right.</script><p>当第1个输出结果为0时，因为其它输出不在考虑，所以也不需要计算损失偏差。</p>
 <h2 id="Landmark-Detection"><a href="#Landmark-Detection" class="headerlink" title="Landmark Detection"></a>Landmark Detection</h2><p>在大部分时候，我们在目标检测时，还需要更进一步检测更细节的东西，比如说人脸识别，不仅要检测定位人脸，还要检测眼睛、鼻子、嘴巴等，那这就不是大范围的目标检测能做到的了，而是需要特征点检测 (Landmark Detection)。</p>
 <p>特征点检测的思路和目标检测一样，就是不断添加重要特征点的坐标作为标签 $y$ 的输出。那么训练后神经网络就能预测出每个特征点的具体坐标，即告诉你眼睛、鼻子和嘴巴等分别在哪里。显然，特征点越多，标签的维度也就越大。假设你给定64个特征点，那么标签 $y$ 的维度为129. 第一个输出为是否存在目标，如果存在目标，那么接下来的128个输出则分别为64个特征点的 $x$ 和 $y$ 坐标；如果不存在目标，那么接下来的128个输出不管是什么，都不必考虑。</p>
 <p>特征点检测在 AR 技术上应用得十分广泛。我们在一些美化照相机等app中，拍照时可以自动添加一些腮红、皇冠等动画效果，事实上首先要进行的就是特征点检测。还有其他的应用，比如说人体姿势检测等。</p>
@@ -475,7 +518,19 @@
 <p>YOLO (You Only Look Once)，这是 Joseph Redmon 在15年发表的文章，可见参考文献 <a href="">3</a>。我们还是用一个例子来对这个算法进行说明吧。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180514/18051411.png" alt=""></p>
 <p>我们看上面一张输入图像 $100 \times 100$，我们用一个 $3\times 3$ 的网格将这张图片划分为9块，根据我们最开始一节所说的分类定位，那么我们可以得到这9块小图片的标签用于训练：</p>
-<p><strong>Labels for training For each grid cell：（以第6块图像为例）</strong><br>$$<br>y=<br>\begin{bmatrix}<br>1 \<br>0.4 \<br>0.3 \<br>0.9 \<br>0.5 \<br>0 \<br>1 \<br>0<br>\end{bmatrix}<br>$$<br>如果将这张图片输入到卷积神经网络中，我们得到的输出维度则为 $3 \times 3 \times 8$ ，分别代表着9块小图片的预测结果，每张小图片的预测结果维度为 $1 \times 1 \times 8$ 。</p>
+<p><strong>Labels for training For each grid cell：（以第6块图像为例）</strong></p>
+<script type="math/tex; mode=display">
+y=
+\begin{bmatrix}
+1 \\
+0.4 \\
+0.3 \\
+0.9 \\
+0.5 \\
+0 \\
+1 \\
+0 
+\end{bmatrix}</script><p>如果将这张图片输入到卷积神经网络中，我们得到的输出维度则为 $3 \times 3 \times 8$ ，分别代表着9块小图片的预测结果，每张小图片的预测结果维度为 $1 \times 1 \times 8$ 。</p>
 <p>YOLO算法的主要优点在于能够精确地输出目标在图片中的具体位置。当然，我们用 $3\times 3$ 的网格划分或许会太大，容易发生在其中一个网格中出现多个目标。我们可以进一步细化，如使用 $19 \times 19$ 的网格，那么就可以减少在一块网格中出现多个目标的情况。</p>
 <p>我们主要关注两点，第一就是YOLO算法在目标分类和定位方面效果显着，而且得到的目标边界框比滑动窗口检测法更精确；第二就是我们将网格划分的所有小块图像同时进行卷积，这样可以避免分别对每块小图片进行预测所造成的计算成本过高。</p>
 <p>我们再看看每张小图像的标签，标签中第 2~4 个输出分别为目标中心的坐标 $x$ 和 $y$，以及目标边界框的高度和宽度，分别用 $b_x,b_y,b_h,b_w$ 表示。我们以每张小图像的左上角为原点 (0, 0)，右下角的点为 (1, 1)。显然，$b_x$ 和 $b_y$ 的值应在区间 [0, 1] 之间，而 $b_h$ 和 $b_w$ 可以大于1，因为目标在原始图像中的比例较大，那么其高度和宽度可以跨越多个网格。</p>
@@ -808,7 +863,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -856,12 +911,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -899,21 +949,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

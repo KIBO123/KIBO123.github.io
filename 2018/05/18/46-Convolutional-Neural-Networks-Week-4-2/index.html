@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.7k
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  10
                 </span>
               
             </div>
@@ -453,7 +453,9 @@
 <p>随着网络层数越深，检测到的图像区域越大，特征也越丰富，不再像是第1层只能捕捉到边缘等比较粗糙的特征。我们见上图，在这里共给出了5层的网络可视化，显然能检测到的细节越来越多。</p>
 <p>每一层的检测过程都和上一节所说的类似，找出能令某一层中每个节点的activation 最大化的图块作为输出。这就是 ConvNet 真正学习的过程。</p>
 <h2 id="Cost-Function"><a href="#Cost-Function" class="headerlink" title="Cost Function"></a>Cost Function</h2><p> 上面我们讲到 content image (C), style image (S) 和 generrated image (G)，那么如何判断 G 的效果好不好呢？我们需要计算关于 G 的 cost function。</p>
-<p>我们将 cost function 定义为两个部分，分别为 content cost 和 style cost ，也就是 C 和 S 的损失：<br>$$<br>J(G)= \alpha J_{content}(C,G)+\beta J_{style}(S,G)<br>$$<br>$ J_{content}(C,G)  $ 衡量了G 的图像内容与 C 的相似度，而 $J_{style}(S,G)$ 则衡量了 G 的风格与 S 的相似度，然后通过将两者加权求和计算总的 cost。具体细节可参考文献 <a href="">3</a>.</p>
+<p>我们将 cost function 定义为两个部分，分别为 content cost 和 style cost ，也就是 C 和 S 的损失：</p>
+<script type="math/tex; mode=display">
+J(G)= \alpha J_{content}(C,G)+\beta J_{style}(S,G)</script><p>$ J_{content}(C,G)  $ 衡量了G 的图像内容与 C 的相似度，而 $J_{style}(S,G)$ 则衡量了 G 的风格与 S 的相似度，然后通过将两者加权求和计算总的 cost。具体细节可参考文献 <a href="">3</a>.</p>
 <p>使用 $J(G)$ 来生成 G 的计算步骤如下：</p>
 <ol>
 <li>Initiate G randomly $\rightarrow \ G:100\times 100\times 3$  </li>
@@ -469,7 +471,9 @@
 <li>If  $ a^{<a href="C">l</a>} $ and $ a^{<a href="G">l</a>} $ are similar, both images have similar content</li>
 </ul>
 <p>我们假设使用第 $ l $ 层来计算内容损失，如果层数越浅，比如说第1层，那么生成的图片G 会与你的初始图片 C 十分相似；如果层数越深，那么你要在 G 中找到和 C 相似的地方，那么就得看得仔细一点了。所以在实际中，我们通常选定 $l$ 在浅层和深层之间。</p>
-<p>其次，使用一个预先训练好的 Convnet，可以是 VGG 结构或者是其它，开始计算 C 和 G 在内容上的相似度。我们假设  $ a^{<a href="C">l</a>} $ 和 $ a^{<a href="G">l</a>} $ 分别为C 和 G 在第 $ l $ 层的激活值 (activation) ，计算它们之间的相似度，若相似度越接近，说明图片的内容也越相似。那么，$ J_{content}(C,G) $ 为：<br>$$<br>J_{content}(C,G)=\frac{1}{2} ||a^{<a href="C">l</a>}-a^{<a href="G">l</a>}||^2<br>$$<br>在图片输入前标准化可要可不要，因为在 $ J(G) $ 中含有 超参数 $\alpha$ 进行调整。另外，  $ a^{<a href="C">l</a>} $ 和 $ a^{<a href="G">l</a>} $ 应将它们拉直成向量，才能计算 $ J_{content}(C,G) $ .</p>
+<p>其次，使用一个预先训练好的 Convnet，可以是 VGG 结构或者是其它，开始计算 C 和 G 在内容上的相似度。我们假设  $ a^{<a href="C">l</a>} $ 和 $ a^{<a href="G">l</a>} $ 分别为C 和 G 在第 $ l $ 层的激活值 (activation) ，计算它们之间的相似度，若相似度越接近，说明图片的内容也越相似。那么，$ J_{content}(C,G) $ 为：</p>
+<script type="math/tex; mode=display">
+J_{content}(C,G)=\frac{1}{2} ||a^{[l](C)}-a^{[l](G)}||^2</script><p>在图片输入前标准化可要可不要，因为在 $ J(G) $ 中含有 超参数 $\alpha$ 进行调整。另外，  $ a^{<a href="C">l</a>} $ 和 $ a^{<a href="G">l</a>} $ 应将它们拉直成向量，才能计算 $ J_{content}(C,G) $ .</p>
 <h2 id="Style-Cost-Function"><a href="#Style-Cost-Function" class="headerlink" title="Style Cost Function"></a>Style Cost Function</h2><h3 id="Meaning-of-the-“style”-of-an-image"><a href="#Meaning-of-the-“style”-of-an-image" class="headerlink" title="Meaning of the “style” of an image"></a>Meaning of the “style” of an image</h3><p>在讲 Style Cost 之前，我们要详细了解一下什么是图像的风格。假设在ConvNet第 $l$ 层的输出维度为 $n_h \times n_w \times n_c$ ，$n_c$ 为第三个维度，我们把该维度称为 channels. 那么我们把风格 (style)定义为不同channels 之间激活值的相关性。</p>
 <blockquote>
 <p>Say you are using layer $ l $’s activation to measure “style.”</p>
@@ -481,10 +485,19 @@
 <p>我们看上图，假设红色channel对应图中下面部分第二组的9个小图块，我们要检测出这中间存在的竖直特征，其次黄色channel对应第四组的9个小图块，它们看起来偏向橙色。那么如果这两个channel相关性很高，就表明图像中的某部分存在竖直结构，就会偏向橙色色调，这就是风格；但如果两个channel不太相关，那么即使存在竖直结构，也未必会是橙色的。</p>
 <p>我们用不同channels之间的相关性去衡量风格，即衡量生成图片 (generated image) 中第1channel和第2channel的相关性，它反映了竖直结构特征和橙色色调特征是否会同时出现的频率，这也就衡量了生成图片的风格和 style image 的风格之间的相似度。</p>
 <h3 id="Style-matrix"><a href="#Style-matrix" class="headerlink" title="Style matrix"></a>Style matrix</h3><p>我们把上面的Intuition写的正式点。首先我们要计算风格矩阵 (style matrix)，它实际上就是所有channels之间的相关性矩阵。我们令第 $l$ 层的激活值为 $a_{i,j,k}^{[l]}$ ，$i,j,k$ 分别代表在 $n_h,n_w,n_c$ 三个维度下的值，同时令第 $l$ 层的风格矩阵为 $G^{[l]}$，那么其维度为 $n^{[l]}_c \times n^{[l]}_c $ 。</p>
-<p>设style image中第 $k$ 个channel 和第 $k’$ 个channel之间的风格矩阵为 $ G_{kk’}^{<a href="S">l</a>} $ ，同理generated image中第 $k$ 个channel 和第 $k’$ 个channel之间的风格矩阵为 $ G_{kk’}^{<a href="G">l</a>} $ ，则：<br>$$<br>G_{kk’}^{<a href="S">l</a>}= \sum_{i=1}^{n_H^{[l]}} \sum_{j=1}^{n_W^{[l]}} a^{<a href="S">l</a>}<em>{ijk} a^{<a href="S">l</a>}</em>{ijk’}   \<br>G_{kk’}^{<a href="G">l</a>}= \sum_{i=1}^{n_H^{[l]}} \sum_{j=1}^{n_W^{[l]}} a^{<a href="G">l</a>}<em>{ijk} a^{<a href="G">l</a>}</em>{ijk’}<br>$$<br>由于 $ k \in [1,n_c]$ ，我们将所有不同的channel一一计算出相关性，即可得 $n_c \times n_c$ 维的风格矩阵 $G^{[l]}$ . 根据上两式，我们可以发现，当激活值越大时，相关性会越高，当激活值越小时，相关性也就越小。风格矩阵，在这里我们称为 Style matrix，但同时它也称为 gram matrix .</p>
-<p>最后，我们计算 style cost function，即 $J_{style}^{[l]}(S,G)$ ：<br>$$<br>\begin{aligned}<br>J_{style}^{[l]}(S,G) &amp;=  \frac{1}{(2n_H^{[l]}n_W^{[l]}n_C^{[l]})^2}||G^{<a href="S">l</a>}-G^{<a href="G">l</a>}||_F^2  \<br>                            &amp;= \frac{1}{(2n_H^{[l]}n_W^{[l]}n_C^{[l]})^2} \sum_k \sum_{k’}(G_{kk’}^{<a href="S">l</a>}-G_{kk’}^{<a href="G">l</a>})</p>
-<p>\end{aligned}<br>$$<br>这是第 $l$ 层的风格损失函数，对于总的风格损失函数，只要将所有层的风格损失函数求和即可。当然，也可以添加超参数 $\lambda$ 进行加权求和：<br>$$<br>J_{style}(S,G)= \sum_l \lambda^{[l]}J_{style}^{[l]}(S,G)<br>$$</p>
-<h2 id="1D-and-3D-Generalizations"><a href="#1D-and-3D-Generalizations" class="headerlink" title="1D and 3D Generalizations"></a>1D and 3D Generalizations</h2><p>我们已经学了关于 ConvNet 的众多知识，包括 ConvNet 的多种架构，以及 ConvNet 的多种应用，如图像识别、目标检测、人脸识别和风格转换等。我们讲的大部分应用都是关于 2D 的图像，事实上图像还有1D和3D的，我们的算法也可以应用在1D和3D 的图像中，我们来具体看看。</p>
+<p>设style image中第 $k$ 个channel 和第 $k’$ 个channel之间的风格矩阵为 $ G_{kk’}^{<a href="S">l</a>} $ ，同理generated image中第 $k$ 个channel 和第 $k’$ 个channel之间的风格矩阵为 $ G_{kk’}^{<a href="G">l</a>} $ ，则：</p>
+<script type="math/tex; mode=display">
+G_{kk'}^{[l](S)}= \sum_{i=1}^{n_H^{[l]}} \sum_{j=1}^{n_W^{[l]}} a^{[l](S)}_{ijk} a^{[l](S)}_{ijk'}   \\
+G_{kk'}^{[l](G)}= \sum_{i=1}^{n_H^{[l]}} \sum_{j=1}^{n_W^{[l]}} a^{[l](G)}_{ijk} a^{[l](G)}_{ijk'}</script><p>由于 $ k \in [1,n_c]$ ，我们将所有不同的channel一一计算出相关性，即可得 $n_c \times n_c$ 维的风格矩阵 $G^{[l]}$ . 根据上两式，我们可以发现，当激活值越大时，相关性会越高，当激活值越小时，相关性也就越小。风格矩阵，在这里我们称为 Style matrix，但同时它也称为 gram matrix .</p>
+<p>最后，我们计算 style cost function，即 $J_{style}^{[l]}(S,G)$ ：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+J_{style}^{[l]}(S,G) &=  \frac{1}{(2n_H^{[l]}n_W^{[l]}n_C^{[l]})^2}||G^{[l](S)}-G^{[l](G)}||_F^2  \\
+                            &= \frac{1}{(2n_H^{[l]}n_W^{[l]}n_C^{[l]})^2} \sum_k \sum_{k'}(G_{kk'}^{[l](S)}-G_{kk'}^{[l](G)})
+
+\end{aligned}</script><p>这是第 $l$ 层的风格损失函数，对于总的风格损失函数，只要将所有层的风格损失函数求和即可。当然，也可以添加超参数 $\lambda$ 进行加权求和：</p>
+<script type="math/tex; mode=display">
+J_{style}(S,G)= \sum_l \lambda^{[l]}J_{style}^{[l]}(S,G)</script><h2 id="1D-and-3D-Generalizations"><a href="#1D-and-3D-Generalizations" class="headerlink" title="1D and 3D Generalizations"></a>1D and 3D Generalizations</h2><p>我们已经学了关于 ConvNet 的众多知识，包括 ConvNet 的多种架构，以及 ConvNet 的多种应用，如图像识别、目标检测、人脸识别和风格转换等。我们讲的大部分应用都是关于 2D 的图像，事实上图像还有1D和3D的，我们的算法也可以应用在1D和3D 的图像中，我们来具体看看。</p>
 <h3 id="Convolutions-in-2D-and-1D"><a href="#Convolutions-in-2D-and-1D" class="headerlink" title="Convolutions in 2D and 1D"></a>Convolutions in 2D and 1D</h3><p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180518/18051807.png" alt=""></p>
 <p>见上图，对于2D的图像，假如说图像维度为 $14\times 14$，滤波器为 $5\times 5$，有16个滤波器，那么卷积之后可得输出为 $10\times 10 \times 16$。若图像是彩色的，则维度为  $14\times 14 \times 3$，在这里彩色图像维度尽管是3维的，但并不属于3D图像，我们只是将色调拆分为RGB三种分别来看而已。那么滤波器和图像维度必须保持一致，即$5\times 5\times 3$，同样有16个滤波器，卷积之后可得输出为 $10\times 10 \times 16$ 。</p>
 <p>1D图像同样可以使用类似的卷积运算，常见的1D图像，比如说信号图。该信号图测量你的心脏，每跳动一下将产生多大电压。假设信号图的维度是14，因为只有1个维度，所以滤波器的维度保持一致，为5，采用16个滤波器，卷积后可得输出维度为 $10 \times 16$.</p>
@@ -822,7 +835,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -870,12 +883,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -913,21 +921,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

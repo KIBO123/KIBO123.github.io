@@ -396,7 +396,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  3.2k
                 </span>
               
 
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  11
                 </span>
               
             </div>
@@ -455,7 +455,9 @@
 <h2 id="Multi-task-learning"><a href="#Multi-task-learning" class="headerlink" title="Multi-task learning"></a>Multi-task learning</h2><p>上节讲了迁移学习，它是将 Task A 的学习迁移到 Task B；而这节主要讲的是多任务学习，它将同时进行多个 Task 的学习。</p>
 <p>举个例子，一个无人驾驶的汽车，它最主要的任务就是要探测出行人、其他车辆、路标和红绿灯等。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18041201.png" alt="18041201"></p>
-<p>那么我们建立如上图的神经网络，针对每个样本 $x^{(i)}$ ，其输出 $y^{(i)}$ 是一个 $(4 \times 1)$的向量，每一行代表是否有行人、是否有其他车辆、是否有路标、是否有红绿灯。那么根据模型，我们即可写出损失函数：<br>$$<br>Loss=\frac{1}{m}\sum^m_{i=1}\sum^4_{j=1}L(\hat{y}_j^{(i)},y_j^{(i)})=-y_j^{(i)}\log \hat{y}_j^{(i)}-(1-y_j^{(i)})\log(1-\hat{y}_j^{(i)})<br>$$<br>这个多任务学习和我们之前所讲的 Softmax 多分类回归似乎挺相似，那它们之间到底有什么区别呢？其实很容易发现，在Softmax多分类中，每个样本只能归属到其中一类，也就是说每个样本只能有一个标签，比如说猫图识别，若使用Softmax，那么识别得到的要不是猫，要不是狗，要不是其它，不可能既是猫又是其它什么动物。而在多任务学习中，每个样本可以有多个标签，比如说无人驾驶识别路面情况，行人、其他车辆、路标和红绿灯都可能同时出现。于是在这里就存在了多个任务，既要识别行人和车辆，路标和红绿灯等通通都要识别出来。</p>
+<p>那么我们建立如上图的神经网络，针对每个样本 $x^{(i)}$ ，其输出 $y^{(i)}$ 是一个 $(4 \times 1)$的向量，每一行代表是否有行人、是否有其他车辆、是否有路标、是否有红绿灯。那么根据模型，我们即可写出损失函数：</p>
+<script type="math/tex; mode=display">
+Loss=\frac{1}{m}\sum^m_{i=1}\sum^4_{j=1}L(\hat{y}_j^{(i)},y_j^{(i)})=-y_j^{(i)}\log \hat{y}_j^{(i)}-(1-y_j^{(i)})\log(1-\hat{y}_j^{(i)})</script><p>这个多任务学习和我们之前所讲的 Softmax 多分类回归似乎挺相似，那它们之间到底有什么区别呢？其实很容易发现，在Softmax多分类中，每个样本只能归属到其中一类，也就是说每个样本只能有一个标签，比如说猫图识别，若使用Softmax，那么识别得到的要不是猫，要不是狗，要不是其它，不可能既是猫又是其它什么动物。而在多任务学习中，每个样本可以有多个标签，比如说无人驾驶识别路面情况，行人、其他车辆、路标和红绿灯都可能同时出现。于是在这里就存在了多个任务，既要识别行人和车辆，路标和红绿灯等通通都要识别出来。</p>
 <p>当然你也可以单独建立4个模型分别检测路面情况，但正如我们上节所说，这4个任务其数据集都有很大的共性，有一些图像特征可以被4个模型所共享，那么建立一个模型训练多个任务，比建立4个模型单独训练一个任务会更高效，而且也能取得更好的效果。</p>
 <p>值得注意的是，对部分仅标注了部分物体的图片，在多任务学习的训练中同样有效。比如说，有一些图片在进行人工数据标注时，标注者对图片标注了有行人、无其他车辆，还有路标和红绿灯等信息由于没注意到而缺少标注。那么在这种情况下，多任务学习在训练中不会产生问题，因为在损失函数中，我们只对有标签的值（0和1）进行计算，其余无标签项直接忽略，并不影响计算结果。</p>
 <p>那么：<strong>When  does multi-task learning make sense?</strong></p>
@@ -822,7 +824,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -870,12 +872,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -913,21 +910,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

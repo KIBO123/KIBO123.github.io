@@ -395,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.3k
                 </span>
               
 
@@ -411,7 +411,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  10
                 </span>
               
             </div>
@@ -438,23 +438,46 @@
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18042702.png" alt=""></p>
 <p>在群决策中，通常采用投票表决的形式，但投票时容易出现投票悖论。由于投票悖论的不可避免性，人们就面临着如何处理投票悖论这一实际问题。为了克服投票悖论造成的困难，人们提出采用某种与群众成员的偏好有关的数量指标来反映群，即社会，对各候选人的总体评价，这种指标称为社会选择函数。</p>
 <p>在这里，我们关注于社会选择理论中的社会选择函数，介绍其相关定义及其多种形式。</p>
-<h1 id="社会选择函数的定义和性质"><a href="#社会选择函数的定义和性质" class="headerlink" title="社会选择函数的定义和性质"></a>社会选择函数的定义和性质</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>设 $N={1,\dots,n}$ 表示群，即投票人的集合；$A={a_1,\dots,a_m}$ 表示备选方案（候选人）集合；$n_{jk}$ 或 $N(a_j \succ a_k)$ 表示群众认为 $a_j$ 优于 $a_k$ 的成员数。</p>
+<h1 id="社会选择函数的定义和性质"><a href="#社会选择函数的定义和性质" class="headerlink" title="社会选择函数的定义和性质"></a>社会选择函数的定义和性质</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>设 $N=\{1,\dots,n\}$ 表示群，即投票人的集合；$A=\{a_1,\dots,a_m\}$ 表示备选方案（候选人）集合；$n_{jk}$ 或 $N(a_j \succ a_k)$ 表示群众认为 $a_j$ 优于 $a_k$ 的成员数。</p>
 <p>采用上述记号，过半数规则可以表示为：</p>
 <p>对 $a_j,a_k \in A $ ，若 $n_{jk}&gt;n_{kj}$ ，则 $a_j \succ_G a_k$ ；若 $n_{jk}=n_{kj}$ ，则 $a_j \sim_G a_k$ </p>
-<p>设群中有 $n$ 个成员，对成员 $i$ 及方案对 $x,y \in A$ ，引入变量 $D_i$ 。$D_i$ 的取值为-1，0，1：若成员 $i$ 认为 $x$ 优于 $y$ ，即 $x \succ_i y$，则 $D_i=1$ ；认为 $x$与 $y$ 无差异，即 $x \sim_i y$，则 $D_i=0$；认为 $y$ 优于 $x$ ，即 $y \succ_i x$ ，则 $D_i=-1$，即：<br>$$<br>D_i= \left{<br>\begin{aligned}<br>1    \qquad  &amp; x P_i y  \<br>0    \qquad  &amp; x I_i y  \<br>-1    \qquad  &amp; y P_i x  \<br>\end{aligned}<br>\right.  \tag{1}<br>$$<br>群即社会中各成员的偏好分布为 $D=(D_1,\dots,D_n)$ ；偏好分布的集合 $\mathfrak{D}={-1,0,1}^n$。社会选择函数 $F$ 要从各成员的偏好分布产生社会的排序，即 $\forall D \in \mathfrak{D}$ ，$F(D)=f(D_1,\dots,D_n)$ ，且：<br>$$<br>F(D)= \left{<br>\begin{aligned}<br>1    \qquad  &amp; x \succ_i y  \<br>0    \qquad  &amp; x \sim_i y  \<br>-1    \qquad  &amp; y \succ_i x  \<br>\end{aligned}<br>\right.  \tag{2}<br>$$<br>即：$F:{-1,0,1} \rightarrow {-1,0,1}$ </p>
+<p>设群中有 $n$ 个成员，对成员 $i$ 及方案对 $x,y \in A$ ，引入变量 $D_i$ 。$D_i$ 的取值为-1，0，1：若成员 $i$ 认为 $x$ 优于 $y$ ，即 $x \succ_i y$，则 $D_i=1$ ；认为 $x$与 $y$ 无差异，即 $x \sim_i y$，则 $D_i=0$；认为 $y$ 优于 $x$ ，即 $y \succ_i x$ ，则 $D_i=-1$，即： </p>
+<script type="math/tex; mode=display">
+D_i= \left\{
+\begin{aligned}
+1    \qquad  & x P_i y  \\
+0    \qquad  & x I_i y  \\
+-1    \qquad  & y P_i x  \\
+\end{aligned}
+\right.  \tag{1}</script><p>群即社会中各成员的偏好分布为 $D=(D_1,\dots,D_n)$ ；偏好分布的集合 $\mathfrak{D}=\{-1,0,1\}^n$。社会选择函数 $F$ 要从各成员的偏好分布产生社会的排序，即 $\forall D \in \mathfrak{D}$ ，$F(D)=f(D_1,\dots,D_n)$ ，且：</p>
+<script type="math/tex; mode=display">
+F(D)= \left\{
+\begin{aligned}
+1    \qquad  & x \succ_i y  \\
+0    \qquad  & x \sim_i y  \\
+-1    \qquad  & y \succ_i x  \\
+\end{aligned}
+\right.  \tag{2}</script><p>即：$F:\{-1,0,1\} \rightarrow \{-1,0,1\}$ </p>
 <h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><p>(1) 明确性：$D \neq 0  \rightarrow F(D) \neq 0$</p>
 <p>(2) 中性，又称对偶性，对候选人的公平性：$f(-D_1,\dots,-D_n)=-f(D_1,\dots,D_n)$</p>
 <p>(3) 匿名性，又称平等原则，各成员的权利相同：$f(D_1,\dots,D_n)=f(D_{\sigma(1)},\dots,D_{\sigma(n)})$ . 其中，$\sigma $ 是 $1,\dots,n$ 的新排列。</p>
 <p>(4) 单调性，又称正响应：若 $D \geq D’$ ，则 $F(D) \geq F(D’)$ .</p>
 <p>(5) 一致性，又称 Weak Pareto 性：$f(1,1,\dots,1)=1$ 或 $f(-1,-1,\dots,-1)=-1$</p>
 <p>(6) 齐次性：对任意正整数 $m$，$F(mD)=F(D)$ .</p>
-<p>(7) Pareto 性：$\forall i,D_i \in {1,0}$ 且对某些 $k$ ，$D_k=1 \rightarrow F(D)=1$ ；$\forall i,D_i=0 \rightarrow F(D)=0$ .</p>
-<h1 id="社会选择函数的几种形式"><a href="#社会选择函数的几种形式" class="headerlink" title="社会选择函数的几种形式"></a>社会选择函数的几种形式</h1><h2 id="Condorcet函数"><a href="#Condorcet函数" class="headerlink" title="Condorcet函数"></a>Condorcet函数</h2><p>Condorcet原则规定，在从多个候选人中选择一个时，如果存在某个候选人 $x$，能在与其他候选人逐一比较时按过半数决策规则击败其他所有人，则 $x$ 称为 Condorcet 候选人，应该由他当选。如果不存在 Condorcet候选人，则应采用函数：<br>$$<br>f_C(x)=\min_{y \in A /{x}}N(x \succ_i y)<br>$$<br>按 $f_C(x)$ 值的大小来排列候选人 $x$ 的优劣次序。</p>
+<p>(7) Pareto 性：$\forall i,D_i \in \{1,0\}$ 且对某些 $k$ ，$D_k=1 \rightarrow F(D)=1$ ；$\forall i,D_i=0 \rightarrow F(D)=0$ .</p>
+<h1 id="社会选择函数的几种形式"><a href="#社会选择函数的几种形式" class="headerlink" title="社会选择函数的几种形式"></a>社会选择函数的几种形式</h1><h2 id="Condorcet函数"><a href="#Condorcet函数" class="headerlink" title="Condorcet函数"></a>Condorcet函数</h2><p>Condorcet原则规定，在从多个候选人中选择一个时，如果存在某个候选人 $x$，能在与其他候选人逐一比较时按过半数决策规则击败其他所有人，则 $x$ 称为 Condorcet 候选人，应该由他当选。如果不存在 Condorcet候选人，则应采用函数：</p>
+<script type="math/tex; mode=display">
+f_C(x)=\min_{y \in A /\{x\}}N(x \succ_i y)</script><p>按 $f_C(x)$ 值的大小来排列候选人 $x$ 的优劣次序。</p>
 <p><strong>示例：</strong></p>
 <p>23人认为：$a \succ b \succ c$ ；17人认为：$b \succ c \succ a$ ；2人认为：$b \succ a \succ c$ ；10人认为：$c \succ a \succ b$ ；8人认为：$c \succ b \succ a$ ；</p>
-<p>所有候选人成对比较的结果是：$a \succ_G b$ ，$b \succ_G c$ ，$c \succ_G a$ ，出现过半数票的循环，需采用 Condorcet 函数，即：<br>$$<br>N(a \succ_i b) =33,N(a \succ_i c) =25 \rightarrow f_C(a)=25  \<br>N(b \succ_i a) =27,N(b \succ_i c) =42 \rightarrow f_C(b)=27  \<br>N(c \succ_i a) =35,N(c \succ_i b) =18 \rightarrow f_C(c)=18  \<br>$$</p>
-<p>由上可得，候选人 $a​$ 应该当选。</p>
-<h2 id="Borda函数"><a href="#Borda函数" class="headerlink" title="Borda函数"></a>Borda函数</h2><p>由每个投票人对各候选人排序，设 $A$ 中有 $m$ 个候选人，则将 $m-1,m-2,\dots,1,0$ 这个 $m$ 个数分别赋予排在第一位、第二位……最末位的候选人，然后计算各候选人的得分总数（Borda分）。得到最高 Borda 分的候选人为胜者，Borda分即 Borda 函数为：<br>$$<br>f_B(x)=\sum_{y \in A/ {x}}N(x \succ_iy)<br>$$<br>候选人按 $f_B(x)​$ 值的大小排序。$f_b(x)​$ 是 $x​$ 与其他候选人逐一比较时 $m-1​$ 次中所得票数的总和。</p>
+<p>所有候选人成对比较的结果是：$a \succ_G b$ ，$b \succ_G c$ ，$c \succ_G a$ ，出现过半数票的循环，需采用 Condorcet 函数，即：</p>
+<script type="math/tex; mode=display">
+N(a \succ_i b) =33,N(a \succ_i c) =25 \rightarrow f_C(a)=25  \\
+N(b \succ_i a) =27,N(b \succ_i c) =42 \rightarrow f_C(b)=27  \\
+N(c \succ_i a) =35,N(c \succ_i b) =18 \rightarrow f_C(c)=18  \\</script><p>由上可得，候选人 $a​$ 应该当选。</p>
+<h2 id="Borda函数"><a href="#Borda函数" class="headerlink" title="Borda函数"></a>Borda函数</h2><p>由每个投票人对各候选人排序，设 $A$ 中有 $m$ 个候选人，则将 $m-1,m-2,\dots,1,0$ 这个 $m$ 个数分别赋予排在第一位、第二位……最末位的候选人，然后计算各候选人的得分总数（Borda分）。得到最高 Borda 分的候选人为胜者，Borda分即 Borda 函数为：</p>
+<script type="math/tex; mode=display">
+f_B(x)=\sum_{y \in A/ \{x\}}N(x \succ_iy)</script><p>候选人按 $f_B(x)​$ 值的大小排序。$f_b(x)​$ 是 $x​$ 与其他候选人逐一比较时 $m-1​$ 次中所得票数的总和。</p>
 <p><strong>示例：</strong></p>
 <p>同见上例。</p>
 <p>Borda分的计算：将 2，1，0 分别赋予排在第一、第二、第三位的候选人，则有：</p>
@@ -462,23 +485,59 @@
 <p>$b$ 的Borda分：$2 \times (17+2)+1 \times (23+8)=69$</p>
 <p>$c$ 的Borda分：$2 \times (10+8)+1 \times 17=53$</p>
 <p>由上可得，候选人 $b$ 应该当选。</p>
-<h2 id="Copeland函数"><a href="#Copeland函数" class="headerlink" title="Copeland函数"></a>Copeland函数</h2><p>令 $f_{cp}(x)=N{y:y \in A \cup x \succ_G y }-N{y:y \in A \cup y \succ_G x }$ ，并以 $f_{cp}(x)$ 的大小来排定 $x$ 的优劣。其中， $N{y:y \in A \cup x \succ_G y }$ 表示 $x$ 能按过半数决策规则击败的方案集 $A$ 中的候选人个数，$N{y:y \in A \cup y \succ_G x }$ 则表示在方案集 $A$ 中能按过半数规则击败 $x$ 的候选人个数，因此 $f_{cp}(x)$ 是 $x$ 在与其他候选人逐一比较时获胜次数与失败次数之差。</p>
-<p>同样以上例为例子：<br>$$<br>N(a \succ_i b) =33&gt;N(a \succ_i c) =25  \<br>N(b \succ_i a) =27&lt;N(b \succ_i c) =42   \<br>N(c \succ_i a) =35&gt;N(c \succ_i b) =18   \<br>$$<br>因此，$f_{cp}(a)=N{y:y \in A \cup a \succ_G y }-N{y:y \in A \cup y \succ_G a }=1-1=0​$ ，$f_{cp}(b)=1-1=0​$， $f_{cp}(c)=1-1=0​$ .</p>
+<h2 id="Copeland函数"><a href="#Copeland函数" class="headerlink" title="Copeland函数"></a>Copeland函数</h2><p>令 $f_{cp}(x)=N\{y:y \in A \cup x \succ_G y \}-N\{y:y \in A \cup y \succ_G x \}$ ，并以 $f_{cp}(x)$ 的大小来排定 $x$ 的优劣。其中， $N\{y:y \in A \cup x \succ_G y \}$ 表示 $x$ 能按过半数决策规则击败的方案集 $A$ 中的候选人个数，$N\{y:y \in A \cup y \succ_G x \}$ 则表示在方案集 $A$ 中能按过半数规则击败 $x$ 的候选人个数，因此 $f_{cp}(x)$ 是 $x$ 在与其他候选人逐一比较时获胜次数与失败次数之差。</p>
+<p>同样以上例为例子：</p>
+<script type="math/tex; mode=display">
+N(a \succ_i b) =33>N(a \succ_i c) =25  \\
+N(b \succ_i a) =27<N(b \succ_i c) =42   \\
+N(c \succ_i a) =35>N(c \succ_i b) =18   \\</script><p>因此，$f_{cp}(a)=N\{y:y \in A \cup a \succ_G y \}-N\{y:y \in A \cup y \succ_G a \}=1-1=0​$ ，$f_{cp}(b)=1-1=0​$， $f_{cp}(c)=1-1=0​$ .</p>
 <p>根据 Copeland 函数，$a,b,c$ 成平局。</p>
 <h2 id="Nanson函数"><a href="#Nanson函数" class="headerlink" title="Nanson函数"></a>Nanson函数</h2><p>Nanson的淘汰过程可表述如下：</p>
-<p>令 $A_1=A$ ，对 $j \geq 1$，令<br>$$<br>A_{j+1}=A_j /  {x \in A_j;f_B(x) \leq f_B(y), \forall y \in A_j }<br>$$<br>且 $\exists y \in A $ ，使 $f_B(x)&lt;f_B(y)$</p>
-<p>其中 $f_B(x)=\sum_{y \in A/ {x}}N(x \succ_iy)$ 为 Borda 分。</p>
+<p>令 $A_1=A$ ，对 $j \geq 1$，令</p>
+<script type="math/tex; mode=display">
+A_{j+1}=A_j /  \{x \in A_j;f_B(x) \leq f_B(y), \forall y \in A_j \}</script><p>且 $\exists y \in A $ ，使 $f_B(x)&lt;f_B(y)$</p>
+<p>其中 $f_B(x)=\sum_{y \in A/ \{x\}}N(x \succ_iy)$ 为 Borda 分。</p>
 <p>上式的含义是集合 $A_j$ 中淘汰 Borda 分最小的方案 $x$ 后，得到结合 $A_{j+1}$ 。</p>
-<p>令 $f_N(x)=\max {j:x \in A_j}$ ，即方案 $x$ 在第 $j$ 次被淘汰，则 $x$ 的 Nanson函数值等于 $j$ 。$f_N(x)$ 的值最大的方案为当选者。</p>
+<p>令 $f_N(x)=\max \{j:x \in A_j\}$ ，即方案 $x$ 在第 $j$ 次被淘汰，则 $x$ 的 Nanson函数值等于 $j$ 。$f_N(x)$ 的值最大的方案为当选者。</p>
 <p><strong>示例：</strong></p>
-<p>还是上例，先令 $A_1=A={ a,b,c}$ ，计算 Borda 分：<br>$$<br>f_B(a)=58,f_B(b)=69,f_B(c)=53<br>$$<br>由于 $c$ 得分最低而被淘汰，$f_N(c)=1$ ，且得 $A_2={a,b}$ ；这时有 $23+10=33$ 人认为 $a \succ b$ ，所以 $f_B(a)=33,f_B(b)=27$ ，$b$ 被淘汰，$f_N(b)=2$，且 $A_3=A_2 / {b}={ a}$ ；因只剩一人，$f_N(a)=3$ ，$a$ 为胜者。社会选择的排序为 $a \succ_G b \succ_G c$ 。</p>
+<p>还是上例，先令 $A_1=A=\{ a,b,c\}$ ，计算 Borda 分：</p>
+<script type="math/tex; mode=display">
+f_B(a)=58,f_B(b)=69,f_B(c)=53</script><p>由于 $c$ 得分最低而被淘汰，$f_N(c)=1$ ，且得 $A_2=\{a,b\}$ ；这时有 $23+10=33$ 人认为 $a \succ b$ ，所以 $f_B(a)=33,f_B(b)=27$ ，$b$ 被淘汰，$f_N(b)=2$，且 $A_3=A_2 / \{b\}=\{ a\}$ ；因只剩一人，$f_N(a)=3$ ，$a$ 为胜者。社会选择的排序为 $a \succ_G b \succ_G c$ 。</p>
 <h2 id="Dodgson函数"><a href="#Dodgson函数" class="headerlink" title="Dodgson函数"></a>Dodgson函数</h2><p>根据候选人要能成为简单过半数胜者（或非失败者），需要改变偏好序的投票人人数来给候选人打分，分值越小越好。</p>
-<p>设有 $n$ 个投票人，$m$ 个候选人，候选人之间成对比较的结果记为 $n_{jk}$ ，即：<br>$$<br>n_{jk}=N(a_j \succ_i a_k),i,k=1,\dots,m,i \neq k<br>$$<br>用 $n_0$ 表示候选人 $a_j(j=1,\dots,m)$ 作为简单过半数胜者（或非失败者）至少应有的票数，则有：<br>$$<br>n_0= \left{<br>\begin{aligned}<br>n/2    \qquad  \qquad  当 n 为偶数时\<br>(n+1)/2  \qquad   当 n 为奇数时<br>\end{aligned}<br>\right.<br>$$<br>设 $n_{jj}=n_0$ ，则 Dodgson 的社会选择函数为：<br>$$<br>f_D(a_j)=\sum^m_{k=1} \frac{|n_0-n_{jk}|+(n_0-n_{jk})}{2}   \qquad j=1,\dots,m<br>$$<br>$f_D(a_j)$ 的值越小，$a_j$ 越优。</p>
-<p>在计算 $f_D(\cdot)$ 时，也可用候选人之间成对比较的结果构成 Dodgson矩阵：<br>$$<br>D=<br>\begin{bmatrix}<br>1 &amp; n_{12}/n_{21}  &amp; \dots &amp; n_{1m}/n_{m1}  \<br>n_{21}/n_{12} &amp; 1  &amp; \dots &amp; n_{2m}/n_{m2}  \<br>\vdots  &amp; \vdots &amp; &amp;   \vdots  \<br>n_{m1}/n_{1m} &amp; n_{m2}/n_{2m}  &amp; \dots &amp; 1 \<br>\end{bmatrix}<br>$$<br>并对第 $j$ 行中 $n_{jk}&lt;n_{kj}$ 的各项求 $n_0$ 与 $n_{jk}$ 之差，然后相加得到 $f_0(a_j)$ 。</p>
+<p>设有 $n$ 个投票人，$m$ 个候选人，候选人之间成对比较的结果记为 $n_{jk}$ ，即：</p>
+<script type="math/tex; mode=display">
+n_{jk}=N(a_j \succ_i a_k),i,k=1,\dots,m,i \neq k</script><p>用 $n_0$ 表示候选人 $a_j(j=1,\dots,m)$ 作为简单过半数胜者（或非失败者）至少应有的票数，则有：</p>
+<script type="math/tex; mode=display">
+n_0= \left\{
+\begin{aligned}
+n/2    \qquad  \qquad  当 n 为偶数时\\
+(n+1)/2  \qquad   当 n 为奇数时
+\end{aligned}
+\right.</script><p>设 $n_{jj}=n_0$ ，则 Dodgson 的社会选择函数为：</p>
+<script type="math/tex; mode=display">
+f_D(a_j)=\sum^m_{k=1} \frac{|n_0-n_{jk}|+(n_0-n_{jk})}{2}   \qquad j=1,\dots,m</script><p>$f_D(a_j)$ 的值越小，$a_j$ 越优。</p>
+<p>在计算 $f_D(\cdot)$ 时，也可用候选人之间成对比较的结果构成 Dodgson矩阵：</p>
+<script type="math/tex; mode=display">
+D=
+\begin{bmatrix}
+1 & n_{12}/n_{21}  & \dots & n_{1m}/n_{m1}  \\
+n_{21}/n_{12} & 1  & \dots & n_{2m}/n_{m2}  \\
+\vdots  & \vdots & &   \vdots  \\
+n_{m1}/n_{1m} & n_{m2}/n_{2m}  & \dots & 1 \\
+\end{bmatrix}</script><p>并对第 $j$ 行中 $n_{jk}&lt;n_{kj}$ 的各项求 $n_0$ 与 $n_{jk}$ 之差，然后相加得到 $f_0(a_j)$ 。</p>
 <p><strong>示例：</strong></p>
-<p>还是上例。。各候选人两两比较的结果是：<br>$$<br>N(a \succ_i b) =33,N(a \succ_i c) =25  \<br>N(b \succ_i a) =27,N(b \succ_i c) =42   \<br>N(c \succ_i a) =35,N(c \succ_i b) =18   \<br>$$</p>
-<p>出现了多数票循环：$a \succ_G b,b \succ_G c,c \succ_G a $。</p>
-<p>将成对比较的结果列入 Dodgson矩阵，有：<br>$$<br>\begin{bmatrix}<br> -&amp; 33/27 &amp;25/35  \<br> 27/33 &amp;- &amp; 42/18 \<br>35/25 &amp; 18/25 &amp;-<br>\end{bmatrix}<br>$$<br>其中，由于 $n_{0}=30,n_{13}=25$ ，候选人 $a$ 要能在与 $c$ 比较时不成为失败者，至少需要5位投票人改变其偏好序，由原先认为 $c \succ_i a$变成$a \succ_i c$ ，因此 $f_D(a)=5$ ；类似地，有 $f_D(b)=3,f_D(c)=12$ 。由 $f_D(b)&lt;f_D(a)&lt;f_D(c)$ ，可得社会选择的排序是：$b \succ_G a \succ_G c$。</p>
+<p>还是上例。。各候选人两两比较的结果是：</p>
+<script type="math/tex; mode=display">
+N(a \succ_i b) =33,N(a \succ_i c) =25  \\
+N(b \succ_i a) =27,N(b \succ_i c) =42   \\
+N(c \succ_i a) =35,N(c \succ_i b) =18   \\</script><p>出现了多数票循环：$a \succ_G b,b \succ_G c,c \succ_G a $。</p>
+<p>将成对比较的结果列入 Dodgson矩阵，有：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+ -& 33/27 &25/35  \\
+ 27/33 &- & 42/18 \\
+35/25 & 18/25 &-
+\end{bmatrix}</script><p>其中，由于 $n_{0}=30,n_{13}=25$ ，候选人 $a$ 要能在与 $c$ 比较时不成为失败者，至少需要5位投票人改变其偏好序，由原先认为 $c \succ_i a$变成$a \succ_i c$ ，因此 $f_D(a)=5$ ；类似地，有 $f_D(b)=3,f_D(c)=12$ 。由 $f_D(b)&lt;f_D(a)&lt;f_D(c)$ ，可得社会选择的排序是：$b \succ_G a \succ_G c$。</p>
 <h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
 <li><a href="">岳超源. 决策理论与方法[M]. 科学出版社, 2003.</a></li>
 </ol>
@@ -803,7 +862,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -851,12 +910,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -894,21 +948,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

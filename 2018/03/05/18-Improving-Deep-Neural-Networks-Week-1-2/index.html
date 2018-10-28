@@ -395,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  1.6k
                 </span>
               
 
@@ -411,7 +411,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  6
                 </span>
               
             </div>
@@ -463,7 +463,14 @@
 <h2 id="Numerical-approximation-of-gradients"><a href="#Numerical-approximation-of-gradients" class="headerlink" title="Numerical approximation of gradients"></a>Numerical approximation of gradients</h2><p>该节讲的是比较基础的梯度估计，估计大家都在高数或数分中学过，在此不废时间记了。</p>
 <h2 id="Gradient-checking"><a href="#Gradient-checking" class="headerlink" title="Gradient checking"></a>Gradient checking</h2><p>在检查 back propagation 的 bug 时，gradient checking 是一个很有效的方法。本节主要讲讲如何进行 gradient checking。</p>
 <p>首先，将 $W^{[1]},b^{[1]},…,W^{[L]},b^{[L]}$ 分别拉直成一列并连接在一起，形成一个大的向量 $\theta$ ；同理，将 $dW^{[1]},db{[1]},…,dW{[L]},db{[L]}$ 拉直连接，形成 $d\theta$ . 那么，cost function 即为 $\theta$ 的函数。</p>
-<p>那么，<code>for each i :</code><br>$$<br>\begin{aligned}<br>d\theta_{appro}[i] &amp;= \frac{J(\theta_1,\theta_2,…,\theta_i+\varepsilon,…)-J(\theta_1,\theta_2,…,\theta_i-\varepsilon,…)}{2\varepsilon}   \<br>&amp;\approx  d\theta[i]=\frac{\partial J}{\partial \theta_i}<br>\end{aligned}  \tag{1}<br>$$<br><code>Check :</code><br>$$<br>\frac{\lVert d\theta_{approx}-d\theta \rVert <em>2}{\lVert d\theta</em>{approx} \rVert_2+\lVert d\theta \rVert_2}  \tag{2}<br>$$<br>当取 $\varepsilon$ 为 $10^{-7}$ 时，若公式(2) 的值约为 $10^{-7}$ ，说明梯度计算几乎没有出错，可以放心了；若约为 $10^{-5}$ ，那么还得稍稍注意一点，查看是否哪里出现了bug；若约为 $10^{-3}$ 或以上，那么很可能出现了计算错误，应细心分析。</p>
+<p>那么，<code>for each i :</code></p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+d\theta_{appro}[i] &= \frac{J(\theta_1,\theta_2,...,\theta_i+\varepsilon,...)-J(\theta_1,\theta_2,...,\theta_i-\varepsilon,...)}{2\varepsilon}   \\
+&\approx  d\theta[i]=\frac{\partial J}{\partial \theta_i}   
+\end{aligned}  \tag{1}</script><p><code>Check :</code></p>
+<script type="math/tex; mode=display">
+\frac{\lVert d\theta_{approx}-d\theta \rVert _2}{\lVert d\theta_{approx} \rVert_2+\lVert d\theta \rVert_2}  \tag{2}</script><p>当取 $\varepsilon$ 为 $10^{-7}$ 时，若公式(2) 的值约为 $10^{-7}$ ，说明梯度计算几乎没有出错，可以放心了；若约为 $10^{-5}$ ，那么还得稍稍注意一点，查看是否哪里出现了bug；若约为 $10^{-3}$ 或以上，那么很可能出现了计算错误，应细心分析。</p>
 <h2 id="Gradient-Checking-Implementation-Notes"><a href="#Gradient-Checking-Implementation-Notes" class="headerlink" title="Gradient Checking Implementation Notes"></a>Gradient Checking Implementation Notes</h2><p>本节讲述在进行 gradient checking 时应注意的一些细节。</p>
 <ul>
 <li>Don’t use in training - only to debug</li>
@@ -813,7 +820,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -861,12 +868,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -904,21 +906,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

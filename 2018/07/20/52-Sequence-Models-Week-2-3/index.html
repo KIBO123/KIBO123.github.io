@@ -398,7 +398,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  1.9k
                 </span>
               
 
@@ -414,7 +414,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  7
                 </span>
               
             </div>
@@ -438,6 +438,7 @@
         <p>本文主要讲解一下关于词嵌入的应用，如语义分类 (Sentiment Classification)、词嵌入的误差修正 (Debiasing word embeddings)，欢迎大家关注！</p>
 <a id="more"></a>
 <h1 id="Applications-using-Word-Embeddings"><a href="#Applications-using-Word-Embeddings" class="headerlink" title="Applications using Word Embeddings"></a>Applications using Word Embeddings</h1><h2 id="Sentiment-Classification"><a href="#Sentiment-Classification" class="headerlink" title="Sentiment Classification"></a>Sentiment Classification</h2><p>情感分类是指根据某段文本，分析人们对文本中所提及内容是否喜欢并做出分类的学习任务，这是NLP中十分基础而重要的一部分。当前这项任务的一个挑战就是难以获取大量做好标签的训练集。然而通过词嵌入算法，即使标记好的训练集样本量不大，同样可以建立一个好的情感分类器。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -464,6 +465,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>举个例子，见上表关于餐厅的评价，收集顾客的评语并做好文本标签进行训练，那么就可以跟踪顾客对餐厅的满意度了。然而，当评语太多时，很难人工对这些评语做情感标签。而对于一个情感分类任务，训练集通常应包含10,000至100,000的评语集。这就造成了情感分类任务的困难，缺乏大量标签好的样本数据。</p>
 <p>我们刚刚说了词嵌入能够解决这个问题，那么词嵌入是如何做的呢？</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1807/180720/18072001.png" alt=""></p>
@@ -484,10 +486,23 @@
 </ol>
 <p>在第一步中，主要通过嵌入向量之间的差来确定偏差的方向，例如计算 $e_{he}-e_{she}$，$e_{male}-e_{female}$ 等嵌入向量之间的差值，然后求均值，从而确定 gender 特征的方向。确定了 bias direction 之后，其余的与该方向不相关的方向称为 non-bias direction，在non-bias direction中包含其余299个特征维度的子空间。bias direction 可能高于一维，且不一定采用求均值的方式，这里都是简化进行描述，实际上在参考文献 <a href="">2</a> 使用了更为复杂的算法：SVU (a singular value decomposition)，主要是采用了主成分方法的思想。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1807/180720/neutral.png" alt=""></p>
-<p>第二步是中立化 (Neutraliza)，通常大部分词语是包含了性别的定义的，如 <em>“grandfather”, “grandmother”, “girl”, “boy”, “she”, “he”</em> 等，然而对于某些存在刻板印象而又不隐含性别定义的词，如 <em>“doctor”, “babysitter”</em> 等，我们必须中性化，避免产生特征偏差。进行中性化，即将词嵌入向量沿着 bias direction 正交的方向进行投影即可。投影公式：<br>$$<br>e^{bias_component}=\frac{e \cdot g}{\lVert g \rVert ^2_2} <em>g  \<br>e^{debiased}=e-e^{bias_component}<br>$$<br>在第二步中存在一个细节，那就是如何决定哪些词需要中性化？显然，像 </em>“doctor”<em> 就很有必要中性化。而像 </em>“beard”<em> 这类词就不需要，因为男性相对于女性更有可能出现 </em>“beard”*。在参考文献中，作者训练了一个分类器用于辨别哪些词是隐含 bias direction 的，从而做出相应的判断。事实上在英语中，大部分的词都是没有隐含 bias direction 的。</p>
+<p>第二步是中立化 (Neutraliza)，通常大部分词语是包含了性别的定义的，如 <em>“grandfather”, “grandmother”, “girl”, “boy”, “she”, “he”</em> 等，然而对于某些存在刻板印象而又不隐含性别定义的词，如 <em>“doctor”, “babysitter”</em> 等，我们必须中性化，避免产生特征偏差。进行中性化，即将词嵌入向量沿着 bias direction 正交的方向进行投影即可。投影公式：</p>
+<script type="math/tex; mode=display">
+e^{bias\_component}=\frac{e \cdot g}{\lVert g \rVert ^2_2} *g  \\
+e^{debiased}=e-e^{bias\_component}</script><p>在第二步中存在一个细节，那就是如何决定哪些词需要中性化？显然，像 <em>“doctor”</em> 就很有必要中性化。而像 <em>“beard”</em> 这类词就不需要，因为男性相对于女性更有可能出现 <em>“beard”</em>。在参考文献中，作者训练了一个分类器用于辨别哪些词是隐含 bias direction 的，从而做出相应的判断。事实上在英语中，大部分的词都是没有隐含 bias direction 的。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1807/180720/equalize10.png" alt=""></p>
 <p>最后一个步骤为 equalizaiton。举个例子，从空间距离来讲，<em>“grandmother”</em> 与 <em>“babysitter”</em> 的距离（或相似度）可能小于 （高于）<em>“grandfather”</em> 与 <em>“babysitter”</em> ，可能这就存在了刻板印象，因为 <em>“grandfather”</em> 同样可以是一个 <em>“babysitter”</em>，因此我们必须让<em>“grandmother”</em> 和 <em>“babysitter”</em> 的距离与<em>“grandfather”</em> 和 <em>“babysitter”</em> 的距离相等，将它们在空间上的点距离同等化。同理，还有许多对类似的词需要进行距离均等化处理，如 <em>“actor-actress”, “boy-girl”, “sorority-fraternity”, “girlhood-boyhood”, “sister-brother”, “niece-nephew”, “daughter-son”</em> 等等。</p>
-<p>在这里给出equalization的计算步骤，在参考文献中，有更为详细的推导。<br>$$<br>\mu = \frac{e_{w1}+e_{w2}}{2}   \<br>\mu_B = \frac{\mu \cdot bias_axis}{\lVert bias_axis \rVert^2_2}<em> bias_axis  \<br>\mu_{\perp}=\mu-\mu_B  \<br>e_{w1B} = \frac{e_{w1} \cdot bias_axis}{\lVert bias_axis \rVert^2_2}</em> bias_axis  \<br>e_{w2B} = \frac{e_{w2} \cdot bias_axis}{\lVert bias_axis \rVert^2_2}<em> bias_axis  \<br>e^{corrected}<em>{w1B}=\sqrt{\lvert 1- \lVert \mu</em>{\perp} \rVert^2_2  \rvert} </em> \frac{e_{w1B-\mu_B}}{\lVert (e_{w1}-\mu_{\perp})-\mu_B\rVert_2} \<br>e^{corrected}<em>{w2B}=\sqrt{\lvert 1- \lVert \mu</em>{\perp} \rVert^2_2  \rvert} * \frac{e_{w2B-\mu_B}}{\lVert (e_{w2}-\mu_{\perp})-\mu_B\rVert_2}  \<br>e_1=e^{corrected}<em>{w1B}+\mu</em>{\perp}  \<br>e_2=e^{corrected}<em>{w2B}+\mu</em>{\perp}<br>$$<br>在上面的式子中， $\lvert \cdot \rvert$ 为绝对值，而$\lVert \cdot \rVert_2$ 为范数。</p>
+<p>在这里给出equalization的计算步骤，在参考文献中，有更为详细的推导。</p>
+<script type="math/tex; mode=display">
+\mu = \frac{e_{w1}+e_{w2}}{2}   \\
+\mu_B = \frac{\mu \cdot bias\_axis}{\lVert bias\_axis \rVert^2_2}* bias\_axis  \\
+\mu_{\perp}=\mu-\mu_B  \\
+e_{w1B} = \frac{e_{w1} \cdot bias\_axis}{\lVert bias\_axis \rVert^2_2}* bias\_axis  \\
+e_{w2B} = \frac{e_{w2} \cdot bias\_axis}{\lVert bias\_axis \rVert^2_2}* bias\_axis  \\
+e^{corrected}_{w1B}=\sqrt{\lvert 1- \lVert \mu_{\perp} \rVert^2_2  \rvert} * \frac{e_{w1B-\mu_B}}{\lVert (e_{w1}-\mu_{\perp})-\mu_B\rVert_2} \\
+e^{corrected}_{w2B}=\sqrt{\lvert 1- \lVert \mu_{\perp} \rVert^2_2  \rvert} * \frac{e_{w2B-\mu_B}}{\lVert (e_{w2}-\mu_{\perp})-\mu_B\rVert_2}  \\
+e_1=e^{corrected}_{w1B}+\mu_{\perp}  \\
+e_2=e^{corrected}_{w2B}+\mu_{\perp}</script><p>在上面的式子中， $\lvert \cdot \rvert$ 为绝对值，而$\lVert \cdot \rVert_2$ 为范数。</p>
 <p>以上就是消除特征偏差的方法步骤。</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
 <li><a href="https://www.coursera.org/learn/nlp-sequence-models/home/week/2" target="_blank" rel="noopener">Sequence Models - Week 2</a></li>
@@ -816,7 +831,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -864,12 +879,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -907,21 +917,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

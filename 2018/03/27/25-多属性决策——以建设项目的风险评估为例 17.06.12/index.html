@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  532
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  2
                 </span>
               
             </div>
@@ -446,6 +446,7 @@
 <p>在风险管理中，对项目的风险评估显然是一个 <strong>多属性决策</strong> 的过程。因为在风险评估中，包括了决策人 (decision makers)，目标集 (projects) 和属性集 (attributes)。而属性集是多属性决策的核心，因为它不仅是数据的来源，也是决策人在目标集中做出决策的基础。</p>
 <p>在这里，属性集由风险因子构成。风险的来源是多种多样的，具有很大的不确定性，通常可分为3类：</p>
 <p><strong>表1</strong>  风险因子</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -481,33 +482,73 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h1 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h1><h2 id="灰色系统理论"><a href="#灰色系统理论" class="headerlink" title="灰色系统理论"></a>灰色系统理论</h2><p>灰色系统理论是由我国邓聚龙教授于1988年提出来的，在离散数据的处理上十分有效，主要体现在几个方面：计算十分方便，只需少量样本，且样本不不要服从特定分布。</p>
 <p>对一个区间尺度，设 $w$ 为该区间的下限，$b$ 为上限，如图：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180327/18032701.png" alt=""></p>
-<p>灰度隶属函数：<br>$$<br>X(k,x)=\left {<br>\begin{array}{rcl}<br>[0,1]  ，&amp;  k\in [w,b]  \<br>0   ，&amp;  k&lt;w,b&lt;k<br>\end{array}  \right. \tag{1}<br>$$<br>其中，$k$ 为一个属性的最优值 ( the optimal value)。通过该隶属函数，可以清晰地描述一个项目某属性在模糊集内的“真实程度”。</p>
-<h2 id="专家评估"><a href="#专家评估" class="headerlink" title="专家评估"></a>专家评估</h2><p>由于在风险评估中，风险因子难以通过具体的数值进行表示，因此文中通过专家对每个项目的每个属性确定风险区间，以灰度 (gray evaluations) 对风险因子进行衡量。设决策矩阵为 $X$ ，则：<br>$$<br>X^k=<br>\begin{bmatrix}<br>x_{11}^k &amp; x_{12}^k &amp; \dots &amp; x_{1m}^k \<br>x_{21}^k &amp; x_{22}^k &amp; \dots &amp; x_{2m}^k \<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>x_{n1}^k &amp; x_{n2}^k &amp; \dots &amp; x_{nm}^k \<br>\end{bmatrix}<br>, \ i=1,2,\dots,n,\ j=1,2,\dots,m<br>\tag{2}<br>$$<br>其中，$x_{ij}^k$ 表示在第 $j$ 个风险因子下，第 $k$ 个决策者对第 $i$ 个项目给出的灰度。</p>
+<p>灰度隶属函数：</p>
+<script type="math/tex; mode=display">
+X(k,x)=\left \{
+\begin{array}{rcl}
+[0,1]  ，&  k\in [w,b]  \\
+0   ，&  k<w,b<k
+\end{array}  \right. \tag{1}</script><p>其中，$k$ 为一个属性的最优值 ( the optimal value)。通过该隶属函数，可以清晰地描述一个项目某属性在模糊集内的“真实程度”。</p>
+<h2 id="专家评估"><a href="#专家评估" class="headerlink" title="专家评估"></a>专家评估</h2><p>由于在风险评估中，风险因子难以通过具体的数值进行表示，因此文中通过专家对每个项目的每个属性确定风险区间，以灰度 (gray evaluations) 对风险因子进行衡量。设决策矩阵为 $X$ ，则：</p>
+<script type="math/tex; mode=display">
+X^k=
+\begin{bmatrix}
+x_{11}^k & x_{12}^k & \dots & x_{1m}^k \\
+x_{21}^k & x_{22}^k & \dots & x_{2m}^k \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{n1}^k & x_{n2}^k & \dots & x_{nm}^k \\
+\end{bmatrix}
+, \ i=1,2,\dots,n,\ j=1,2,\dots,m
+\tag{2}</script><p>其中，$x_{ij}^k$ 表示在第 $j$ 个风险因子下，第 $k$ 个决策者对第 $i$ 个项目给出的灰度。</p>
 <p>在文章案例中，共有 3 位专家对 4 个项目共 13 个属性确定其风险区间，并确定每个属性的权重值，见表2 ：</p>
 <p><strong>表2</strong> 原始决策矩阵 </p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180327/18032702.png" alt=""></p>
 <h1 id="MADM-methods"><a href="#MADM-methods" class="headerlink" title="MADM methods"></a>MADM methods</h1><h2 id="TOPSIS"><a href="#TOPSIS" class="headerlink" title="TOPSIS"></a>TOPSIS</h2><p><strong><em>Step 1 :</em></strong> 对灰色决策矩阵进行标准化：</p>
-<p>越大越好的属性 ( the bigger the better ):<br>$$<br>\overline{x}^k_{ij,b}=\frac{x^k_{ij}}{\max \limits_{i}(b^k_{ij})}=(\frac{w^k_{ij}}{\max \limits_{i}(b^k_{ij})},\frac{b^k_{ij}}{\max \limits_{i}(b^k_{ij})})   \tag{3}\<br>$$<br>越小越好的属性  ( the smaller the better ):<br>$$<br>\overline{x}^k_{ij,w}=-\frac{x^k_{ij}}{\min \limits_{i}(w^k_{ij})}+2=(-\frac{b^k_{ij}}{\min \limits_{i}(w^k_{ij})}+2,-\frac{w^k_{ij}}{\min \limits_{i}(w^k_{ij})}+2)   \tag{4}<br>$$<br>标准化结果见表：</p>
+<p>越大越好的属性 ( the bigger the better ):</p>
+<script type="math/tex; mode=display">
+\overline{x}^k_{ij,b}=\frac{x^k_{ij}}{\max \limits_{i}(b^k_{ij})}=(\frac{w^k_{ij}}{\max \limits_{i}(b^k_{ij})},\frac{b^k_{ij}}{\max \limits_{i}(b^k_{ij})})   \tag{3}\\</script><p>越小越好的属性  ( the smaller the better ):</p>
+<script type="math/tex; mode=display">
+\overline{x}^k_{ij,w}=-\frac{x^k_{ij}}{\min \limits_{i}(w^k_{ij})}+2=(-\frac{b^k_{ij}}{\min \limits_{i}(w^k_{ij})}+2,-\frac{w^k_{ij}}{\min \limits_{i}(w^k_{ij})}+2)   \tag{4}</script><p>标准化结果见表：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180327/18032703.png" alt=""></p>
-<p> <strong><em>Step 2 :</em></strong> 确定第 $k$ 个决策者的正理想解 $A^{k+}$ 和负理想解 $A^{k-}$ ：<br>$$<br>A^{k+}=\left{ \left(\max \limits_{i}b^k_{ij}|j \in J \right),  \left(\min \limits_{i}w^k_{ij}|j \in J’ \right) \Bigg| i \in n\right}=[ x_1^{k+},x_2^{k+},\dots,x_m^{k+}]  \tag{5}<br>$$</p>
-<p>$$<br>A^{k-}=\left{ \left(\min \limits_{i}w^k_{ij}|j \in J \right),  \left(\max \limits_{i}b^k_{ij}|j \in J’ \right)\Bigg| i\in n  \right}=[ x_1^{k-},x_2^{k-},\dots,x_m^{k-}]  \tag{6}<br>$$</p>
-<p><strong><em>Step 3 :</em></strong> 计算每个项目分别到第 $k$ 个决策者正理想解和负理想解的加权欧几里得距离 $d_i^{k+}$ 和 $d_i^{k-}$ ：( 注：$q_j$ 为第 $j$ 个属性的权重 )<br>$$<br>d_i^{k+}=\sqrt{\frac{1}{2} \sum^m_{j=1}q_j \left[ \left| x_j^{k+}-\overline{w}^k_{ij}\right|^2+ \left| x_j^{k+}-\overline{b}^k_{ij}\right|^2\right]}  \tag{7}<br>$$</p>
-<p>$$<br>d_i^{k-}=\sqrt{\frac{1}{2} \sum^m_{j=1}q_j \left[ \left| x_j^{k-}-\overline{w}^k_{ij}\right|^2+ \left| x_j^{k-}-\overline{b}^k_{ij}\right|^2\right]}  \tag{8}<br>$$</p>
-<p><strong><em>Step 4 :</em></strong>  对所有决策者的距离矩阵计算几何平均：<br>$$<br>d_i^{*+}=\left( \prod^K_{k=1}d_i^{k+}\right)^{1/K} \tag{9}<br>$$</p>
-<p>$$<br>d_i^{*-}=\left( \prod^K_{k=1}d_i^{k-}\right)^{1/K} \tag{10}<br>$$</p>
-<p><strong><em>Step 5 :</em></strong> 计算每个项目到最优方案的相对距离 $C_i^{<em>+}$：<br>$$<br>C_i^{</em>+}=\frac{d_i^{<em>-}}{d_i^{</em>+}+d_i^{<em>-}}   \tag{11}<br>$$<br>其中，$C_i^{</em>+} \in [0,1]​$ ，值越大，说明项目越优。</p>
+<p> <strong><em>Step 2 :</em></strong> 确定第 $k$ 个决策者的正理想解 $A^{k+}$ 和负理想解 $A^{k-}$ ：</p>
+<script type="math/tex; mode=display">
+A^{k+}=\left\{ \left(\max \limits_{i}b^k_{ij}|j \in J \right),  \left(\min \limits_{i}w^k_{ij}|j \in J' \right) \Bigg| i \in n\right\}=[ x_1^{k+},x_2^{k+},\dots,x_m^{k+}]  \tag{5}</script><script type="math/tex; mode=display">
+A^{k-}=\left\{ \left(\min \limits_{i}w^k_{ij}|j \in J \right),  \left(\max \limits_{i}b^k_{ij}|j \in J' \right)\Bigg| i\in n  \right\}=[ x_1^{k-},x_2^{k-},\dots,x_m^{k-}]  \tag{6}</script><p><strong><em>Step 3 :</em></strong> 计算每个项目分别到第 $k$ 个决策者正理想解和负理想解的加权欧几里得距离 $d_i^{k+}$ 和 $d_i^{k-}$ ：( 注：$q_j$ 为第 $j$ 个属性的权重 )</p>
+<script type="math/tex; mode=display">
+d_i^{k+}=\sqrt{\frac{1}{2} \sum^m_{j=1}q_j \left[ \left| x_j^{k+}-\overline{w}^k_{ij}\right|^2+ \left| x_j^{k+}-\overline{b}^k_{ij}\right|^2\right]}  \tag{7}</script><script type="math/tex; mode=display">
+d_i^{k-}=\sqrt{\frac{1}{2} \sum^m_{j=1}q_j \left[ \left| x_j^{k-}-\overline{w}^k_{ij}\right|^2+ \left| x_j^{k-}-\overline{b}^k_{ij}\right|^2\right]}  \tag{8}</script><p><strong><em>Step 4 :</em></strong>  对所有决策者的距离矩阵计算几何平均：</p>
+<script type="math/tex; mode=display">
+d_i^{*+}=\left( \prod^K_{k=1}d_i^{k+}\right)^{1/K} \tag{9}</script><script type="math/tex; mode=display">
+d_i^{*-}=\left( \prod^K_{k=1}d_i^{k-}\right)^{1/K} \tag{10}</script><p><strong><em>Step 5 :</em></strong> 计算每个项目到最优方案的相对距离 $C_i^{*+}$：</p>
+<script type="math/tex; mode=display">
+C_i^{*+}=\frac{d_i^{*-}}{d_i^{*+}+d_i^{*-}}   \tag{11}</script><p>其中，$C_i^{*+} \in [0,1]​$ ，值越大，说明项目越优。</p>
 <p><strong><em>Step 6 :</em></strong> 按 $C_i^{*+}$ 由大到小排列项目的优劣次序，结果见下表：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180327/18032704.png" alt=""></p>
 <p>根据 TOPSIS 法，可得计算的结果为：</p>
 <p><strong>Project 1</strong> $\succ$ <strong>Project 3</strong> $\succ$ <strong>Project 4</strong> $\succ$ <strong>Project 2</strong></p>
-<h2 id="COPRAS-G"><a href="#COPRAS-G" class="headerlink" title="COPRAS-G"></a>COPRAS-G</h2><p><strong><em>Step 1 :</em></strong> 对灰色决策矩阵进行标准化：<br>$$<br>\overline{w}<em>{ij}=\frac{w</em>{ij}}{\frac{1}{2} \left(\sum^n_{i=1}w_{ij}+\sum^n_{i=1}b_{ij} \right)}=\frac{2w_{ij}}{\sum^n_{i=1}w_{ij}+\sum^n_{i=1}b_{ij} }  \tag{12}<br>$$</p>
-<p>$$<br>\overline{b}<em>{ij}=\frac{b</em>{ij}}{\frac{1}{2} \left(\sum^n_{i=1}w_{ij}+\sum^n_{i=1}b_{ij} \right)}=\frac{2b_{ij}}{\sum^n_{i=1}w_{ij}+\sum^n_{i=1}b_{ij} }  \tag{13}<br>$$</p>
-<p>标准化结果见表：</p>
+<h2 id="COPRAS-G"><a href="#COPRAS-G" class="headerlink" title="COPRAS-G"></a>COPRAS-G</h2><p><strong><em>Step 1 :</em></strong> 对灰色决策矩阵进行标准化：</p>
+<script type="math/tex; mode=display">
+\overline{w}_{ij}=\frac{w_{ij}}{\frac{1}{2} \left(\sum^n_{i=1}w_{ij}+\sum^n_{i=1}b_{ij} \right)}=\frac{2w_{ij}}{\sum^n_{i=1}w_{ij}+\sum^n_{i=1}b_{ij} }  \tag{12}</script><script type="math/tex; mode=display">
+\overline{b}_{ij}=\frac{b_{ij}}{\frac{1}{2} \left(\sum^n_{i=1}w_{ij}+\sum^n_{i=1}b_{ij} \right)}=\frac{2b_{ij}}{\sum^n_{i=1}w_{ij}+\sum^n_{i=1}b_{ij} }  \tag{13}</script><p>标准化结果见表：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180327/18032705.png" alt=""></p>
-<p><strong><em>Step 2 :</em></strong> 对标准化决策矩阵进行加权：<br>$$<br>\hat{x}<em>{ij}=\overline{x}</em>{ij} \cdot q_j \<br>that\  is:\ \hat{w}<em>{ij}=\overline{w}</em>{ij} \cdot q_j, \ \hat{x}<em>{ij}=\overline{x}</em>{ij} \cdot q_j \tag{14}<br>$$<br><strong><em>Step 3 :</em></strong> 对每个项目的正向属性进行加权求和，正向属性表示属性值越大越好的属性：<br>$$<br>P_i=\frac{1}{2} \sum^k_{j=1}(\hat{w}<em>{ij}+\hat{b}</em>{ij})   \tag{15}<br>$$<br><strong><em>Step 4 :</em></strong> 对每个项目的负向属性进行加权求和，负向属性表示属性值越小越好的属性：<br>$$<br>R_i=\frac{1}{2} \sum^m_{j=k+1}(\hat{w}<em>{ij}+\hat{b}</em>{ij})   \tag{16}<br>$$<br>在上式中，$(m-k)​$ 表示负向属性的数量，那么即有：<br>$$<br>\sum^n_{i=1}P_i+\sum^n_{i=1}R_i=1 \tag{17}<br>$$<br><strong><em>Step 5 :</em></strong> 计算每个项目的相对权重：<br>$$<br>Q_i=P_i+\frac{\sum^n_{i=1}R_i}{R_i \sum^n_{i=1} \frac{1}{R_i}}  \tag{18}<br>$$<br><strong><em>Step 6 :</em></strong> 确定最优标准：<br>$$<br>L=\max \limits_i Q_i<br>$$<br><strong><em>Step 7 :</em></strong> 计算每个项目的效用程度 $N_i=\frac{Q_i}{L}$，并按 $N_i$ 由大到小排列项目的优劣次序，结果见下表：</p>
+<p><strong><em>Step 2 :</em></strong> 对标准化决策矩阵进行加权：</p>
+<script type="math/tex; mode=display">
+\hat{x}_{ij}=\overline{x}_{ij} \cdot q_j \\
+that\  is:\ \hat{w}_{ij}=\overline{w}_{ij} \cdot q_j, \ \hat{x}_{ij}=\overline{x}_{ij} \cdot q_j \tag{14}</script><p><strong><em>Step 3 :</em></strong> 对每个项目的正向属性进行加权求和，正向属性表示属性值越大越好的属性：</p>
+<script type="math/tex; mode=display">
+P_i=\frac{1}{2} \sum^k_{j=1}(\hat{w}_{ij}+\hat{b}_{ij})   \tag{15}</script><p><strong><em>Step 4 :</em></strong> 对每个项目的负向属性进行加权求和，负向属性表示属性值越小越好的属性：</p>
+<script type="math/tex; mode=display">
+R_i=\frac{1}{2} \sum^m_{j=k+1}(\hat{w}_{ij}+\hat{b}_{ij})   \tag{16}</script><p>在上式中，$(m-k)​$ 表示负向属性的数量，那么即有：</p>
+<script type="math/tex; mode=display">
+\sum^n_{i=1}P_i+\sum^n_{i=1}R_i=1 \tag{17}</script><p><strong><em>Step 5 :</em></strong> 计算每个项目的相对权重：</p>
+<script type="math/tex; mode=display">
+Q_i=P_i+\frac{\sum^n_{i=1}R_i}{R_i \sum^n_{i=1} \frac{1}{R_i}}  \tag{18}</script><p><strong><em>Step 6 :</em></strong> 确定最优标准：</p>
+<script type="math/tex; mode=display">
+L=\max \limits_i Q_i</script><p><strong><em>Step 7 :</em></strong> 计算每个项目的效用程度 $N_i=\frac{Q_i}{L}$，并按 $N_i$ 由大到小排列项目的优劣次序，结果见下表：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180327/18032706.png" alt=""></p>
 <p>根据 COPRAS-G 法，可得计算的结果为：</p>
 <p><strong>Project 1</strong> $\succ$ <strong>Project 3</strong> $\succ$ <strong>Project 2</strong>  $\succ$ <strong>Project 4</strong>  </p>
@@ -847,7 +888,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -895,12 +936,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -938,21 +974,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

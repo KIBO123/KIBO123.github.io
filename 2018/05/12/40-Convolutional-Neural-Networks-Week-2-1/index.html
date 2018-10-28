@@ -406,7 +406,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  3.4k
                 </span>
               
 
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  13
                 </span>
               
             </div>
@@ -465,7 +465,12 @@
 <h2 id="ResNets"><a href="#ResNets" class="headerlink" title="ResNets"></a>ResNets</h2><h3 id="Residual-block"><a href="#Residual-block" class="headerlink" title="Residual block"></a>Residual block</h3><p>由于梯度消失或梯度爆炸等各种各样的原因，通常一个深度神经网络是十分难以训练的。这节我们介绍 skip connections ，它可以使你从某一层的激活节点投入到更深层中。那么，你就可以建立 ResNet 来训练一个深度神经网络了，即使超过100层也不在话下。</p>
 <p>ResNet是有一系列的残差块 (residual block) 建立起来的，什么是残差块？我们先看一个神经网络中的其中两层：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180512/18051204.png" alt=""></p>
-<p> 那么，$a^{[l]}$ 要想传递到 $a^{[l+2]}$，通常的方式是：<br>$$<br>z^{[l+1]}=W^{[l+1]}a^{[l]}+b^{[l+1]} \<br>a^{[l+1]}=g(z^{[l+1]})  \<br>z^{[l+2]}=W^{[l+2]}a^{[l+1]}+b^{[l+2]} \<br>a^{[l+2]}=g(z^{[l+2]})<br>$$<br>显然，传递过程是比较繁琐的，我们做一些改变。将 $a^{[l]}$ 直接跳跃到第二个 Relu 激活函数之前，这种跳跃称为捷径 (shortcut). 那么我们将最后一个等式改为：$a^{[l+2]}=g(z^{[l+2]}+a^{[l]}）$ . 这就是一个 residual block。</p>
+<p> 那么，$a^{[l]}$ 要想传递到 $a^{[l+2]}$，通常的方式是：</p>
+<script type="math/tex; mode=display">
+z^{[l+1]}=W^{[l+1]}a^{[l]}+b^{[l+1]} \\
+a^{[l+1]}=g(z^{[l+1]})  \\
+z^{[l+2]}=W^{[l+2]}a^{[l+1]}+b^{[l+2]} \\
+a^{[l+2]}=g(z^{[l+2]})</script><p>显然，传递过程是比较繁琐的，我们做一些改变。将 $a^{[l]}$ 直接跳跃到第二个 Relu 激活函数之前，这种跳跃称为捷径 (shortcut). 那么我们将最后一个等式改为：$a^{[l+2]}=g(z^{[l+2]}+a^{[l]}）$ . 这就是一个 residual block。</p>
 <p>shortcut 的专业术语为 skip connection. 通过 skip connection ，$a^{[l]}$ 就被插入到下一层的激活函数之前了。</p>
 <h3 id="Residual-Network"><a href="#Residual-Network" class="headerlink" title="Residual Network"></a>Residual Network</h3><p>在Residual Network 中，许多残差块被插入其中，用于训练更深更大的神经网络，例如：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180512/18051205.png" alt=""></p>
@@ -475,7 +480,11 @@
 <p>那 ResNet 是如何起到作用的呢？我们见下一节。</p>
 <h2 id="Why-ResNets-work"><a href="#Why-ResNets-work" class="headerlink" title="Why ResNets work"></a>Why ResNets work</h2><p>我们之前说到，建立更深更复杂的网络通常会降低训练效果，然而对 ResNet 来说，则未必会出现这样的现象，为什么呢？</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180512/18051206.png" alt=""></p>
-<p>我们用上面这个例子解释。假设存在上面这个大型神经网络，第 $l$ 层为输出，我们在输出 $a^{[l]}$ 后添加两层，得到新的输出 $a^{[l+2]}$ ，并在第 $l$ 层和第 $l+2$ 层之间建立一个残差块，那么根据我们上节的解释，有：<br>$$<br>a^{[l+2]}=g(z^{[l+2]}+a^{[l]})=g(w^{[l+2]}a^{[l+1]}+b^{[l+2]}+a^{[l]})  \tag{1}<br>$$<br>我们发现，当我们使用 $L2$ 正则项的时候，会产生权值衰减 (weight decay) ，即 $w^{[l+2]}$ 的值会不断缩小，同理 $b^{[l+2]}$ 也会不断衰减。那么当 $w^{[l+2]}$ 和 $b^{[l+2]}$ 衰减到 0 时，则有：<br>$$<br>g(w^{[l+2]}a^{[l+1]}+b^{[l+2]}+a^{[l]})=g(a^{[l]})=a^{[l]} \tag{2}<br>$$<br>由于 $a^{[l]}$ 总是大于等于0 ，且激活函数是 ReLU，所以 $g(a^{[l]})=a^{[l]}$ 。这样的恒等函数 (identity function) 可让残差块训练十分容易。同时那么结合式(1)和(2) ，我们可得 $a^{[l+2]}=a^{[l]}$ 。由此即可说明，添加两层后，建立残差块并不会损害神经网络的训练效果。那么在保证不损害神经网络总体的训练效果下，层数越多，自然能学到的东西也越多，训练的精度也会越高。</p>
+<p>我们用上面这个例子解释。假设存在上面这个大型神经网络，第 $l$ 层为输出，我们在输出 $a^{[l]}$ 后添加两层，得到新的输出 $a^{[l+2]}$ ，并在第 $l$ 层和第 $l+2$ 层之间建立一个残差块，那么根据我们上节的解释，有：</p>
+<script type="math/tex; mode=display">
+a^{[l+2]}=g(z^{[l+2]}+a^{[l]})=g(w^{[l+2]}a^{[l+1]}+b^{[l+2]}+a^{[l]})  \tag{1}</script><p>我们发现，当我们使用 $L2$ 正则项的时候，会产生权值衰减 (weight decay) ，即 $w^{[l+2]}$ 的值会不断缩小，同理 $b^{[l+2]}$ 也会不断衰减。那么当 $w^{[l+2]}$ 和 $b^{[l+2]}$ 衰减到 0 时，则有：</p>
+<script type="math/tex; mode=display">
+g(w^{[l+2]}a^{[l+1]}+b^{[l+2]}+a^{[l]})=g(a^{[l]})=a^{[l]} \tag{2}</script><p>由于 $a^{[l]}$ 总是大于等于0 ，且激活函数是 ReLU，所以 $g(a^{[l]})=a^{[l]}$ 。这样的恒等函数 (identity function) 可让残差块训练十分容易。同时那么结合式(1)和(2) ，我们可得 $a^{[l+2]}=a^{[l]}$ 。由此即可说明，添加两层后，建立残差块并不会损害神经网络的训练效果。那么在保证不损害神经网络总体的训练效果下，层数越多，自然能学到的东西也越多，训练的精度也会越高。</p>
 <p>在深层平坦网络中，由于层数越深，那么参数的学习也将越来越难，这是太多层造成训练效果差的原因。而在 ResNet 中，由于大量的残差块可使得多数层进行跳跃式的连接，且恒等函数十分容易学习，从而保证了不会损害总体训练效果，如果运气好反而能够提升训练效果，这是 ResNet 有效的原因，详见参考文献 <a href="">5</a>。</p>
 <p>有一点值得注意的就是在残差块中，$z^{[l+2]}$ 和 $a^{[l]}$ 是可加的，那么必须保证两者具有相同的维度。因此，在 ResNet 中会经常使用到 same convolutions ，可能是 same padding ，也可能是 $1 \times 1$ 的滤波器，来保证残差块中前后层的维度一致。</p>
 <p>假如残差块中的输入和输出维度不一致，比如说 $a^{[l]}$ 的维度为128，$z^{l+2}$ 的维度为256，那么我们必须添加一个额外的参数矩阵 $W_s$ ，维度为 $256 \times 128$ ，使得输入输出的维度一致，即 $a^{[l+2]}=g(z^{[l+2]}+W_sa^{[l]})$ 。矩阵 $W_s$ 可以使让其自己学习的参数矩阵，也可以是通过 $a^{[l]}$ 进行 padding 得到的固定矩阵。</p>
@@ -833,7 +842,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -881,12 +890,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -924,21 +928,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

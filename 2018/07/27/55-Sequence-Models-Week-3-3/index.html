@@ -398,7 +398,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  1.1k
                 </span>
               
 
@@ -414,7 +414,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  4
                 </span>
               
             </div>
@@ -449,7 +449,7 @@
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18/1807/180727/18072803.png" alt=""></p>
 <p>对于音频数据，其输入的量是很大的，通常输入的时间步远大于输出的时间步。例如，我们刚刚的音频片段是 10 秒钟，而每秒钟都包含100个赫兹信号输入，也就是说10秒钟的音频片段即是1000个输入。然而我们的输出却未必有1000个字母。</p>
 <p>CTC 损失函数可让 RNN 生成如下输出：</p>
-<p><em>“tt____h____eee___   <strong><strong>    </strong></strong>qqq____   <strong>___</strong>“</em></p>
+<p><em>“tt<strong><strong>h</strong></strong>eee<strong>_   __</strong>    <strong><strong>qqq</strong></strong>   <strong>___</strong>“</em></p>
 <p>简单来说，就是让字母不断重复，从而达到特定的长度。之前再对没被空格分开的重复字母去重。这就是 CTC cost。</p>
 <h2 id="Trigger-Word-Detection"><a href="#Trigger-Word-Detection" class="headerlink" title="Trigger Word Detection"></a>Trigger Word Detection</h2><p>对于现在的语音识别系统，越来越多的装置可以根据你的声音进行自动唤醒，这叫触发词检测系统 (Trigger word detection system)。例如，Amazon，Baidu，Apple和Google都有类似的系统，当你叫一声 <em>“Alexa”</em>，Amazon语音识别系统就会自动回应，当你叫一声 <em>“百度你好”</em>，百度语音识别系统也会自动回应。</p>
 <p>当前关于 Trigger word detection 的相关研究还在不断发展，因此还没有一致公认的算法。在这里我们仅给出一个算法的例子：</p>
@@ -792,7 +792,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -840,12 +840,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -883,21 +878,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 

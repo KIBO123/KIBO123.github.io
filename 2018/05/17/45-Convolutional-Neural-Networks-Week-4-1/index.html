@@ -398,7 +398,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  
+                  2.6k
                 </span>
               
 
@@ -414,7 +414,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  
+                  9
                 </span>
               
             </div>
@@ -447,18 +447,39 @@
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051701.png" alt=""></p>
 <p>通常来说，每个类别只有一个训练样本，深度学习算法是很难凑效的，比如说数据库中有4个人的图片（图中左侧）作为训练样本，那么人脸识别系统要识别出图中右侧第1张到底是图中左侧的哪一位。另外，若给出一张在数据库中不存在的图片（图中右侧第2张），那么人脸识别系统也要识别出这是不是数据库中的人。这就是 one-shot learning problem，它要求只通过一个样本的训练去再次识别这个样本。在企业中，大部分时候我们的数据库中可能只有同事的一张照片，因此这个问题是很关键的。</p>
 <p>按照我们之前学的知识，一共有4人，我们把每个人的一张照片给定好标签，输入到 ConvNet 中，运用 Softmax 分类将类别划分为5类，分别对应为这4人以及“不是以上任何一人”。然而，这基本训练不出好的效果，因为训练集太小，如果不断有新的同事要加入数据库，那是否要不断地重新训练 ConvNet？这显然不太可能，因此想要进行人脸识别，必须进行 one-shot learning.</p>
-<p>one-shot learning 有一个比较重要的部分就是相似度函数 (similarity function)。<br>$$<br>d(img1,img2)=degree \ of \ difference \ between \ images  \<br>If \  d(img1,img2)<br>\left{<br>\begin{aligned}<br>\leq \tau   \quad &amp; ,\  “Same”  \<br>\geq \tau  \quad &amp;,\ “different”<br>\end{aligned}<br>\right.<br>$$<br>相似度函数即表示两张图片之间差别的程度，值越小说明越相似，值越大说明越不相似。在这里我们会给定阈值 $\tau$ ，若相似度小于 $\tau$ ，则两张图片是识别为同一个人，否则为不是同一人。</p>
+<p>one-shot learning 有一个比较重要的部分就是相似度函数 (similarity function)。</p>
+<script type="math/tex; mode=display">
+d(img1,img2)=degree \ of \ difference \ between \ images  \\
+If \  d(img1,img2)
+\left\{
+\begin{aligned}
+\leq \tau   \quad & ,\  "Same"  \\
+\geq \tau  \quad &,\ "different"
+\end{aligned}
+\right.</script><p>相似度函数即表示两张图片之间差别的程度，值越小说明越相似，值越大说明越不相似。在这里我们会给定阈值 $\tau$ ，若相似度小于 $\tau$ ，则两张图片是识别为同一个人，否则为不是同一人。</p>
 <p>如果有新人加入数据库，同样可以直接计算相似度来判断是否为同一人，就不需要不断重新训练网络了。</p>
 <h2 id="Siamese-Network"><a href="#Siamese-Network" class="headerlink" title="Siamese Network"></a>Siamese Network</h2><p>上节我们所说的相似度函数，通常在 Siamese Network 中使用。那什么是 Siamese Network ？我们来看看。</p>
 <p>一般我们的卷积网络结构是先从输入一张图像样本开始，经过一系列的卷积层、池化层和全连接层，得到一串特征向量，再将这串特征向量输入到 Softmax 分类器中做出分类和预测。但我们现在去掉 Softmax 这一步，那么结果就是一串维度为 128 的向量，我们把这串向量用 $f(x^{(1)})$ 表示，$x^{(1)}$ 为第一个样本，如图：</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051702.png" alt=""></p>
-<p>其次，我们输入第2张图像样本，同样得到一串向量，我们用 $f(x^{(2)})$ 表示，这样用函数表示的过程，我们称为编码 (encoding)。那么我们计算 $f(x^{(1)})$ 和 $f(x^{(2)})$ 之间的相似度：<br>$$<br>d(x^{(1)},x^{(2)})=||f(x^{(1)})-f(x^{(2)})||^2_2<br>$$<br>根据相似度，我们可以判断这两张图片是否为同一个人，这就是 Siamese Neural Network 的构架，具体还可参考文献 <a href="">2</a>。</p>
+<p>其次，我们输入第2张图像样本，同样得到一串向量，我们用 $f(x^{(2)})$ 表示，这样用函数表示的过程，我们称为编码 (encoding)。那么我们计算 $f(x^{(1)})$ 和 $f(x^{(2)})$ 之间的相似度：</p>
+<script type="math/tex; mode=display">
+d(x^{(1)},x^{(2)})=||f(x^{(1)})-f(x^{(2)})||^2_2</script><p>根据相似度，我们可以判断这两张图片是否为同一个人，这就是 Siamese Neural Network 的构架，具体还可参考文献 <a href="">2</a>。</p>
 <h2 id="Triplet-Loss"><a href="#Triplet-Loss" class="headerlink" title="Triplet Loss"></a>Triplet Loss</h2><h3 id="Learning-Objective"><a href="#Learning-Objective" class="headerlink" title="Learning Objective"></a>Learning Objective</h3><p>我们如何对上面的 Siamses Neural Network 进行参数训练呢？一个方法就是定义 triplet loss function 进行梯度下降。</p>
 <p>triplet loss function 必须同时在多张图像中使用，进行相互比较。举个例子：对于同一个人的两张图片，其之间的距离是很小的，表示这两张图片很相似；而对于不同人的两张图片，其之间的距离是很大的，triplet loss也会随之增大。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051703.png" alt=""></p>
-<p>给定一张图片，我们称之为 Anchor image (简写为A)，和它相似的（同一个人）的图片，称之为 Positive image (P)，而和它不相似（不是同一人）的图片，称之为 Negative image (N).  那么我们的目标是，在神经网络训练参数时，能满足：<br>$$<br>d(A,P) \leq d(A,N)  \<br>that \ is : ||f(A)-f(P)||^2 \leq  ||f(A)-f(N)||^2  \<br>\Longrightarrow ||f(A)-f(P)||^2 -  ||f(A)-f(N)||^2 \leq 0<br>$$<br>现在，我们要做一些修改。因为如果神经网络训练得出的编码 $f​$ 参数均为0，那么不管输入的是什么图片，输出都为0，显然上式是永远成立的。我们添加一个参数 $\alpha​$ ，得到：<br>$$<br>||f(A)-f(P)||^2 -  ||f(A)-f(N)||^2 + \alpha \leq 0<br>$$<br>这样就避免了刚刚所说的那种情况，我们把 $\alpha​$ 称为 margin，这在支持向量机中也常用到。</p>
+<p>给定一张图片，我们称之为 Anchor image (简写为A)，和它相似的（同一个人）的图片，称之为 Positive image (P)，而和它不相似（不是同一人）的图片，称之为 Negative image (N).  那么我们的目标是，在神经网络训练参数时，能满足：</p>
+<script type="math/tex; mode=display">
+d(A,P) \leq d(A,N)  \\
+that \ is : ||f(A)-f(P)||^2 \leq  ||f(A)-f(N)||^2  \\
+\Longrightarrow ||f(A)-f(P)||^2 -  ||f(A)-f(N)||^2 \leq 0</script><p>现在，我们要做一些修改。因为如果神经网络训练得出的编码 $f​$ 参数均为0，那么不管输入的是什么图片，输出都为0，显然上式是永远成立的。我们添加一个参数 $\alpha​$ ，得到：</p>
+<script type="math/tex; mode=display">
+||f(A)-f(P)||^2 -  ||f(A)-f(N)||^2 + \alpha \leq 0</script><p>这样就避免了刚刚所说的那种情况，我们把 $\alpha​$ 称为 margin，这在支持向量机中也常用到。</p>
 <p>假设我们把 $\alpha$ 设为0.2，通常 $d(A,P)$ 是小于 $d(A,N)$ ，但我们也不希望它们之间过于接近，比如说 $d(A,P)=0.5$，$d(A,N)=0.51$ ，这是不能接受的，$d(A,N)$ 至少得大于等于0.7，这是我们把 $\alpha$ 设为0.2的原因，它能够把两类距离进一步拉大。</p>
-<h3 id="Loss-function"><a href="#Loss-function" class="headerlink" title="Loss function"></a>Loss function</h3><p>给定三张图片：A，P 和 N，P 和 A 图像中是同一人，而 N 和 A 图像中并非同一人，那么 Triplet loss function 为：<br>$$<br>L(A,P,N)=max(||f(A)-f(P)||^2 -  ||f(A)-f(N)||^2 + \alpha, \ 0)<br>$$<br>因为损失函数总是大于等于0的，因此要在相似度之差和0之间，取一个最大值。只要满足 $d(A,P) \leq d(A,N) $，那么损失函数总是等于0的。但如果$d(A,P) &gt;d(A,N) $，那么就说明出现了误判，损失函数也随之增大。Cost function 如下：<br>$$<br>J=\sum^m_{i=1}L(A^{(i)},P^{(i)},N^{(i)})<br>$$<br>注意到我们如果想要训练这个网络，那么就必须要有图片 A 和 P，也就是说同一个人至少要有2张照片以上进行训练。最好每个人能提供10张照片进行训练才能得到好的效果，如果每个人只有1张照片，那么是不能在这个网络进行训练的。</p>
+<h3 id="Loss-function"><a href="#Loss-function" class="headerlink" title="Loss function"></a>Loss function</h3><p>给定三张图片：A，P 和 N，P 和 A 图像中是同一人，而 N 和 A 图像中并非同一人，那么 Triplet loss function 为：</p>
+<script type="math/tex; mode=display">
+L(A,P,N)=max(||f(A)-f(P)||^2 -  ||f(A)-f(N)||^2 + \alpha, \ 0)</script><p>因为损失函数总是大于等于0的，因此要在相似度之差和0之间，取一个最大值。只要满足 $d(A,P) \leq d(A,N) $，那么损失函数总是等于0的。但如果$d(A,P) &gt;d(A,N) $，那么就说明出现了误判，损失函数也随之增大。Cost function 如下：</p>
+<script type="math/tex; mode=display">
+J=\sum^m_{i=1}L(A^{(i)},P^{(i)},N^{(i)})</script><p>注意到我们如果想要训练这个网络，那么就必须要有图片 A 和 P，也就是说同一个人至少要有2张照片以上进行训练。最好每个人能提供10张照片进行训练才能得到好的效果，如果每个人只有1张照片，那么是不能在这个网络进行训练的。</p>
 <h3 id="Choosing-the-triplets-A-P-N"><a href="#Choosing-the-triplets-A-P-N" class="headerlink" title="Choosing the triplets A,P,N"></a>Choosing the triplets A,P,N</h3><p>那么在神经网络中，是如何从训练集中选择这样的三图组合呢？如果你随机选择的话，那么这样的约束是很容易满足的 $||f(A)-f(P)||^2 + \alpha \leq  ||f(A)-f(N)||^2$，因此我们必须尽量选择更难识别的组合去训练，即$d(A,P) \approx d(A,N) $，也就是 A,P,N 都很相似，尽管 A 和 N 不是同一人。</p>
 <blockquote>
 <p>Choose triplets that are “hard” to train on.</p>
@@ -467,7 +488,11 @@
 <h2 id="Face-Verification-and-Binary-Classification"><a href="#Face-Verification-and-Binary-Classification" class="headerlink" title="Face Verification and Binary Classification"></a>Face Verification and Binary Classification</h2><p>人脸识别可以转化为一个直接的二元分类问题，那就是使用 Siamese Network，我们具体来看看。</p>
 <p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/18051704.png" alt=""></p>
 <p> 见上图，我们将两张图分别输入到神经网络中，得到两串特征向量，然后我们将这两串向量输入到 logistic regression 中做出预测。如果预测为1，则两张图像是同一人；如果预测为0，则两张图像并非同一人。</p>
-<p>这种方式和计算 triplet loss 训练参数的方式不同，但同样十分有效。我们具体看 逻辑回归单元中是怎么计算的。 输出 $\hat{y}$ 采用了 sigmoid 函数，但逻辑回归的输入并非只是前面一层得到的两列编码向量，而是：<br>$$<br>\hat{y}=\sigma (\sum^{128}_{k=1}w_i \big| f(x^{(i)})_k-  f(x^{(j)})_k \big|+b)<br>$$<br>在式中，$\big| f(x^{(i)})_k-  f(x^{(j)})_k \big|$ 还有其它的形式，如卡方形式，称为卡方相似度：<br>$$<br>\frac{( f(x^{(i)})_k-  f(x^{(j)})_k )^2}{ f(x^{(i)})_k+ f(x^{(j)})_k }<br>$$<br>最后提示一下计算技巧，假设上图中的第一个人是新人，我们不需要将他的图像添加到已训练的网络重新进行训练，只需要将他的图像输入到训练好的网络中计算出一串特征向量。以后当他每一次进入企业时，拍照后输入到网络中计算特征向量，然后与数据库中其之前图像计算的特征向量进行逻辑回归，即可预测出他是否为本人。这样就不用重新进行训练，节省了大量的计算成本。</p>
+<p>这种方式和计算 triplet loss 训练参数的方式不同，但同样十分有效。我们具体看 逻辑回归单元中是怎么计算的。 输出 $\hat{y}$ 采用了 sigmoid 函数，但逻辑回归的输入并非只是前面一层得到的两列编码向量，而是：</p>
+<script type="math/tex; mode=display">
+\hat{y}=\sigma (\sum^{128}_{k=1}w_i \big| f(x^{(i)})_k-  f(x^{(j)})_k \big|+b)</script><p>在式中，$\big| f(x^{(i)})_k-  f(x^{(j)})_k \big|$ 还有其它的形式，如卡方形式，称为卡方相似度：</p>
+<script type="math/tex; mode=display">
+\frac{( f(x^{(i)})_k-  f(x^{(j)})_k )^2}{ f(x^{(i)})_k+ f(x^{(j)})_k }</script><p>最后提示一下计算技巧，假设上图中的第一个人是新人，我们不需要将他的图像添加到已训练的网络重新进行训练，只需要将他的图像输入到训练好的网络中计算出一串特征向量。以后当他每一次进入企业时，拍照后输入到网络中计算特征向量，然后与数据库中其之前图像计算的特征向量进行逻辑回归，即可预测出他是否为本人。这样就不用重新进行训练，节省了大量的计算成本。</p>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
 <li><a href="https://www.coursera.org/learn/convolutional-neural-networks/home/week/4" target="_blank" rel="noopener">Convolutional Neural Networks - Week 4</a></li>
 <li><a href="">Taigman et al., 2014. DeepFace closing the gap to human level performance</a></li>
@@ -796,7 +821,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
 
@@ -844,12 +869,7 @@
   
 
 
-  
 
-
-
-  
-  
 
 
 
@@ -887,21 +907,6 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
   
 
 
