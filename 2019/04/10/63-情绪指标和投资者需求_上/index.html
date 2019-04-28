@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="关于投资者情绪的相关文献，过去多认为价格的偏离是由“公众心理”产生的情绪所驱动的，即个人投资者应为这种情绪导致的错误定价 (sentiment-induced mispricing) 所负责。这是传统的投资者情绪假设。然而，反映个人投资者需求的情绪指标仅是该传统假设的必要条件，而非充分条件。机构是否也会受到投资者情绪的影响，从而导致机构投资者投资决策的变化？本文旨在挖掘投资者情绪指标是否能够捕捉机">
+<meta name="keywords" content="实证">
+<meta property="og:type" content="article">
+<meta property="og:title" content="情绪指标和投资者需求（上）">
+<meta property="og:url" content="http://kibo.tech/2019/04/10/63-情绪指标和投资者需求_上/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="关于投资者情绪的相关文献，过去多认为价格的偏离是由“公众心理”产生的情绪所驱动的，即个人投资者应为这种情绪导致的错误定价 (sentiment-induced mispricing) 所负责。这是传统的投资者情绪假设。然而，反映个人投资者需求的情绪指标仅是该传统假设的必要条件，而非充分条件。机构是否也会受到投资者情绪的影响，从而导致机构投资者投资决策的变化？本文旨在挖掘投资者情绪指标是否能够捕捉机">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1904/19041001.png?q-sign-algorithm=sha1&q-ak=AKIDtq1RXZ2LSdDQrp3OgwyBHwY0OGu4vaku&q-sign-time=1556435115;1556436915&q-key-time=1556435115;1556436915&q-header-list=&q-url-param-list=&q-signature=6f5c2c563afa4a0a5f4baf6b2b805ecb6686632a&x-cos-security-token=c4307fec2318cd6d750b58c020152146c9099ffe10001">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1904/19041002.png?q-sign-algorithm=sha1&q-ak=AKIDa7KsSLuF1i0C4cDQYR3Yj1lGmpxJyHct&q-sign-time=1556435146;1556436946&q-key-time=1556435146;1556436946&q-header-list=&q-url-param-list=&q-signature=628d148909faebf08d7eac1a333fd5455518cdb9&x-cos-security-token=fa25be8035bd9ebfbf08d04edcf8f2c0cd8e9cee10001">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1904/19041003.png?q-sign-algorithm=sha1&q-ak=AKID6qvKvY1laF2KGD6gTznvBXlnKdw6gccB&q-sign-time=1556435170;1556436970&q-key-time=1556435170;1556436970&q-header-list=&q-url-param-list=&q-signature=ace26c115707e0d434eea7df607eff5782e163f2&x-cos-security-token=6f0af379621a5c6c98e5ef3067e05aca477fc71410001">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1904/19041004.png?q-sign-algorithm=sha1&q-ak=AKIDatmB4V0RqwpI2dGMKSbmDCZ93B4RlHe4&q-sign-time=1556435237;1556437037&q-key-time=1556435237;1556437037&q-header-list=&q-url-param-list=&q-signature=25a2a536d9717e2bc51fc7716590cd6d5464d424&x-cos-security-token=bcdc17330cb8cd3453f0e754359e90786b37c67a10001">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1904/19041005.png?q-sign-algorithm=sha1&q-ak=AKIDsi2e2nkeJYeUaDgbjm8ZMobkPvd3eEGw&q-sign-time=1556435188;1556436988&q-key-time=1556435188;1556436988&q-header-list=&q-url-param-list=&q-signature=23b0e543912d942a461c2538cd4f23dbb3235e05&x-cos-security-token=617c7aa6758e26ffc0ca2dffbd46319761a3389510001">
+<meta property="og:updated_time" content="2019-04-28T07:19:08.484Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="情绪指标和投资者需求（上）">
+<meta name="twitter:description" content="关于投资者情绪的相关文献，过去多认为价格的偏离是由“公众心理”产生的情绪所驱动的，即个人投资者应为这种情绪导致的错误定价 (sentiment-induced mispricing) 所负责。这是传统的投资者情绪假设。然而，反映个人投资者需求的情绪指标仅是该传统假设的必要条件，而非充分条件。机构是否也会受到投资者情绪的影响，从而导致机构投资者投资决策的变化？本文旨在挖掘投资者情绪指标是否能够捕捉机">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1904/19041001.png?q-sign-algorithm=sha1&q-ak=AKIDtq1RXZ2LSdDQrp3OgwyBHwY0OGu4vaku&q-sign-time=1556435115;1556436915&q-key-time=1556435115;1556436915&q-header-list=&q-url-param-list=&q-signature=6f5c2c563afa4a0a5f4baf6b2b805ecb6686632a&x-cos-security-token=c4307fec2318cd6d750b58c020152146c9099ffe10001">
+
+
+
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2019/04/10/63-情绪指标和投资者需求_上/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>情绪指标和投资者需求（上） | Foresee</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2019/04/10/63-情绪指标和投资者需求_上/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">情绪指标和投资者需求（上）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-10 08:51:31" itemprop="dateCreated datePublished" datetime="2019-04-10T08:51:31+08:00">2019-04-10</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.9k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>关于投资者情绪的相关文献，过去多认为价格的偏离是由“公众心理”产生的情绪所驱动的，即个人投资者应为这种情绪导致的错误定价 (sentiment-induced mispricing) 所负责。这是传统的投资者情绪假设。然而，反映个人投资者需求的情绪指标仅是该传统假设的必要条件，而非充分条件。机构是否也会受到投资者情绪的影响，从而导致机构投资者投资决策的变化？本文旨在挖掘投资者情绪指标是否能够捕捉机构投资者的需求冲击。</p>
+<blockquote>
+<p>Contrary to this widely held assumption, in this paper, we demostrate that sentiment metrics capture the demand shocks of institutional, rather than individual, investors.</p>
+</blockquote>
+<a id="more"></a>
+<p>今天的这篇文章是 <a href="https://doi.org/10.1111/jofi.12754" target="_blank" rel="noopener">Sentiment Metrics and Investor Demand</a> (Devault et al., 2019)，来源于 “Jouranal of Finance”，主要讲的是机构需求冲击 (institutional demand shocks)、投资者情绪 (investor sentiment)和股票收益 (equity returns)之间的关系。</p>
+<h1 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h1><p>作者选取了6个投资者情绪代理变量：封闭式基金折价 (closed-end fund discounts)、NYSE股票交易总量 (NYSE share turnover)、上市公司数量 (the number of IPOs)、上市第一天的平均收益 (the average first-day IPO return)、股本发行在总债务中的份额和股本发行量 (the share of equity issues in total debt and equity issues)、股息溢价 (dividend premium)。根据这些代理变量，计算其改变（<em>原文为change，经过后文推断，应该是时序上的季度差分</em>）的第一主成分以衡量投资者情绪的改变。这个情绪指标是基于季度，即计算的是投资者情绪季度的改变。Baker &amp; Wurgler (2007) 提到，情绪指标有两种算法，一种是“raw sentiment”，即直接计算6个代理变量的第一主成分作为投资者情绪；另一种是“orthogonalized sentiment”，即根据6个代理变量与一系列宏观经济变量 (business cycle variables)的回归得到的残差，再取残差的第一主成分作为正交化投资者情绪。<strong>本文中作者在BW的基础上，计算6个代理变量的差分后，再以其第一主成分作为投资者情绪的改变。</strong></p>
+<p>作者选择了一些普通股票作为样本 (CRSP share code 10 or 11)，并采用月收益波动率（前12个月内至少有9个月收益的股票）来捕捉股票的投机特点。其次，采用季度 13(f) 报告来反映每只股票自1980至2010每季度的部分机构所有制水平 (fractional institutional ownership levels) 和机构需求冲击 。</p>
+<script type="math/tex; mode=display">
+机构所有制水平=\lbrace \frac{机构持有股票数量}{已发行股票数量}\rbrace
+\\
+机构需求冲击=change\ of\ \lbrace \frac{机构持有股票数量}{已发行股票数量}\rbrace</script><p>作者假设机构需求冲击的负值可代理为个人投资者的需求冲击。作者还采用了两种13(f) 基金经理的分类方式（13(f)见下段引用）。样本中对3945只股票自1980年6月至2010年12月（共123个季度）每季度的价格取了均值。</p>
+<blockquote>
+<p>“In the United States, institutional investors are required to report their equity positions quarterly in 13-F filings to the Securities and Exchange Commission (SEC). These quarterly data show that changes in institutional equity holdings are positively serially correlatred and positively correlated with future stock returns, and institutional purchases appear to be positively correlated with lagged stock returns.” ——<a href="https://doi.org/10.1016/j.jfineco.2008.03.006" target="_blank" rel="noopener">Campbell et al., 2009</a></p>
+</blockquote>
+<h1 id="Dose-the-BW-Metric-Capture-Institutions’-or-Individuals’-Demand-Shocks"><a href="#Dose-the-BW-Metric-Capture-Institutions’-or-Individuals’-Demand-Shocks" class="headerlink" title="Dose the BW Metric Capture Institutions’ or Individuals’ Demand Shocks?"></a>Dose the BW Metric Capture Institutions’ or Individuals’ Demand Shocks?</h1><p>作者首先检验了情绪的季度改变与13(f)季度需求冲击之间的关系，以确认谁（机构vs. 个人）的需求冲击能够被情绪指标所捕捉。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1904/19041001.png?q-sign-algorithm=sha1&amp;q-ak=AKIDtq1RXZ2LSdDQrp3OgwyBHwY0OGu4vaku&amp;q-sign-time=1556435115;1556436915&amp;q-key-time=1556435115;1556436915&amp;q-header-list=&amp;q-url-param-list=&amp;q-signature=6f5c2c563afa4a0a5f4baf6b2b805ecb6686632a&amp;x-cos-security-token=c4307fec2318cd6d750b58c020152146c9099ffe10001" alt=""></p>
+<p>由上表可见，在第一列中，当情绪上涨时，机构会从个人投资者（散户）中买入高波动的股票（高波动股票的机构需求冲击与情绪改变的相关性高达31.5%），并向散户卖出低波动股票（第1列最上面1行的相关性为-28.7%）。由此说明，情绪指标捕捉的是机构的总需求冲击，而非散户的。</p>
+<p>其次，作者构建了两步法对所有样本进行了测试。在第一步测试中，以机构需求冲击和股票收益波动的截面相关性作为每一季度机构从散户中购买（或向散户卖出）风险股票的程度。正值表示机构可从散户中购买高波动股票，而负值表示散户从机构中购买高波动股票。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1904/19041002.png?q-sign-algorithm=sha1&amp;q-ak=AKIDa7KsSLuF1i0C4cDQYR3Yj1lGmpxJyHct&amp;q-sign-time=1556435146;1556436946&amp;q-key-time=1556435146;1556436946&amp;q-header-list=&amp;q-url-param-list=&amp;q-signature=628d148909faebf08d7eac1a333fd5455518cdb9&amp;x-cos-security-token=fa25be8035bd9ebfbf08d04edcf8f2c0cd8e9cee10001" alt=""></p>
+<p>上表中的Panel A展示出截面相关性随着时间而发生巨大变化，低至-16.86%（即机构极力卖出高波动股票的季度），高达17.65%（即机构强烈买入高波动股票的季度）。在第二步中作者计算了情绪季度改变与机构从散户中购买风险股票的时序变化程度（即上一步测试估计的123个截面相关性的序列）的相关性，用于检验当情绪上涨时，机构投资者是否也会提高对风险股票的偏好。和之前的测试结果保持一致，情绪的改变能够捕捉机构投资者的需求冲击，机构吸引高波动股票的时序变化程度与纯情绪改变的相关性为37.34%，与正交情绪改变的相关性为37.27%（均在1%水平显著）。</p>
+<p>然而，上述检验的不足之处在于股票的风险在一个季度内是不断变化的，例如当情绪上涨时，机构会倾向买入高波动股票，而当到达季度后期时，股票波动发生均值回归(mean reversion)，那么机构新持有股票的波动性会保持不变，甚至会降低。于是，作者根据三个不同季度的日收益去估计非重复的风险，即由季度 $t-1(\sigma_{i,t-1})$，季度 $t(\sigma_{i,t})$，季度 $t+1(\sigma_{i,t+1})$ 的日收益的平方计算得到的月度收益标准差的自然对数。通过这种方法能够更好得反映真实的波动和风险。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1904/19041003.png?q-sign-algorithm=sha1&amp;q-ak=AKID6qvKvY1laF2KGD6gTznvBXlnKdw6gccB&amp;q-sign-time=1556435170;1556436970&amp;q-key-time=1556435170;1556436970&amp;q-header-list=&amp;q-url-param-list=&amp;q-signature=ace26c115707e0d434eea7df607eff5782e163f2&amp;x-cos-security-token=6f0af379621a5c6c98e5ef3067e05aca477fc71410001" alt=""></p>
+<p>作者进行了4项测试去检验公司股票的风险变化是否还能重新解释情绪指标捕捉散户的需求冲击。第一，当情绪上涨时机构买入的股票比卖出的股票风险更低，那么情绪改变与机构需求冲击的相关性应为负数，在采用季度末期的风险水平时。下表中的Panel A展示了情绪改变和机构持有改变量和波动水平之间相关性的相关性，其中波动基于季度 $t-1$,$t$,$t+1$ 的日收益来衡量。该结果与Table II 中的Panel B相似。作者推断风险可能会在情绪对机构需求的影响中起作用，事实上，不管是 $t-1$,$t$,还是 $t+1$ 季度的风险，两者关系都基本保持一致。</p>
+<p>第二个测试进一步得检验了当情绪上涨时机构买入的股票风险降低的可能性。Panel B同样反映风险改变并不能解释情绪指标捕捉散户的需求冲击。结果的两列均为正值，且第一列显著，说明当情绪上涨时，机构买入的股票会倾向于风险更大。</p>
+<p>机构对风险股票的偏好增长主要有两个方面：(1) 机构将其投资组合转移到风险更大的股票中；(2) 增加机构已持有的相对高风险的股票。因此，在第三个测试中，作者检验了当情绪上涨时，机构持有的股票是否变得风险更小。上表中的Panel C中第一行和第二行分别衡量季度 $t$ 的首期和末期的风险。结果第一列表明情绪改变和机构持有证券风险的上涨和下跌并无关联，而第二列表明当情绪上涨时，机构持有的股票会变得风险更大。</p>
+<p>最后，作者考虑了另一种方法用于衡量高波动股票对机构投资者的吸引力的改变。具体地，即在季度 $t$ 的结束与开始的机构持有水平和风险水平相关性之差：</p>
+<script type="math/tex; mode=display">
+\rho (Inst_{i,1},\sigma_{i,1})- \rho (Inst_{i,0},\sigma_{i,0})</script><p>Panel D展示了这些相关性与情绪改变的相关性，尽管第一列表明了无依据显示情绪改变和相关性之差之间存在关系，但第二列的结果却支持了情绪捕捉机构需求冲击的假设。此外，该结果也与情绪指标捕捉个人需求冲击的假设不一致。</p>
+<h1 id="Alternative-Measures-of-Sentiment-and-Institutional-Investor-Demand"><a href="#Alternative-Measures-of-Sentiment-and-Institutional-Investor-Demand" class="headerlink" title="Alternative Measures of Sentiment and Institutional Investor Demand"></a>Alternative Measures of Sentiment and Institutional Investor Demand</h1><p>尽管BW情绪指标体系在现有研究中经常被使用，然而还存在其他代理变量能够更好地捕捉散户由情绪引发的需求冲击。作者考虑了另外的6个代理变量：BW情绪指标的个人部分 (the individual components of the BW sentiment metric)、基金流量 (mutual fund flows)、消费者信心 (consumer confidence)、散户情绪 (a survey-based measure of individual investor sentiment)、风险资本流量 (venture capital flows)以及经济条件的改变 (changes in economic conditions)。作者主要采用这些变量检验了两个问题，(1)这些指标是否能和BW指标体系一样捕捉同时及随后的收益模式。(2) 这些指标是否能捕捉机构或散户的需求冲击。</p>
+<p>为了构建基于共同基金流量的情绪指标，作者根据7种共同基金的种类 (aggressive growth, growth, balanced, growth and income, sector, imcome equity and income mixed)，计算了共同基金流量改变中的前两个主成分，并将其视为一般需求 (“general demand”)和投机需求 (“speculative demand”)。数据从 Investment Company Institute (ICI)获得，自1984至2010。和BW指标一致，第一主成分与所有的基金种类呈正相关，而第二主成分仅与极速增长型基金 (aggressive fund)呈正相关。</p>
+<p>关于消费者信息，作者采用两个指数进行衡量，the University of Michigan Survey  of Consumer Expectations and the Conference Board Consumer Confidence Index. 关于风险资本流量，作者采用 PWC/National Venture Capital Association data 计算了：(i) the percentage change in the dollar value of “cash-for-equity investments by the professional venture capital community in private emerging companies in the U.S.” (ii) the change in the number of venture capital deals. 而对于经济条件，作者采用了两个指数的变化（差分）：the Chicago Fed’s National Activity Index and St. Louis Fed’s Financial Stress Index.</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1904/19041004.png?q-sign-algorithm=sha1&amp;q-ak=AKIDatmB4V0RqwpI2dGMKSbmDCZ93B4RlHe4&amp;q-sign-time=1556435237;1556437037&amp;q-key-time=1556435237;1556437037&amp;q-header-list=&amp;q-url-param-list=&amp;q-signature=25a2a536d9717e2bc51fc7716590cd6d5464d424&amp;x-cos-security-token=bcdc17330cb8cd3453f0e754359e90786b37c67a10001" alt=""></p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1904/19041005.png?q-sign-algorithm=sha1&amp;q-ak=AKIDsi2e2nkeJYeUaDgbjm8ZMobkPvd3eEGw&amp;q-sign-time=1556435188;1556436988&amp;q-key-time=1556435188;1556436988&amp;q-header-list=&amp;q-url-param-list=&amp;q-signature=23b0e543912d942a461c2538cd4f23dbb3235e05&amp;x-cos-security-token=617c7aa6758e26ffc0ca2dffbd46319761a3389510001" alt=""></p>
+<p>上表为其它代理情绪指标的检验结果。首先，由第1列来看大部分指标和BW情绪指标呈正相关。其次，现时收益（第2列）和随后收益（第3列）与BW指标的结果大部分保持一致。特别地，当情绪上涨时，风险股票表现得比稳定股票更好，因为第2列17个系数中有13个均为正值，且有6个显著异于0。相反，第2列中估计的4个负相关系数均不显著异于0。和BW指标一致，在高情绪水平时，风险股票比稳定股票表现得更差，因为第3列中17个系数有14个为负，且有6个显著异于0。前3列中并不显著的系数表明：(1) 这些指标并没有捕捉到投资者情绪；(2) 情绪交易者的需求冲击不会导致风险股票和稳定股票在收益上的差别；(3) 这些指标的噪声太大，就像BW指标中，每一个情绪代理变量都包含情绪的部分和特殊无效的部分。</p>
+<p>最后1列检验的是这些情绪指标是否捕捉了机构或散户的需求冲击。正值表示的是当情绪上涨时机构倾向于增加对风险股票的需求，负值表示当情绪上涨时散户倾向于增加对风险股票的需求。这些结果表明情绪指标捕捉的是机构而不是散户的需求冲击。特别地，17个相关系数中有13个为正值，且在这13个中有9个显著异于0，而4个负相关系数均不显著异于0。</p>
+<p>前面的结果均反映了情绪指标捕捉的是机构冲击需求，而且散户的。那么为什么情绪能够反映机构的需求呢？本博文只讲了文章的上半部分，下半部分可见下篇博文。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li>DeVAULT L, Sias R, Starks L. Sentiment metrics and investor demand[J]. The Journal of Finance, 2019, 74(2): 985-1024.</li>
+<li>Baker M , Wurgler J . Investor Sentiment in the Stock Market[J]. Journal of Economic Perspectives, 2007, 21.</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2019/04/10/63-情绪指标和投资者需求_上/">情绪指标和投资者需求（上）</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2019年04月10日 - 08:04</p>
+
+  <p><span>最后更新:</span>2019年04月28日 - 15:04</p>
+
+  <p><span>原始链接:</span><a href="/2019/04/10/63-情绪指标和投资者需求_上/" title="情绪指标和投资者需求（上）">http://kibo.tech/2019/04/10/63-情绪指标和投资者需求_上/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2019/04/10/63-情绪指标和投资者需求_上/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Thanks for your donation!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/实证/" rel="tag"><i class="fa fa-tag"></i> 实证</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/28/62-中文Beamer小技巧——Latex/" rel="next" title="中文Beamer小技巧——Latex">
+                <i class="fa fa-chevron-left"></i> 中文Beamer小技巧——Latex
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">63</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">59</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Data"><span class="nav-number">1.</span> <span class="nav-text">Data</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dose-the-BW-Metric-Capture-Institutions’-or-Individuals’-Demand-Shocks"><span class="nav-number">2.</span> <span class="nav-text">Dose the BW Metric Capture Institutions’ or Individuals’ Demand Shocks?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Alternative-Measures-of-Sentiment-and-Institutional-Investor-Demand"><span class="nav-number">3.</span> <span class="nav-text">Alternative Measures of Sentiment and Institutional Investor Demand</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">257k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">3:54</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.4.2</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v="></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v="></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script type="text/javascript">
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/ni-j.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
