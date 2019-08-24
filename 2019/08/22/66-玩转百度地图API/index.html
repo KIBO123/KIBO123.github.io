@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="最近做了一个项目，其中涉及到寻找一些地标的具体位置及相关信息，例如地标的准确坐标、地标周围的POI信息等，看起来好像很难的样子，但实际上非常简单，这里主要调用了百度地图开放平台实现我们的目的，给大家分享一下相关使用技巧。">
+<meta name="keywords" content="Python,经验,百度地图API">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python玩转百度地图API">
+<meta property="og:url" content="http://kibo.tech/2019/08/22/66-玩转百度地图API/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="最近做了一个项目，其中涉及到寻找一些地标的具体位置及相关信息，例如地标的准确坐标、地标周围的POI信息等，看起来好像很难的样子，但实际上非常简单，这里主要调用了百度地图开放平台实现我们的目的，给大家分享一下相关使用技巧。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-24T04:01:52.255Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python玩转百度地图API">
+<meta name="twitter:description" content="最近做了一个项目，其中涉及到寻找一些地标的具体位置及相关信息，例如地标的准确坐标、地标周围的POI信息等，看起来好像很难的样子，但实际上非常简单，这里主要调用了百度地图开放平台实现我们的目的，给大家分享一下相关使用技巧。">
+
+
+
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2019/08/22/66-玩转百度地图API/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Python玩转百度地图API | Foresee</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2019/08/22/66-玩转百度地图API/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python玩转百度地图API
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-22 15:18:40" itemprop="dateCreated datePublished" datetime="2019-08-22T15:18:40+08:00">2019-08-22</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Work/" itemprop="url" rel="index"><span itemprop="name">Work</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">7.2k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">7 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近做了一个项目，其中涉及到寻找一些地标的具体位置及相关信息，例如地标的准确坐标、地标周围的POI信息等，看起来好像很难的样子，但实际上非常简单，这里主要调用了百度地图开放平台实现我们的目的，给大家分享一下相关使用技巧。</p>
+<a id="more"></a>
+<p>首先介绍一下这个百度地图开放平台吧！</p>
+<p>首页：<a href="http://lbsyun.baidu.com" target="_blank" rel="noopener">http://lbsyun.baidu.com</a></p>
+<p>API：<a href="http://lbsyun.baidu.com/index.php?title=webapi" target="_blank" rel="noopener">http://lbsyun.baidu.com/index.php?title=webapi</a></p>
+<p>百度地图开放平台提供了许多功能，诸如地点检索、正/逆地理编码、路线规划、实时路况查询等等，详见百度地图API。由于我们的项目数据量非常庞大，共计几十万条吧，都是一些地标的文本地址，我们需要的是根据这些地址，进一步挖掘出与这些地址相关的信息，因此首先涉及到地理编码，即将文本地址转化为地理坐标，再根据地理坐标进行地点检索，查询相应的POI信息。在这里就简单介绍一下这两项服务。</p>
+<h1 id="百度地图批量地理编码"><a href="#百度地图批量地理编码" class="headerlink" title="百度地图批量地理编码"></a>百度地图批量地理编码</h1><p>在使用百度地图的各种服务之前，需要申请一个AK码。首先我们注册一个百度地图账号，如果有百度账号也可以直接登录。在百度地图首页进入控制台，创建应用，应用名称随便填，应用类型选“浏览器端”，Referer白名单设为<code>*</code>，这样不管是任何网站都能够调用百度地图服务了。</p>
+<p>AK码申请下来后，可以申请认证用户，认证用户的免费访问额度比较多，地理编码是30万次/天，地点检索是3万次/天。我果断申请了认证用户，哈哈，申请方法按流程和指引走就行了，在这里不再具体介绍。</p>
+<p>好了，申请完AK之后，就马上开始我们的任务了。数据在一个Excel当中，只有1列，即文本地址，我们需要批量读取每一条地址，访问百度地图地理编码，将其转化为坐标，再批量写入Excel当中。不多说了，直接上代码吧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">import xlrd</span><br><span class="line">import json</span><br><span class="line">import pandas as pd</span><br><span class="line">from urllib.request import urlopen, quote</span><br><span class="line"></span><br><span class="line">#获取坐标函数</span><br><span class="line">#其中status是获取状态，成功返回0，错误返回其他数字，表示错误原因，具体可见API文档</span><br><span class="line">def get_coordinates(address):</span><br><span class="line">    url = &apos;http://api.map.baidu.com/geocoding/v3/&apos;</span><br><span class="line">    output = &apos;json&apos;</span><br><span class="line">    ak = &apos;替换为你的ak码&apos;</span><br><span class="line">    address = quote(address)</span><br><span class="line">    uri = url + &apos;?&apos; + &apos;address=&apos; + address + &apos;&amp;output=&apos; + output + &apos;&amp;ak=&apos; + ak</span><br><span class="line">    req = urlopen(uri)</span><br><span class="line">    res = req.read().decode()</span><br><span class="line">    temp = json.loads(res)</span><br><span class="line">    status = temp[&apos;status&apos;]</span><br><span class="line">    if status == 0:</span><br><span class="line">        lng = temp[&apos;result&apos;][&apos;location&apos;][&apos;lng&apos;]</span><br><span class="line">        lat = temp[&apos;result&apos;][&apos;location&apos;][&apos;lat&apos;]</span><br><span class="line">        coordinate = (status, lng, lat)</span><br><span class="line">    else:</span><br><span class="line">        coordinate = (status,&apos;Unknown&apos;, &apos;Unknown&apos;) </span><br><span class="line">    return coordinate</span><br><span class="line"></span><br><span class="line">#用pandas的read_excel()函数直接读取excel会更方便点</span><br><span class="line">data = xlrd.open_workbook(&apos;address.xlsx&apos;)</span><br><span class="line">rtable = data.sheets()[0]</span><br><span class="line">values = rtable.col_values(0)</span><br><span class="line">row = 0</span><br><span class="line">coordinates = []</span><br><span class="line">for value in values:</span><br><span class="line">    coordinate = get_coordinates(value)</span><br><span class="line">    coordinates.append(coordinate)</span><br><span class="line"></span><br><span class="line">#用pandas直接写入excel</span><br><span class="line">coordinates_dataframe = pd.DataFrame(coordinates, columns=[&apos;status&apos;, &apos;lng&apos;, &apos;lat&apos;])</span><br><span class="line">coordinates_dataframe.to_excel(&apos;address_scoordinates.xlsx&apos;)</span><br></pre></td></tr></table></figure>
+<h1 id="百度地图批量获取POI信息"><a href="#百度地图批量获取POI信息" class="headerlink" title="百度地图批量获取POI信息"></a>百度地图批量获取POI信息</h1><p>第二个任务会稍稍繁重一点，我们需要根据坐标去进行地点检索，将地标周围的各类型的建筑物和店铺信息（即POI信息）都抓取下来，然后统计各个类别的POI数量，比如说附近 <code>美食</code> 有多少家？<code>酒店</code> 有多少间等等，批量统计完之后将其写入Excel当中。</p>
+<p>百度的POI类型可见：<a href="http://lbsyun.baidu.com/index.php?title=lbscloud/poitags" target="_blank" rel="noopener">http://lbsyun.baidu.com/index.php?title=lbscloud/poitags</a></p>
+<p>好了，再次上代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">import math</span><br><span class="line">import xlrd</span><br><span class="line">import json</span><br><span class="line">import pandas as pd</span><br><span class="line">from urllib.request import urlopen, quote</span><br><span class="line"></span><br><span class="line">#获取详细POI信息</span><br><span class="line">def get_poi(lat, lng, radius):</span><br><span class="line">    lat = str(lat)</span><br><span class="line">    lng = str(lng)</span><br><span class="line">    radius = str(radius)</span><br><span class="line">    url = &apos;http://api.map.baidu.com/place/v2/search?&apos;</span><br><span class="line">    query= quote(&apos;美食$酒店$购物$休闲娱乐$教育$医疗$交通设施$金融$公司企业$政府机构&apos;)</span><br><span class="line">    page_num = &apos;0&apos;</span><br><span class="line">    ak = &apos;替换为你的ak码&apos;</span><br><span class="line">    uri = url + &apos;query=&apos; + query + &apos;&amp;location=&apos; + lat + &apos;,&apos; + lng + &apos;&amp;radius=&apos; + radius + &apos;&amp;output=json&amp;scope=2&amp;filter=sort_name:dostance|sort_rule:1&amp;page_size=20&amp;page_num=&apos; + page_num + &apos;&amp;ak=&apos; + ak</span><br><span class="line">    req = urlopen(uri)</span><br><span class="line">    res = req.read().decode()</span><br><span class="line">    temp = json.loads(res)</span><br><span class="line">    status = temp[&apos;status&apos;]</span><br><span class="line">    message = temp[&apos;message&apos;]</span><br><span class="line">    poi_dict = &#123;&#125;</span><br><span class="line">    if status == 0:</span><br><span class="line">        total = temp[&apos;total&apos;]</span><br><span class="line">        pages = math.ceil(total/20)</span><br><span class="line">        results = temp[&apos;results&apos;]</span><br><span class="line">        for i in range(1,pages):</span><br><span class="line">            pages_num = str(i)</span><br><span class="line">            uri_i = url + &apos;query=&apos; + query + &apos;&amp;location=&apos; + lat + &apos;,&apos; + lng + &apos;&amp;radius=&apos; + radius + &apos;&amp;output=json&amp;scope=2&amp;filter=sort_name:dostance|sort_rule:1&amp;page_size=20&amp;page_num=&apos; + pages_num + &apos;&amp;ak=&apos; + ak</span><br><span class="line">            req_i = urlopen(uri_i)</span><br><span class="line">            res_i = req_i.read().decode()</span><br><span class="line">            temp_i = json.loads(res_i)</span><br><span class="line">            result_i = temp_i[&apos;results&apos;]</span><br><span class="line">            results = results + result_i</span><br><span class="line">        tag_dict = types_count(total, results)</span><br><span class="line">        tag_dict[&apos;status&apos;] = status</span><br><span class="line">        tag_dict[&apos;total&apos;] = total</span><br><span class="line">        poi_dict = tag_dict</span><br><span class="line">    else:</span><br><span class="line">        poi_dict[&apos;status&apos;] = status</span><br><span class="line">        poi_dict[&apos;message&apos;] = message</span><br><span class="line">    return poi_dict</span><br><span class="line"></span><br><span class="line">#对各类别POI进行统计</span><br><span class="line">def types_count(total, results):</span><br><span class="line">    tag_dict = &#123;&#125;</span><br><span class="line">    for i in range(len(results)):</span><br><span class="line">        if &apos;tag&apos; in results[i][&apos;detail_info&apos;]:</span><br><span class="line">            tags = results[i][&apos;detail_info&apos;][&apos;tag&apos;]</span><br><span class="line">            if tags not in tag_dict:</span><br><span class="line">                tag_dict[tags] = 1</span><br><span class="line">            else:</span><br><span class="line">                tag_dict[tags] += 1</span><br><span class="line">    return tag_dict</span><br><span class="line"></span><br><span class="line"># 读取excel坐标</span><br><span class="line">data = xlrd.open_workbook(&apos;coordinates.xlsx&apos;)</span><br><span class="line">rtable = data.sheets()[0]</span><br><span class="line">#nrows = rtable.nrows</span><br><span class="line">vlats = rtable.col_values(0)</span><br><span class="line">vlngs = rtable.col_values(1)</span><br><span class="line"></span><br><span class="line">#由于每访问一条数据，返回的各类别POI顺序都不一致，且POI类型也不一定相同，需要构建一个字典，将所有类别覆盖。</span><br><span class="line">POI = []</span><br><span class="line">for t in range(len(vlats)):</span><br><span class="line">    ppoi = get_poi(vlats[t],vlngs[t], 1000)</span><br><span class="line">    POI.append(ppoi)</span><br><span class="line"></span><br><span class="line">POIs = &#123;&#125;</span><br><span class="line">for j in range(len(POI)):</span><br><span class="line">    poi_dict = POI[j]</span><br><span class="line">    POIs = dict(POIs, **poi_dict)</span><br><span class="line"></span><br><span class="line">#最终将每条数据的所有POI类别定序填入字典，转化为dataframe写入excel</span><br><span class="line">POIs_final = []</span><br><span class="line">for k in range(len(POI)):</span><br><span class="line">    for n in POIs.keys():</span><br><span class="line">        POIs[n] = 0</span><br><span class="line">    poi_dict = POI[k]</span><br><span class="line">    for key in poi_dict.keys():</span><br><span class="line">        if key in POIs.keys():</span><br><span class="line">            POIs[key] = poi_dict[key]</span><br><span class="line">    poi_final = list(POIs.values())</span><br><span class="line">    POIs_final.append(poi_final)</span><br><span class="line"></span><br><span class="line">POI_dataframe = pd.DataFrame(POIs_final, columns=list(POIs.keys()))</span><br><span class="line">POI_dataframe.to_excel(&apos;pois.xlsx&apos;)</span><br></pre></td></tr></table></figure>
+<p>可能会有些细节大家看不懂，那是因为百度地点检索的限制，因为百度地图每输入一个坐标，其周围1公里的POI数量可能高达几百条（出于数据保护的原因，百度地图最多返回400条），而每次其页面返回的数量最多20条，因此一个坐标可能需要十几次访问才能将其所有的POI给完全获取下来。还有其他很多一些细节需要考究，但都是出于对百度地图访问的限制所作的考虑，因此看不懂的同学要好好结合百度地图API来看，哈哈。</p>
+<h1 id="Excel拼接"><a href="#Excel拼接" class="headerlink" title="Excel拼接"></a>Excel拼接</h1><p>最后还有一个小问题，就是我每天的访问限额只有3万次/天，要是数据量比较大，那么在不花钱的情况下，只好连续多天进行访问了。然而每天访问后获取的多个excel文件，其每一列都是不同的，比如说今天得到的excel，第1列是 <code>美食</code> 数量，第2列是 <code>酒店</code> 数量。明天得到的excel，第1列是 <code>图书馆</code> 数量，第2列是 <code>便利店</code> 数量等等。由于POI类别很多，每个excel可能都有好几十列乃至上百列，靠人工将这些excel合并，那得折腾多久。。。想想我都觉得可怕。</p>
+<p>嘻嘻，但是不用急，没有什么是python程序不能实现的，看代码吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">from os import walk</span><br><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">#遍历所有excel文件</span><br><span class="line">for root, dirs, files in walk(&apos;excel_file(即包含所有要处理excel的文件夹路径)&apos;, topdown=False):</span><br><span class="line">    print(files)</span><br><span class="line"></span><br><span class="line">files.sort()</span><br><span class="line">num = len(files)</span><br><span class="line">alldata = []</span><br><span class="line"></span><br><span class="line">#读取后全部转化为字典</span><br><span class="line">for i in range(num):</span><br><span class="line">    newexcel = pd.read_excel(&apos;excel_file/%s&apos; %files[i])</span><br><span class="line">    newdata = newexcel.to_dict(orient = &apos;list&apos;)</span><br><span class="line">    alldata.append(newdata)</span><br><span class="line">    </span><br><span class="line">all_dict = &#123;&#125;</span><br><span class="line">for j in range(num):</span><br><span class="line">    data_dict = alldata[j]</span><br><span class="line">    all_dict = dict(all_dict, **data_dict)</span><br><span class="line"></span><br><span class="line">#读入字典，按多个excel的字典键值一一对应</span><br><span class="line">for key in all_dict.keys():</span><br><span class="line">    all_dict[key] = []</span><br><span class="line">    for k in range(num):</span><br><span class="line">        data_dict = alldata[k]</span><br><span class="line">        if key not in data_dict.keys():</span><br><span class="line">            data_dict[key] = list(np.zeros(len(data_dict[&apos;status&apos;])))</span><br><span class="line">        all_dict[key] += data_dict[key]</span><br><span class="line"></span><br><span class="line"># 再将统一整合的字典导出到excel</span><br><span class="line">pois_df = pd.DataFrame(all_dict)</span><br><span class="line">pois_df1 = pois_df.sort_index(axis = 1, ascending = True)</span><br><span class="line">pois_df1.to_excel(&apos;pois_combine.xlsx&apos;)</span><br></pre></td></tr></table></figure>
+<p>以上只是项目的一小部分，但又让我学习到了很多东西，所以说实践还是非常重要的。很多东西你并不知道自己学会了没有，这时候往往需要实践来检验一下。哈哈，今天就到这里，没有什么新东西，只是将我近期的工作整理了一下，开学要好好回到苦读文献的状态了。</p>
+<p>谢谢大家！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2019/08/22/66-玩转百度地图API/">Python玩转百度地图API</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2019年08月22日 - 15:08</p>
+
+  <p><span>最后更新:</span>2019年08月24日 - 12:08</p>
+
+  <p><span>原始链接:</span><a href="/2019/08/22/66-玩转百度地图API/" title="Python玩转百度地图API">http://kibo.tech/2019/08/22/66-玩转百度地图API/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2019/08/22/66-玩转百度地图API/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Thanks for your donation!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          
+            <a href="/tags/经验/" rel="tag"><i class="fa fa-tag"></i> 经验</a>
+          
+            <a href="/tags/百度地图API/" rel="tag"><i class="fa fa-tag"></i> 百度地图API</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/22/65-SAS日期处理小技巧/" rel="next" title="SAS日期处理小技巧">
+                <i class="fa fa-chevron-left"></i> SAS日期处理小技巧
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">66</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">62</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#百度地图批量地理编码"><span class="nav-number">1.</span> <span class="nav-text">百度地图批量地理编码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#百度地图批量获取POI信息"><span class="nav-number">2.</span> <span class="nav-text">百度地图批量获取POI信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Excel拼接"><span class="nav-number">3.</span> <span class="nav-text">Excel拼接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">267k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">4:03</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.4.2</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v="></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v="></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script type="text/javascript">
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/ni-j.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>

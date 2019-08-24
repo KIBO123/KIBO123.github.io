@@ -112,11 +112,11 @@
 <meta name="keywords" content="经验,SAS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SAS日期处理小技巧">
-<meta property="og:url" content="http://kibo.tech/2019/08/22/64-SAS日期处理小技巧/index.html">
+<meta property="og:url" content="http://kibo.tech/2019/08/22/65-SAS日期处理小技巧/index.html">
 <meta property="og:site_name" content="Foresee">
 <meta property="og:description" content="最近好久没出现了，哈哈，跑到银行实习捣鼓了两个月。一般大银行或大企业都习惯以SAS作为大型数据分析的首选软件之一，毕竟SAS是相当成熟的商业软件。自大三以来，我已经好久没玩过了SAS了，有些小技巧忘得一干二净，在此赶紧做个记录贴，日后还有更多技巧也会不断更新。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-22T02:16:23.632Z">
+<meta property="og:updated_time" content="2019-08-22T03:21:52.887Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SAS日期处理小技巧">
 <meta name="twitter:description" content="最近好久没出现了，哈哈，跑到银行实习捣鼓了两个月。一般大银行或大企业都习惯以SAS作为大型数据分析的首选软件之一，毕竟SAS是相当成熟的商业软件。自大三以来，我已经好久没玩过了SAS了，有些小技巧忘得一干二净，在此赶紧做个记录贴，日后还有更多技巧也会不断更新。">
@@ -126,7 +126,7 @@
 
 
 
-  <link rel="canonical" href="http://kibo.tech/2019/08/22/64-SAS日期处理小技巧/">
+  <link rel="canonical" href="http://kibo.tech/2019/08/22/65-SAS日期处理小技巧/">
 
 
 
@@ -350,7 +350,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2019/08/22/64-SAS日期处理小技巧/">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2019/08/22/65-SAS日期处理小技巧/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
@@ -445,7 +445,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">629</span>
+                <span title="本文字数">766</span>
               
 
               
@@ -486,6 +486,8 @@
 <p>其中的原理就是采用 <code>compress()</code> 函数将所有数字保留，剔除其余的中文字符，留下数字的年月日，再采用 <code>input()</code> 函数将数字转化为日期格式，就是这么简单。</p>
 <h1 id="SAS筛选日期"><a href="#SAS筛选日期" class="headerlink" title="SAS筛选日期"></a>SAS筛选日期</h1><p>如果要提取某年段或某日期段内的数据，那也十分简单：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data new;</span><br><span class="line">set string_2_date;</span><br><span class="line">where year(date)&gt;2000;</span><br><span class="line">/*where date between &apos;01Jan2010&apos;d and &apos;31Dec2010&apos;d */</span><br><span class="line">run;</span><br></pre></td></tr></table></figure>
+<h1 id="SAS转换日期格式"><a href="#SAS转换日期格式" class="headerlink" title="SAS转换日期格式"></a>SAS转换日期格式</h1><p>如果上面得到的日期变量想要转化其他格式，例如只保留年和月：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data new1;</span><br><span class="line">set new;</span><br><span class="line">year_month = date;</span><br><span class="line">/*采用format语句转换为你想要的各种格式*/</span><br><span class="line">format year_month yymon7.;</span><br><span class="line">run;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -512,17 +514,17 @@
 
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-  <p><span>本文标题:</span><a href="/2019/08/22/64-SAS日期处理小技巧/">SAS日期处理小技巧</a></p>
+  <p><span>本文标题:</span><a href="/2019/08/22/65-SAS日期处理小技巧/">SAS日期处理小技巧</a></p>
 
   <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
 
   <p><span>发布时间:</span>2019年08月22日 - 10:08</p>
 
-  <p><span>最后更新:</span>2019年08月22日 - 10:08</p>
+  <p><span>最后更新:</span>2019年08月22日 - 11:08</p>
 
-  <p><span>原始链接:</span><a href="/2019/08/22/64-SAS日期处理小技巧/" title="SAS日期处理小技巧">http://kibo.tech/2019/08/22/64-SAS日期处理小技巧/</a>
+  <p><span>原始链接:</span><a href="/2019/08/22/65-SAS日期处理小技巧/" title="SAS日期处理小技巧">http://kibo.tech/2019/08/22/65-SAS日期处理小技巧/</a>
 
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2019/08/22/64-SAS日期处理小技巧/" aria-label="复制成功！"></i></span>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2019/08/22/65-SAS日期处理小技巧/" aria-label="复制成功！"></i></span>
 
   </p>
 
@@ -627,6 +629,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/08/22/66-玩转百度地图API/" rel="prev" title="Python玩转百度地图API">
+                Python玩转百度地图API <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -697,7 +703,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">65</span>
+                    <span class="site-state-item-count">66</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -857,7 +863,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">61</span>
+                      
+                    
+                    <span class="site-state-item-count">62</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -893,7 +901,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SAS-文本变量转化日期变量"><span class="nav-number">1.</span> <span class="nav-text">SAS 文本变量转化日期变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SAS筛选日期"><span class="nav-number">2.</span> <span class="nav-text">SAS筛选日期</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SAS-文本变量转化日期变量"><span class="nav-number">1.</span> <span class="nav-text">SAS 文本变量转化日期变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SAS筛选日期"><span class="nav-number">2.</span> <span class="nav-text">SAS筛选日期</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SAS转换日期格式"><span class="nav-number">3.</span> <span class="nav-text">SAS转换日期格式</span></a></li></ol></div>
             
 
           </div>
@@ -925,7 +933,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">260k</span>
+    <span title="站点总字数">267k</span>
   
 
   
@@ -934,7 +942,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">3:56</span>
+    <span title="站点阅读时长">4:03</span>
   
 </div>
 
