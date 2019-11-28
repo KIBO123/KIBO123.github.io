@@ -8,8 +8,8 @@
         <category>Course</category>
       </categories>
       <tags>
-        <tag>Python</tag>
         <tag>学习笔记</tag>
+        <tag>Python</tag>
         <tag>TensorFlow</tag>
       </tags>
   </entry>
@@ -229,8 +229,8 @@
         <tag>Deep Learning</tag>
         <tag>Neural Networks</tag>
         <tag>学习笔记</tag>
-        <tag>NLP</tag>
         <tag>Word Embeddings</tag>
+        <tag>NLP</tag>
       </tags>
   </entry>
   <entry>
@@ -338,8 +338,8 @@
         <category>Work</category>
       </categories>
       <tags>
-        <tag>Python</tag>
         <tag>Deep Learning</tag>
+        <tag>Python</tag>
         <tag>Keras</tag>
       </tags>
   </entry>
