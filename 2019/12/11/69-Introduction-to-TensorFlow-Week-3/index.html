@@ -108,25 +108,31 @@
 
 
 
-  <meta name="description" content="最近好久没出现了，哈哈，跑到银行实习捣鼓了两个月。一般大银行或大企业都习惯以SAS作为大型数据分析的首选软件之一，毕竟SAS是相当成熟的商业软件。自大三以来，我已经好久没玩过了SAS了，有些小技巧忘得一干二净，在此赶紧做个记录贴，日后还有更多技巧也会不断更新。">
-<meta name="keywords" content="经验,SAS">
+  <meta name="description" content="此周课程主要讲解在深度学习中卷积层 (convolution ) 和池化层 (max-pooling) 的应用。">
+<meta name="keywords" content="Python,学习笔记,TensorFlow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SAS日期处理小技巧">
-<meta property="og:url" content="http://kibo.tech/2019/08/22/65-SAS日期处理小技巧/index.html">
+<meta property="og:title" content="Introduction to TensorFlow - Week 3">
+<meta property="og:url" content="http://kibo.tech/2019/12/11/69-Introduction-to-TensorFlow-Week-3/index.html">
 <meta property="og:site_name" content="Foresee">
-<meta property="og:description" content="最近好久没出现了，哈哈，跑到银行实习捣鼓了两个月。一般大银行或大企业都习惯以SAS作为大型数据分析的首选软件之一，毕竟SAS是相当成熟的商业软件。自大三以来，我已经好久没玩过了SAS了，有些小技巧忘得一干二净，在此赶紧做个记录贴，日后还有更多技巧也会不断更新。">
+<meta property="og:description" content="此周课程主要讲解在深度学习中卷积层 (convolution ) 和池化层 (max-pooling) 的应用。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-22T03:21:52.887Z">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1912/19121101.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1912/19121102.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1912/19121103.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1912/19121104.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1912/19121105.png">
+<meta property="og:updated_time" content="2019-12-11T14:47:08.008Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SAS日期处理小技巧">
-<meta name="twitter:description" content="最近好久没出现了，哈哈，跑到银行实习捣鼓了两个月。一般大银行或大企业都习惯以SAS作为大型数据分析的首选软件之一，毕竟SAS是相当成熟的商业软件。自大三以来，我已经好久没玩过了SAS了，有些小技巧忘得一干二净，在此赶紧做个记录贴，日后还有更多技巧也会不断更新。">
+<meta name="twitter:title" content="Introduction to TensorFlow - Week 3">
+<meta name="twitter:description" content="此周课程主要讲解在深度学习中卷积层 (convolution ) 和池化层 (max-pooling) 的应用。">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1912/19121101.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://kibo.tech/2019/08/22/65-SAS日期处理小技巧/">
+  <link rel="canonical" href="http://kibo.tech/2019/12/11/69-Introduction-to-TensorFlow-Week-3/">
 
 
 
@@ -136,7 +142,7 @@
   };
 </script>
 
-  <title>SAS日期处理小技巧 | Foresee</title>
+  <title>Introduction to TensorFlow - Week 3 | Foresee</title>
   
 
 
@@ -350,7 +356,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2019/08/22/65-SAS日期处理小技巧/">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2019/12/11/69-Introduction-to-TensorFlow-Week-3/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
@@ -367,7 +373,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">SAS日期处理小技巧
+          <h1 class="post-title" itemprop="name headline">Introduction to TensorFlow - Week 3
               
             
           </h1>
@@ -392,7 +398,7 @@
                 
               
 
-              <time title="创建时间：2019-08-22 10:07:01" itemprop="dateCreated datePublished" datetime="2019-08-22T10:07:01+08:00">2019-08-22</time>
+              <time title="创建时间：2019-12-11 22:43:48" itemprop="dateCreated datePublished" datetime="2019-12-11T22:43:48+08:00">2019-12-11</time>
             
 
             
@@ -410,7 +416,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Work/" itemprop="url" rel="index"><span itemprop="name">Work</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Course/" itemprop="url" rel="index"><span itemprop="name">Course</span></a></span>
 
                 
                 
@@ -445,7 +451,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">766</span>
+                <span title="本文字数">1.9k</span>
               
 
               
@@ -459,7 +465,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">1 分钟</span>
+                <span title="阅读时长">2 分钟</span>
               
             </div>
           
@@ -479,15 +485,23 @@
       
 
       
-        <p>最近好久没出现了，哈哈，跑到银行实习捣鼓了两个月。一般大银行或大企业都习惯以SAS作为大型数据分析的首选软件之一，毕竟SAS是相当成熟的商业软件。自大三以来，我已经好久没玩过了SAS了，有些小技巧忘得一干二净，在此赶紧做个记录贴，日后还有更多技巧也会不断更新。</p>
+        <p>此周课程主要讲解在深度学习中卷积层 (convolution ) 和池化层 (max-pooling) 的应用。</p>
 <a id="more"></a>
-<h1 id="SAS-文本变量转化日期变量"><a href="#SAS-文本变量转化日期变量" class="headerlink" title="SAS 文本变量转化日期变量"></a>SAS 文本变量转化日期变量</h1><p>假设SAS数据集  <code>raw_data</code>  中包含类似 “2010年01月01日” 的字符型变量 <code>string_date</code> ，那么如何将其转化为日期型变量？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data string_2_date;</span><br><span class="line">set raw_data;</span><br><span class="line">new_date = input(compress(string_date, &apos;1234567890&apos;, &apos;k&apos;), yymmdd10.)</span><br><span class="line">format new_date yymmdd10.</span><br><span class="line">run;</span><br></pre></td></tr></table></figure>
-<p>其中的原理就是采用 <code>compress()</code> 函数将所有数字保留，剔除其余的中文字符，留下数字的年月日，再采用 <code>input()</code> 函数将数字转化为日期格式，就是这么简单。</p>
-<h1 id="SAS筛选日期"><a href="#SAS筛选日期" class="headerlink" title="SAS筛选日期"></a>SAS筛选日期</h1><p>如果要提取某年段或某日期段内的数据，那也十分简单：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data new;</span><br><span class="line">set string_2_date;</span><br><span class="line">where year(date)&gt;2000;</span><br><span class="line">/*where date between &apos;01Jan2010&apos;d and &apos;31Dec2010&apos;d */</span><br><span class="line">run;</span><br></pre></td></tr></table></figure>
-<h1 id="SAS转换日期格式"><a href="#SAS转换日期格式" class="headerlink" title="SAS转换日期格式"></a>SAS转换日期格式</h1><p>如果上面得到的日期变量想要转化其他格式，例如只保留年和月：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data new1;</span><br><span class="line">set new;</span><br><span class="line">year_month = date;</span><br><span class="line">/*采用format语句转换为你想要的各种格式*/</span><br><span class="line">format year_month yymon7.;</span><br><span class="line">run;</span><br></pre></td></tr></table></figure>
+<h1 id="What-are-convolutions-and-pooling"><a href="#What-are-convolutions-and-pooling" class="headerlink" title="What are convolutions and pooling?"></a>What are convolutions and pooling?</h1><p>卷积 (convolution)：</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1912/19121101.png" alt="19121101"></p>
+<p>卷积的效果由filter决定：</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1912/19121102.png" alt="19121102"></p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1912/19121103.png" alt="19121103"></p>
+<p>池化 (max-pooling):</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1912/19121104.png" alt="19121104"></p>
+<h1 id="Implementing-convolutional-and-pooling-layers"><a href="#Implementing-convolutional-and-pooling-layers" class="headerlink" title="Implementing convolutional and pooling layers"></a>Implementing convolutional and pooling layers</h1><figure class="highlight pl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">model = tf.keras.model.Sequential([</span><br><span class="line">    tf.keras.layers.Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, input_shape=(<span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>)),</span><br><span class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>, <span class="number">2</span>),</span><br><span class="line">    tf.keras.layers.Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>),</span><br><span class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>,<span class="number">2</span>),</span><br><span class="line">    tf.keras.layers.Flatten(),</span><br><span class="line">    tf.keras.layers.Dense(<span class="number">128</span>, activation=<span class="string">'relu'</span>),</span><br><span class="line">    tf.keras.layers.Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>)</span><br><span class="line">])</span><br><span class="line"><span class="comment"># summary函数可查看每一层output的具体维度</span></span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/19/1912/19121105.png" alt="19121105"></p>
+<p>若对convolution层和pooling层的输出维度有疑惑，可回到 <a href="http://kibo.tech/2018/05/04/37-Convolutional-Neural-Networks-Week-1-1/">Deep Learning 课程</a>.</p>
+<h1 id="Improving-the-Fashion-classifier-with-convolution"><a href="#Improving-the-Fashion-classifier-with-convolution" class="headerlink" title="Improving the Fashion classifier with convolution"></a>Improving the Fashion classifier with convolution</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">print(tf.__version__)</span><br><span class="line">mnist = tf.keras.datasets.fashion_mnist</span><br><span class="line">(training_images, training_labels), (test_images, test_labels) = mnist.load_data()</span><br><span class="line">training_images=training_images.reshape(60000, 28, 28, 1)</span><br><span class="line">training_images=training_images / 255.0</span><br><span class="line">test_images = test_images.reshape(10000, 28, 28, 1)</span><br><span class="line">test_images=test_images/255.0</span><br><span class="line">model = tf.keras.models.Sequential([</span><br><span class="line">  tf.keras.layers.Conv2D(64, (3,3), activation=&apos;relu&apos;, input_shape=(28, 28, 1)),</span><br><span class="line">  tf.keras.layers.MaxPooling2D(2, 2),</span><br><span class="line">  tf.keras.layers.Conv2D(64, (3,3), activation=&apos;relu&apos;),</span><br><span class="line">  tf.keras.layers.MaxPooling2D(2,2),</span><br><span class="line">  tf.keras.layers.Flatten(),</span><br><span class="line">  tf.keras.layers.Dense(128, activation=&apos;relu&apos;),</span><br><span class="line">  tf.keras.layers.Dense(10, activation=&apos;softmax&apos;)</span><br><span class="line">])</span><br><span class="line">model.compile(optimizer=&apos;adam&apos;, loss=&apos;sparse_categorical_crossentropy&apos;, metrics=[&apos;accuracy&apos;])</span><br><span class="line">model.summary()</span><br><span class="line">model.fit(training_images, training_labels, epochs=5)</span><br><span class="line">test_loss = model.evaluate(test_images, test_labels)</span><br></pre></td></tr></table></figure>
+<p>这里同样可以加入callback机制，当达到一定准确率后，可终止训练。在训练中加入卷积层和池化层，可大大提高训练精确度，但训练时间也有所增加。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://github.com/lmoroney/dlaicourse" target="_blank" rel="noopener">课程资料Github</a></li>
+</ol>
 
       
     </div>
@@ -514,17 +528,17 @@
 
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-  <p><span>本文标题:</span><a href="/2019/08/22/65-SAS日期处理小技巧/">SAS日期处理小技巧</a></p>
+  <p><span>本文标题:</span><a href="/2019/12/11/69-Introduction-to-TensorFlow-Week-3/">Introduction to TensorFlow - Week 3</a></p>
 
   <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
 
-  <p><span>发布时间:</span>2019年08月22日 - 10:08</p>
+  <p><span>发布时间:</span>2019年12月11日 - 22:12</p>
 
-  <p><span>最后更新:</span>2019年08月22日 - 11:08</p>
+  <p><span>最后更新:</span>2019年12月11日 - 22:12</p>
 
-  <p><span>原始链接:</span><a href="/2019/08/22/65-SAS日期处理小技巧/" title="SAS日期处理小技巧">http://kibo.tech/2019/08/22/65-SAS日期处理小技巧/</a>
+  <p><span>原始链接:</span><a href="/2019/12/11/69-Introduction-to-TensorFlow-Week-3/" title="Introduction to TensorFlow - Week 3">http://kibo.tech/2019/12/11/69-Introduction-to-TensorFlow-Week-3/</a>
 
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2019/08/22/65-SAS日期处理小技巧/" aria-label="复制成功！"></i></span>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2019/12/11/69-Introduction-to-TensorFlow-Week-3/" aria-label="复制成功！"></i></span>
 
   </p>
 
@@ -604,9 +618,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/经验/" rel="tag"><i class="fa fa-tag"></i> 经验</a>
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
           
-            <a href="/tags/SAS/" rel="tag"><i class="fa fa-tag"></i> SAS</a>
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          
+            <a href="/tags/TensorFlow/" rel="tag"><i class="fa fa-tag"></i> TensorFlow</a>
           
         </div>
       
@@ -619,8 +635,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/29/64-浮生六记之坎坷记愁/" rel="next" title="浮生六记之坎坷记愁">
-                <i class="fa fa-chevron-left"></i> 浮生六记之坎坷记愁
+              <a href="/2019/12/05/68-Introduction-to-TensorFlow-Week-2/" rel="next" title="Introduction to TensorFlow - Week 2">
+                <i class="fa fa-chevron-left"></i> Introduction to TensorFlow - Week 2
               </a>
             
           </div>
@@ -628,10 +644,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/22/66-玩转百度地图API/" rel="prev" title="Python玩转百度地图API">
-                Python玩转百度地图API <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -903,7 +915,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SAS-文本变量转化日期变量"><span class="nav-number">1.</span> <span class="nav-text">SAS 文本变量转化日期变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SAS筛选日期"><span class="nav-number">2.</span> <span class="nav-text">SAS筛选日期</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SAS转换日期格式"><span class="nav-number">3.</span> <span class="nav-text">SAS转换日期格式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#What-are-convolutions-and-pooling"><span class="nav-number">1.</span> <span class="nav-text">What are convolutions and pooling?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Implementing-convolutional-and-pooling-layers"><span class="nav-number">2.</span> <span class="nav-text">Implementing convolutional and pooling layers</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Improving-the-Fashion-classifier-with-convolution"><span class="nav-number">3.</span> <span class="nav-text">Improving the Fashion classifier with convolution</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>
