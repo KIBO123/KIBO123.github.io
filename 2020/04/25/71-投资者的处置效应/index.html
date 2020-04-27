@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="很久没更新博客了，由于临近毕业，事情比较多。虽然疫情给足了我时间独自在家好好做研究，但效率还是不高。不管怎样，该干的事还会干，该写的博客不会停。最近读了一篇文章，行为金融领域中十分经典的论文，是Odean于1998年发表在 The Journal of Finance 的《Are Investors Reluctant to Realize Their Losses?》。">
+<meta name="keywords" content="处置效应,金融">
+<meta property="og:type" content="article">
+<meta property="og:title" content="投资者的处置效应">
+<meta property="og:url" content="http://kibo.tech/2020/04/25/71-投资者的处置效应/index.html">
+<meta property="og:site_name" content="Foresee">
+<meta property="og:description" content="很久没更新博客了，由于临近毕业，事情比较多。虽然疫情给足了我时间独自在家好好做研究，但效率还是不高。不管怎样，该干的事还会干，该写的博客不会停。最近读了一篇文章，行为金融领域中十分经典的论文，是Odean于1998年发表在 The Journal of Finance 的《Are Investors Reluctant to Realize Their Losses?》。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042701.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042702.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042703.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042704.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042705.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042706.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042707.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042708.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042709.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042710.png">
+<meta property="og:updated_time" content="2020-04-27T14:16:40.364Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="投资者的处置效应">
+<meta name="twitter:description" content="很久没更新博客了，由于临近毕业，事情比较多。虽然疫情给足了我时间独自在家好好做研究，但效率还是不高。不管怎样，该干的事还会干，该写的博客不会停。最近读了一篇文章，行为金融领域中十分经典的论文，是Odean于1998年发表在 The Journal of Finance 的《Are Investors Reluctant to Realize Their Losses?》。">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042701.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://kibo.tech/2020/04/25/71-投资者的处置效应/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>投资者的处置效应 | Foresee</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4c8be82b3dedf623671a57d32bb0ed1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Foresee</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">I like for you to be still.</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>关于</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2020/04/25/71-投资者的处置效应/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">投资者的处置效应
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-25 21:16:48" itemprop="dateCreated datePublished" datetime="2020-04-25T21:16:48+08:00">2020-04-25</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>很久没更新博客了，由于临近毕业，事情比较多。虽然疫情给足了我时间独自在家好好做研究，但效率还是不高。不管怎样，该干的事还会干，该写的博客不会停。最近读了一篇文章，行为金融领域中十分经典的论文，是Odean于1998年发表在 <em><a href="">The Journal of Finance</a></em> 的《Are Investors Reluctant to Realize Their Losses?》。</p>
+<a id="more"></a>
+<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><blockquote>
+<p>I test the disposition effect, the tendency of investors to hold losing investments too loong and sell winning investments too soon, by analyzing trading records for 10,000 accounts at a large discount brokerage house. These investors demonstrate a strong preference for realizing winners rather than losers. Their behavior does not appear to be motivated by a disire to rebalance portfolios, or to avoid the higher trading costs of low priced stocks. Nor is it justified by subsequent portfolio performance. For taxable investments, it is suboptimal and leads to lower after-tax returns. Tax-motivated selling is most evident in December.</p>
+</blockquote>
+<p>摘要主要介绍了作者对投资者处置效应（Disposition effect）的检验。处置效应指的是投资者保持亏损投资（Losing investments）持有和盈利投资（Wining Investments）出售的倾向。通过对一个大型经纪商中1万个账户的交易记录分析，发现投资者表现出对实现盈利的强烈便好。而这种行为偏好并非由对投资组合再平衡的需求所驱动的，亦非避免低价股票的高交易成本的原因。同样也不能用随之的投资组合绩效来解释。此外，应税投资是次优选择，因为它导致了更低的税后回报，而这种税务驱动的抛售在12月份中最为明显。</p>
+<h1 id="The-Dispostion-Effect"><a href="#The-Dispostion-Effect" class="headerlink" title="The Dispostion Effect"></a>The Dispostion Effect</h1><p>作者首先从四个方面来对处置效应进行了综述，我们也对此进行回顾，了解处置效应的来龙去脉。</p>
+<h2 id="Prospect-Theory"><a href="#Prospect-Theory" class="headerlink" title="Prospect Theory"></a>Prospect Theory</h2><p>自Kahneman和Tversky于1979年提出前景理论以来，其在投资领域的扩展启示即处置效应。前景理论指出，人们面临决策时其行为会满足<code>S</code>型效用函数（如下图所示）。在该函数中，当实现获益时，效用函数呈凹函数形式；当发生亏损时，则呈现凸函数形式。此外，亏损时的函数斜率会远大于获益时的斜率，表明人们普遍是风险厌恶的。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042701.png" alt=""></p>
+<p>举个例子，假设一个投资者购买了一只他认为有足够高的预期回报率来抵消其风险的股票。如果投资者将购买价格作为参考点，那么会有两种情况：</p>
+<ol>
+<li><p>当股票升值时，其价格将处于投资者效用函数中的风险厌恶部分。当升得越高时，其效用函数就会越凹，且越加风险厌恶。那么此时，投资者只要降低他对股票回报的期望（即投资者认为股票不会涨得更高了，或者股票回报已经抵消不了风险了），他就会倾向于将这只股票卖出。</p>
+</li>
+<li><p>若股票下跌时，其价格则处于效用函数中的风险偏好部分。此时投资者将继续持有该股，即使其预期回报率低于他最初购买该股票所付出的必要成本。因为投资者认为预期收益得降得更低会更加刺激亏损股票的销量，使其大于盈利股票的销量（俗称“抄底”），所以他会继续保留亏损股票的持有。</p>
+</li>
+</ol>
+<p>而如果投资者拥有两只股票，一只上涨，一只下跌。当这个投资者面临资产流动需求的话，且他没有关于任何一只股票的内幕消息，那么他会倾向于卖出上涨的股票而非下跌的股票。显然，正在这种风险厌恶，使得投资者更加愿意去实现自己盈利而非亏损。</p>
+<p>在本文研究中，投资者的参考点将设为购买价格。然而购买价格并不是唯一的参考点，价格变化会导致人们对参考点选择的变化。比如说，一个房主花了一百万买了一套房子，当房地产过热时，该房子上涨到两百万。那么该房主一百万卖出这套房子时，是不会感觉到收支平衡的。因此说购买价格是一个主要的参考点，但绝不是单一的参考点。</p>
+<h2 id="An-Alaternative-Behavioral-Theory"><a href="#An-Alaternative-Behavioral-Theory" class="headerlink" title="An Alaternative Behavioral Theory"></a>An Alaternative Behavioral Theory</h2><p>投资者选择保留亏损股票而售出盈利股票，可能并不是因为投资者不愿意实现亏损，而是因为他们认为现在的亏损股票迟早会比盈利股票表现更好。如果未来亏损股票的预期收益的确高于盈利股票，那么投资者的信念是理性的。但是若未来亏损股票的预期收益仍低于盈利股票，且投资者置亏损于不顾继续抱着相信其会涨的念头，那么这种信念则是非理性的。这种信念即是均值回归信念（Belief in mean reversion）。</p>
+<p>很多时候投资者选择保留亏损股票，到底是因为他认为亏损股票总有一天会涨上来的？还是因为不愿意去接受卖出亏损股票而导致的亏损？这个问题（均值回归信念 v.s. 前景理论）在很多研究中都难以区分，甚至连投资者自己内心也没有很明确的定义。</p>
+<h2 id="Taxes"><a href="#Taxes" class="headerlink" title="Taxes"></a>Taxes</h2><p>对于应税投资，投资者不愿实现亏损是和最优税损抛售（tax-loss selling）相冲突的。在一定程度上说，人们继续持有盈利投资的话，那么就可以相应地避免卖出时应交的税款。他们应该通过出售亏损投资来避免税收损失，尽管不一定以固定的税率。众多研究者也发现，在年底的时候，税损买盘会更加明显。</p>
+<p>尽管投资者不愿意实现亏损，但在税务上能获益还是非常愿意的。而年底则是税损抛售的最后时期。因此在每年中，投资者都会推迟卖出亏损股票，直到12月份当deadline将至时他们才会抛售亏损股票。</p>
+<h2 id="Previous-Studies"><a href="#Previous-Studies" class="headerlink" title="Previous Studies"></a>Previous Studies</h2><p>除了先前提到的前景理论和均值回归信念，先前研究对处置效应还存在其他的解释：</p>
+<ul>
+<li>当股市价格普遍上涨时，缺少市场投资组合的投资者会卖出一些升值的股票来维持他们投资组合的多样性（即投资组合的再平衡）。</li>
+<li>当投资者对购买的股票掌握一定内幕消息时，若股票上涨，那么他们会认为股票价格正反映着他所掌握的信息，因此他们会马上卖掉。若股票下跌，那么他们会认为他所掌握的信息还未在股价中体现，因此会保持继续持有。</li>
+<li>低价股票的交易成本会更高，且亏损股票相较于盈利股票更可能被价格低估，因此投资者会继续持有亏损股票以避免高交易成本。</li>
+</ul>
+<h1 id="Empirical-Study"><a href="#Empirical-Study" class="headerlink" title="Empirical Study"></a>Empirical Study</h1><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>数据方面就不详细讲了，感兴趣可以看看原文。原文还是采用了很常规的实证分析方法。在这里讲讲作者是如何进行检验的。在每天投资组合的两只或多只股票的销售中，作者比较了每只股票卖出价格和平均买入价格来确定该只股票是卖得赚了（Realized gain）还是亏了（Realized loss）。如果股票没有被卖出，那么其盈利或是亏损都是账面的，而非实现的，即账面盈利（Paper gain）和账面损失（Paper loss）。那么账面是盈利还是亏损取决于该股票当天最高价与最低价和平均购买价格的比较。如果最高价和最低价都高于平均购买价格，那么记为账面盈利。如果两个价格均低于平均购买价格，则记为账面亏损。若平均购买价格处于最低价和最高价之间，则不算盈利也不算亏损。</p>
+<script type="math/tex; mode=display">
+\frac{Realized\ Gains}{Realized\ Gains+Paper\ Gains}=Proportion\ of\ Gains\ Realized\ (PGR) \\
+\frac{Realized\ Losses}{Realized\ Losses+Paper\ Losses}=Proportion\ of\ Losses\ Realized\ (PLR) \\</script><p>据此作者便提出两个假设进行联合检验，以证实处置效应。</p>
+<ul>
+<li>假设一：<em>Proportion of Gains Realized &gt; Proportion of Losses Realized (for the entire year)</em></li>
+<li>假设二：<em>Proportion of Losses Realized - Proportion of Gains Realized in December &gt; Proportion of Losses Realized - Proportion of Gains Realized in January~November</em></li>
+</ul>
+<p>假设一的零假设为PGR $\leq$ PLR，而假设二的零假设即为PLR-PGR in December $\leq$  PLR-PGR in January ~ November.</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p>下图展示了全年，1至11月，12月份的PGR和PLR，可见全年中投资者的确售出盈利股票的比例大于卖出亏损股票，且假设一和假设二的零假设均显著拒绝。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042702.png" alt=""></p>
+<p>然而，这些检验都是将每天中每笔股票的销售视为独立观测，但实际上每观测值却是不同投资者之间售出的总和，因此并不满足独立性假设。例如，假设一个投资者不会重复卖出同一只股票，那么该投资者今天卖出某股票和另一天卖出某股票并非为独立的。又或者，两个投资者可能收到同样的内部消息而卖出相同的股票，这也是非独立的。</p>
+<p>因此，作者继续做了另一个检验。首先作者假设独立性存在于每个账户中而非每笔交易，即假设每个账户的PGR和PLR是独立的，那么检验结果得到平均账户PGR为0.57，平均账户PLR为0.36，平均PGR-PLR为0.21，同样是显著拒绝零假设的。该检验就是为了控制相同内幕信息而导致的不独立。具体做法是一只股票的售出只有当其在销售当天一周前和一周后没有售出记录才会被统计。这样的话就能保持每个账户的权重一致。但这种方法也会导致我们忽略一个事实，即拥有更多交易记录的账户可更加精确地估计实际的PGR和PLR。也就是中，本检验假设了观测账户的PGR和PLR都是同方差的，即使实际上它们是异方差。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042703.png" alt=""></p>
+<p>上图展示了每个月的PGR与PLR之比，从1月份至12月，该比值从2.1将至0.85。这个下降和税损卖盘是一致的，表明部分投资者在全年中都存在税务动机的抛售。</p>
+<p>为检验以上结果的鲁棒性，作者还将数据集分别分为两时段和两组交易者。下图展示了不同阶段，以及不同类型交易者的结果。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042704.png" alt=""></p>
+<p>在数据集中，最活跃的10%交易者占了57%的股票交易量。在不同阶段和不同类别交易者中，全年度的PGR都显著大于PLR。而相较于全年度，12月的PLR则高于PGR，说明投资者在12月份会进行税损抛售。</p>
+<p>下表展示了实现和未实现的亏损股票和赢利股票的投资回报，发现12月份的亏损是远远高于全面的，这也侧面证明了12月份中投资者的确参与了税损抛售。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042705.png" alt=""></p>
+<p>之前文献提到，处置效应的存在可能出于投资者对投资组合的再平衡需求。作者认为如果投资者需要进行投资组合的再平衡，那么他们只会卖出部分股票，而不会将所有的持有股票清空。因此，为了反驳再平衡这一观点，作者仅计算了清空股票的账户中的PGR和PLR。结果如下表所示，和先前结果相比并无发生太大变化。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042706.png" alt=""></p>
+<p>如果投资者是为了再平衡投资组合的话，那么他们很可能会继续买入股票。为了解决投资者为再平衡而继续进行买入交易的问题，作者在此计算了在售出当天后三周内无新交易的账户的PGR和PLR，如下表所示，结果还是保持不变。（不得不说作者非常严谨）</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042707.png" alt=""></p>
+<p>处置效应的另外一个原因，就是投资者掌握着股票的内幕消息。下表展示了售出的赢利股票和未售出的亏损股票的超额收益。检验从三个投资跨度分别进行，84个交易日（大约是样本中所有股票持有天数的中位数），254个交易日（一年），504个交易日（两年）。对于被卖了的赢利股票，其来年的超额收益比没被卖出的亏损股票的超额收益高出3.4%。显然，投资者认为亏损股票未来会比赢利股票绩效要好，这种预期基本是错误的。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042708.png" alt=""></p>
+<p>有文献同样提到投资者之所以不愿意卖出亏损股票是因为低价股票的交易成本较高。下表展示了1月至11月不同价格范围和不同回报范围中的PGR和PLR，在一共12个分区中，有11个分区是PGR高于PLR的，显著性只有最后一个不显著，其余分区均显著。由此可见，不管是哪个价格区间中，回报大还是小，投资者都是倾向于卖出赢利股票，显然交易成本并不是造成处置效应的原因。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042709.png" alt=""></p>
+<p>作者还从另一个角度对两个假设进行了验证，在此他们主要关注于投资者对已拥有股票的额外股份的购买率。那么复购赢利股票比例（PGPA）与复购亏损股票比例（PLPA）的计算方法与PGR和PLR相似。其中，在购买日中，投资组合内没有进行复购的股票则记为潜在复购（Potentially Purchased Again）。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2004/20042710.png" alt=""></p>
+<p>如果投资者为了避免低价股票的高交易成本，那么PLPA理应小于PGPA，因为他们不会复购低价股票。然而，根据前景理论（对亏损股票的风险偏好）或均值回归信念（相信股票价格会回涨），那么PLPA理应高于PGPA。在样本中，计算结果为PLPA=0.135，而PGPA=0.094，假设一和假设二均能得到支持。交易成本假设不支持。</p>
+<h1 id="Discussion"><a href="#Discussion" class="headerlink" title="Discussion"></a>Discussion</h1><p>本文检验了个人投资者行为，并发现了投资者中存在的处置效应，即除了12月份，他们实现赢利投资的比例远高于实现亏损投资。</p>
+<p>处置效应有助于影响供给来维持市场稳定性。如果众多投资者以一定价格买入股票，那么这个这个价格可成为其参考点。每当股价跌到参考点以下，那么投资者将会继续持有这些亏损股票，从而减少了亏损股票的大量抛售，延缓了价格的进一步下跌。而另一方面，如果股价上涨到参考点以上，投资者会更加愿意卖出，从而增加了赢利股票的供给，降低了价格的增高。</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>本文发现了个人投资者的处置效应，12月份税务驱动的抛售流行除外。投资者行为并非由投资组合再平衡需求驱动，也不是由低价股票的高交易成本所造成的，更不是受来年的投资组合绩效的影响。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="">Odean T . Are Investors Reluctant to Realize Their Losses?[J]. Journal of Finance, 1998, 53(5):1775-1798.</a></li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2020/04/25/71-投资者的处置效应/">投资者的处置效应</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2020年04月25日 - 21:04</p>
+
+  <p><span>最后更新:</span>2020年04月27日 - 22:04</p>
+
+  <p><span>原始链接:</span><a href="/2020/04/25/71-投资者的处置效应/" title="投资者的处置效应">http://kibo.tech/2020/04/25/71-投资者的处置效应/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2020/04/25/71-投资者的处置效应/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Thanks for your donation!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/处置效应/" rel="tag"><i class="fa fa-tag"></i> 处置效应</a>
+          
+            <a href="/tags/金融/" rel="tag"><i class="fa fa-tag"></i> 金融</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/27/70-Introduction-to-TensorFlow-Week-4/" rel="next" title="Introduction to TensorFlow - Week 4">
+                <i class="fa fa-chevron-left"></i> Introduction to TensorFlow - Week 4
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/foresee.JPG" alt="KIBO">
+            
+              <p class="site-author-name" itemprop="name">KIBO</p>
+              <p class="site-description motion-element" itemprop="description">This is a new world fulled of freedom and hope !</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">71</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">65</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-Dispostion-Effect"><span class="nav-number">2.</span> <span class="nav-text">The Dispostion Effect</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Prospect-Theory"><span class="nav-number">2.1.</span> <span class="nav-text">Prospect Theory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#An-Alaternative-Behavioral-Theory"><span class="nav-number">2.2.</span> <span class="nav-text">An Alaternative Behavioral Theory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Taxes"><span class="nav-number">2.3.</span> <span class="nav-text">Taxes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Previous-Studies"><span class="nav-number">2.4.</span> <span class="nav-text">Previous Studies</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Empirical-Study"><span class="nav-number">3.</span> <span class="nav-text">Empirical Study</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">3.1.</span> <span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-number">3.2.</span> <span class="nav-text">Results</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Discussion"><span class="nav-number">4.</span> <span class="nav-text">Discussion</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">5.</span> <span class="nav-text">Conclusion</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">KIBO</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">286k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">4:20</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.4.2</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v="></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v="></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script type="text/javascript">
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/ni-j.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
