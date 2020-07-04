@@ -108,23 +108,29 @@
 
 
 
-  <meta name="description" content="This is a new world fulled of freedom and hope !">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Foresee">
-<meta property="og:url" content="http://kibo.tech/archives/page/5/index.html">
+  <meta name="description" content="本文讲解迁移学习（Transfer Learning），以及迁移学习在Keras中的实现。">
+<meta name="keywords" content="Python,学习笔记,TensorFlow,Keras">
+<meta property="og:type" content="article">
+<meta property="og:title" content="迁移学习——Keras">
+<meta property="og:url" content="http://kibo.tech/2020/07/03/74-迁移学习——Keras/index.html">
 <meta property="og:site_name" content="Foresee">
-<meta property="og:description" content="This is a new world fulled of freedom and hope !">
+<meta property="og:description" content="本文讲解迁移学习（Transfer Learning），以及迁移学习在Keras中的实现。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2007/20070401.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2007/20070402.png">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2007/20070403.png">
+<meta property="og:updated_time" content="2020-07-04T03:42:27.171Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Foresee">
-<meta name="twitter:description" content="This is a new world fulled of freedom and hope !">
+<meta name="twitter:title" content="迁移学习——Keras">
+<meta name="twitter:description" content="本文讲解迁移学习（Transfer Learning），以及迁移学习在Keras中的实现。">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2007/20070401.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://kibo.tech/archives/page/5/">
+  <link rel="canonical" href="http://kibo.tech/2020/07/03/74-迁移学习——Keras/">
 
 
 
@@ -134,7 +140,7 @@
   };
 </script>
 
-  <title>归档 | Foresee</title>
+  <title>迁移学习——Keras | Foresee</title>
   
 
 
@@ -193,7 +199,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -258,7 +264,7 @@
         
         
           
-          <li class="menu-item menu-item-archives menu-item-active">
+          <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
   </li>
@@ -328,422 +334,350 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2020/07/03/74-迁移学习——Keras/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="KIBO">
+      <meta itemprop="description" content="This is a new world fulled of freedom and hope !">
+      <meta itemprop="image" content="/images/foresee.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Foresee">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
-         
+          <h1 class="post-title" itemprop="name headline">迁移学习——Keras
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-07-03 16:35:56" itemprop="dateCreated datePublished" datetime="2020-07-03T16:35:56+08:00">2020-07-03</time>
+            
+
+            
+          </span>
+
           
-        不错! 目前共计 74 篇日志。 继续努力。
-      </span>
-      
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Coursera/" itemprop="url" rel="index"><span itemprop="name">Coursera</span></a></span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
+          
+            
+          
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/26/34-多目标决策——用KKT条件求非劣解/" itemprop="url">
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
               
-                <span itemprop="name">多目标决策——用KKT条件求非劣解</span>
+
               
-            </a>
-        
-      </h2>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6.7k</span>
+              
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-04-26T21:52:19+08:00" content="2018-04-26">
-          04-26
-        </time>
-      </div>
+              
+                <span class="post-meta-divider">|</span>
+              
 
-    </header>
-  </article>
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
 
+          
 
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/25/33-动态决策——隐马尔科夫模型/" itemprop="url">
-              
-                <span itemprop="name">动态决策——隐马尔科夫模型</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-04-25T21:38:40+08:00" content="2018-04-25">
-          04-25
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/24/32-风险型决策——贝叶斯分析/" itemprop="url">
-              
-                <span itemprop="name">风险型决策——贝叶斯分析</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-04-24T08:56:25+08:00" content="2018-04-24">
-          04-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>本文讲解迁移学习（Transfer Learning），以及迁移学习在Keras中的实现。</p>
+<a id="more"></a>
+<h1 id="Understanding-transfer-learning-the-concepts"><a href="#Understanding-transfer-learning-the-concepts" class="headerlink" title="Understanding transfer learning: the concepts"></a>Understanding transfer learning: the concepts</h1><p>在上篇文章中，我们知道过拟合是如何产生的，我们也采用了数据增广方式来避免过拟合。但这样的方式缺点就在于我们都要构建模型重头开始训练。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2007/20070401.png" alt=""></p>
+<p>是否有可能存在一个已经训练好的模型，并将其学习得到的特征应用到我们所需要预测的样本上呢？这就是迁移学习主要干的事。我们将已训练模型所得到的参数给锁定，直接将这些训练好的特征投入到需要进行下一步训练的模型当中。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2007/20070402.png" alt=""></p>
+<p>在<code>Horses versas Humans</code>数据集中，我们以《Rethinking the Inception Architecture for Computer Vision》该文章中的模型作为已训练模型，将其迁移至我们的数据集中，帮助提高训练准确率。这篇文章采用了ImageNet数据集进行预训练，这个数据集非常庞大，包括了140万张图片，并覆盖1000个不同的类别。</p>
+<h1 id="Coding-transfer-learning-from-the-inception-mode"><a href="#Coding-transfer-learning-from-the-inception-mode" class="headerlink" title="Coding transfer learning from the inception mode"></a>Coding transfer learning from the inception mode</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"># 加载模块</span><br><span class="line">import os</span><br><span class="line">import tensorflow as tf</span><br><span class="line">from tensorflow.keras import layers</span><br><span class="line">from tensorflow.keras import Model</span><br><span class="line">from os import getcwd</span><br><span class="line"></span><br><span class="line"># 加载已经训练好的模型 (pre_trained_model)</span><br><span class="line">path_inception = f&quot;&#123;getcwd()&#125;/../tmp2/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5&quot;</span><br><span class="line"></span><br><span class="line"># Import the inception model  </span><br><span class="line">from tensorflow.keras.applications.inception_v3 import InceptionV3</span><br><span class="line"></span><br><span class="line"># Create an instance of the inception model from the local pre-trained weights</span><br><span class="line">local_weights_file = path_inception</span><br><span class="line"></span><br><span class="line">pre_trained_model = InceptionV3(input_shape = (150,150,3), include_top = False, weights = None)  # Your Code Here</span><br><span class="line"></span><br><span class="line">pre_trained_model.load_weights(local_weights_file)</span><br><span class="line"></span><br><span class="line"># Make all the layers in the pre-trained model non-trainable</span><br><span class="line">for layer in pre_trained_model.layers:</span><br><span class="line">    layer.trainable = False</span><br><span class="line">  # Your Code Here</span><br><span class="line">  </span><br><span class="line"># Print the model summary</span><br><span class="line">pre_trained_model.summary()</span><br></pre></td></tr></table></figure>
+<p>如上，加载了预训练模型后，我们可以通过<code>pre_trained_model.summary()</code>查看预训练模型中每个训练层的维度。其次，我们可以选择其中某一层作为接下来需要训练的连接层。当然，也可以将预训练模型的最后一层作为连接层。在这里，我们挑了<code>mixed7</code>层作为与接下来模型进行连接的层，该层的输出维度为<code>(7,7,768)</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">last_layer = pre_trained_model.get_layer(&apos;mixed7&apos;) # Your Code Here)</span><br><span class="line">print(&apos;last layer output shape: &apos;, last_layer.output_shape)</span><br><span class="line">last_output = last_layer.output # Your Code Here</span><br><span class="line"></span><br><span class="line"># Expected Output:</span><br><span class="line"># (&apos;last layer output shape: &apos;, (None, 7, 7, 768))</span><br></pre></td></tr></table></figure>
+<p>为了尽快完成训练，在此添加了<a href="http://kibo.tech/2019/12/05/68-Introduction-to-TensorFlow-Week-2/">callback机制</a>，当训练准确率达到97%时，即停止训练：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Define a Callback class that stops training once accuracy reaches 97.0%</span><br><span class="line">class myCallback(tf.keras.callbacks.Callback):</span><br><span class="line">  def on_epoch_end(self, epoch, logs=&#123;&#125;):</span><br><span class="line">    if(logs.get(&apos;acc&apos;)&gt;0.97):</span><br><span class="line">      print(&quot;\nReached 97.0% accuracy so cancelling training!&quot;)</span><br><span class="line">      self.model.stop_training = True</span><br></pre></td></tr></table></figure>
+<p>好了，预训练模型加载完成后，我们需要在预训练模型的基础上继续搭建完善自己的模型。对于预训练模型这样一个庞大的神经网络，有时候也可能也会出现过拟合的现象，因此可以<code>dropout</code>层，减少不同层之间相似参数的传递，从而减小过拟合出现的概率。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">from tensorflow.keras.optimizers import RMSprop</span><br><span class="line"></span><br><span class="line"># Flatten the output layer to 1 dimension</span><br><span class="line">x = layers.Flatten()(last_output)</span><br><span class="line"># Add a fully connected layer with 1,024 hidden units and ReLU activation</span><br><span class="line">x = layers.Dense(1024, activation=&apos;relu&apos;)(x)</span><br><span class="line"># Add a dropout rate of 0.2</span><br><span class="line">x = layers.Dropout(0.2)(x)                  </span><br><span class="line"># Add a final sigmoid layer for classification</span><br><span class="line">x = layers.Dense(1, activation=&apos;sigmoid&apos;)(x)           </span><br><span class="line"></span><br><span class="line">model = Model(pre_trained_model.input, x) </span><br><span class="line"></span><br><span class="line">model.compile(optimizer = RMSprop(lr=0.0001), </span><br><span class="line">              loss = &apos;binary_crossentropy&apos;, </span><br><span class="line">              metrics = [&apos;acc&apos;])</span><br><span class="line"></span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+<p>这次我们采用的数据集是 Horses versas Humans数据集，首先将数据集下载：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># Get the Horse or Human dataset</span><br><span class="line">path_horse_or_human = f&quot;&#123;getcwd()&#125;/../tmp2/horse-or-human.zip&quot;</span><br><span class="line"># Get the Horse or Human Validation dataset</span><br><span class="line">path_validation_horse_or_human = f&quot;&#123;getcwd()&#125;/../tmp2/validation-horse-or-human.zip&quot;</span><br><span class="line">from tensorflow.keras.preprocessing.image import ImageDataGenerator</span><br><span class="line"></span><br><span class="line">import os</span><br><span class="line">import zipfile</span><br><span class="line">import shutil</span><br><span class="line"></span><br><span class="line">shutil.rmtree(&apos;/tmp&apos;)</span><br><span class="line">local_zip = path_horse_or_human</span><br><span class="line">zip_ref = zipfile.ZipFile(local_zip, &apos;r&apos;)</span><br><span class="line">zip_ref.extractall(&apos;/tmp/training&apos;)</span><br><span class="line">zip_ref.close()</span><br><span class="line"></span><br><span class="line">local_zip = path_validation_horse_or_human</span><br><span class="line">zip_ref = zipfile.ZipFile(local_zip, &apos;r&apos;)</span><br><span class="line">zip_ref.extractall(&apos;/tmp/validation&apos;)</span><br><span class="line">zip_ref.close()</span><br></pre></td></tr></table></figure>
+<p>采用<code>ImageDataGenerator</code>对数据集不同类别图片划分并打上标签，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># Define our example directories and files</span><br><span class="line">train_dir = &apos;/tmp/training&apos;</span><br><span class="line">validation_dir = &apos;/tmp/validation&apos;</span><br><span class="line"></span><br><span class="line">train_horses_dir = os.path.join(train_dir, &apos;horses&apos;) # Your Code Here</span><br><span class="line">train_humans_dir = os.path.join(train_dir, &apos;humans&apos;) # Your Code Here</span><br><span class="line">validation_horses_dir = os.path.join(validation_dir, &apos;horses&apos;) # Your Code Here</span><br><span class="line">validation_humans_dir = os.path.join(validation_dir, &apos;humans&apos;) # Your Code Here</span><br><span class="line"></span><br><span class="line">train_horses_fnames = os.listdir(train_horses_dir) # Your Code Here</span><br><span class="line">train_humans_fnames = os.listdir(train_humans_dir)  # Your Code Here</span><br><span class="line">validation_horses_fnames = os.listdir(validation_horses_dir) # Your Code Here</span><br><span class="line">validation_humans_fnames = os.listdir(validation_humans_dir)  # Your Code Here</span><br><span class="line"></span><br><span class="line">print(len(train_horses_fnames))  # Your Code Here</span><br><span class="line">print(len(train_humans_fnames))# Your Code Here)</span><br><span class="line">print(len(validation_horses_fnames)) # Your Code Here)</span><br><span class="line">print(len(validation_humans_fnames)) # Your Code Here)</span><br><span class="line"></span><br><span class="line"># Add our data-augmentation parameters to ImageDataGenerator</span><br><span class="line">train_datagen = ImageDataGenerator(rescale=1./255., rotation_range=40, width_shift_range=0.2,</span><br><span class="line">                                  height_shift_range=0.2, shear_range=0.2, zoom_range=0.2,</span><br><span class="line">                                  horizontal_flip=True) # Your Code Here</span><br><span class="line"></span><br><span class="line"># Note that the validation data should not be augmented!</span><br><span class="line">test_datagen = ImageDataGenerator(rescale=1./255.) # Your Code Here )</span><br><span class="line"></span><br><span class="line"># Flow training images in batches of 20 using train_datagen generator</span><br><span class="line">train_generator = train_datagen.flow_from_directory(train_dir, batch_size=10, class_mode=&apos;binary&apos;, target_size=(150, 150))  # Your Code Here)     </span><br><span class="line"></span><br><span class="line"># Flow validation images in batches of 20 using test_datagen generator</span><br><span class="line">validation_generator =  test_datagen.flow_from_directory(validation_dir, batch_size=10, class_mode=&apos;binary&apos;, target_size=(150, 150)) # Your Code Here)</span><br></pre></td></tr></table></figure>
+<p>最后训练模型，记得要把callbacks参数加上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">callbacks = myCallback() # Your Code Here</span><br><span class="line">history = model.fit_generator(train_generator, validation_data=validation_generator,</span><br><span class="line">                             steps_per_epoch=100, epochs=3, validation_steps=50, verbose=2,</span><br><span class="line">                             callbacks=[callbacks]) # Your Code Here (set epochs = 3))</span><br></pre></td></tr></table></figure>
+<p>作图如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">acc = history.history[&apos;acc&apos;]</span><br><span class="line">val_acc = history.history[&apos;val_acc&apos;]</span><br><span class="line">loss = history.history[&apos;loss&apos;]</span><br><span class="line">val_loss = history.history[&apos;val_loss&apos;]</span><br><span class="line"></span><br><span class="line">epochs = range(len(acc))</span><br><span class="line"></span><br><span class="line">plt.plot(epochs, acc, &apos;r&apos;, label=&apos;Training accuracy&apos;)</span><br><span class="line">plt.plot(epochs, val_acc, &apos;b&apos;, label=&apos;Validation accuracy&apos;)</span><br><span class="line">plt.title(&apos;Training and validation accuracy&apos;)</span><br><span class="line">plt.legend(loc=0)</span><br><span class="line">plt.figure()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2007/20070403.png" alt=""></p>
+<p>可见，采用别人预训练得到的参数，对自己训练的精确度提升帮助极大。这也是迁移学习最大的优点。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://arxiv.org/abs/1512.00567" target="_blank" rel="noopener">Rethinking the Inception Architecture for Computer Vision</a></li>
+</ol>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/13/31-已知需求分布下报童问题的决策偏差/" itemprop="url">
-              
-                <span itemprop="name">已知需求分布下报童问题的决策偏差</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-04-13T19:26:23+08:00" content="2018-04-13">
-          04-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/10/30-Structuring-Machine-Learning-Projects-Week-2-3 17.02.59/" itemprop="url">
-              
-                <span itemprop="name">Structuring Machine Learning Projects - Week 2 - (3)</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-04-10T20:22:32+08:00" content="2018-04-10">
-          04-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/10/29-Structuring-Machine-Learning-Projects-Week-2-2 17.02.59/" itemprop="url">
-              
-                <span itemprop="name">Structuring Machine Learning Projects - Week 2 - (2)</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-04-10T09:34:52+08:00" content="2018-04-10">
-          04-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/09/28-Structuring-Machine-Learning-Projects-Week-2 17.02.59/" itemprop="url">
-              
-                <span itemprop="name">Structuring Machine Learning Projects - Week 2 - (1)</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-04-09T19:27:01+08:00" content="2018-04-09">
-          04-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/06/27-Structuring-Machine-Learning-Projets-Week-1-2 17.02.59/" itemprop="url">
-              
-                <span itemprop="name">Structuring Machine Learning Projects - Week 1 - (2)</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-04-06T20:23:58+08:00" content="2018-04-06">
-          04-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/03/26-Structuring-Machine-Learning-Projects-Week-1 17.02.59/" itemprop="url">
-              
-                <span itemprop="name">Structuring Machine Learning Projects - Week 1 - (1)</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-04-03T20:13:54+08:00" content="2018-04-03">
-          04-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/27/25-多属性决策——以建设项目的风险评估为例 17.06.12/" itemprop="url">
-              
-                <span itemprop="name">多属性决策——以建设项目的风险评估为例</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-03-27T16:08:01+08:00" content="2018-03-27">
-          03-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+
+    
+
+    
+    
+    
+
+    <div>
+      
+        ﻿
+
+<div class="my_post_copyright">
+
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <p><span>本文标题:</span><a href="/2020/07/03/74-迁移学习——Keras/">迁移学习——Keras</a></p>
+
+  <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
+
+  <p><span>发布时间:</span>2020年07月03日 - 16:07</p>
+
+  <p><span>最后更新:</span>2020年07月04日 - 11:07</p>
+
+  <p><span>原始链接:</span><a href="/2020/07/03/74-迁移学习——Keras/" title="迁移学习——Keras">http://kibo.tech/2020/07/03/74-迁移学习——Keras/</a>
+
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2020/07/03/74-迁移学习——Keras/" aria-label="复制成功！"></i></span>
+
+  </p>
+
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> </p>
+  <p><span>转载须知:</span>转载请保留原文链接及作者。</p>
+</div>
+
+<script>
+
+    var clipboard = new Clipboard('.fa-clipboard');
+
+      $(".fa-clipboard").click(function(){
+
+      clipboard.on('success', function(){
+
+        swal({
+   
+       title: "",
+
+          text: '复制成功',
+
+          icon: "success",
+
+          showConfirmButton: true
+
+          });
+
+        });
+
+    });
+
+</script>
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Thanks for your donation!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="KIBO 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="KIBO 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          
+            <a href="/tags/TensorFlow/" rel="tag"><i class="fa fa-tag"></i> TensorFlow</a>
+          
+            <a href="/tags/Keras/" rel="tag"><i class="fa fa-tag"></i> Keras</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/02/73-数据增广在TensorFlow中的实现/" rel="next" title="数据增广在TensorFlow中的实现">
+                <i class="fa fa-chevron-left"></i> 数据增广在TensorFlow中的实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/archives/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/8/">8</a><a class="extend next" rel="next" href="/archives/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
+  </article>
 
 
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -764,8 +698,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -979,6 +922,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Understanding-transfer-learning-the-concepts"><span class="nav-number">1.</span> <span class="nav-text">Understanding transfer learning: the concepts</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Coding-transfer-learning-from-the-inception-mode"><span class="nav-number">2.</span> <span class="nav-text">Coding transfer learning from the inception mode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -1147,6 +1106,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
 
   
 
@@ -1528,7 +1491,7 @@
   <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
   <script type="text/javascript">
   
-    bookmark.loadBookmark();
+    bookmark.scrollToMark('auto', "#更多");
   
   </script>
 
