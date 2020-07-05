@@ -108,30 +108,27 @@
 
 
 
-  <meta name="description" content="这是教程系列之七，也是该系列的最后一次课程，对应 Data analysis in Python with pandas 视频29~30，欢迎大家关注。">
-<meta name="keywords" content="Python,pandas,经验">
+  <meta name="description" content="本文主要介绍多分类问题，以Kaggle上的手势数据集（Sign Language MNIST）为例，采用卷积神经网络训练，进行手势识别。">
+<meta name="keywords" content="Python,学习笔记,TensorFlow,Keras">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pandas系列教程（七）">
-<meta property="og:url" content="http://kibo.tech/2018/03/02/12-Pandas系列教程（七）/index.html">
+<meta property="og:title" content="手势识别——Sign Language MNIST">
+<meta property="og:url" content="http://kibo.tech/2020/07/05/75-手势识别——Sign-Language-MNIST/index.html">
 <meta property="og:site_name" content="Foresee">
-<meta property="og:description" content="这是教程系列之七，也是该系列的最后一次课程，对应 Data analysis in Python with pandas 视频29~30，欢迎大家关注。">
+<meta property="og:description" content="本文主要介绍多分类问题，以Kaggle上的手势数据集（Sign Language MNIST）为例，采用卷积神经网络训练，进行手势识别。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180302/18030212.png">
-<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180302/18030210.png">
-<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180302/18030211.png">
-<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180302/18030213.png">
-<meta property="og:updated_time" content="2018-03-02T12:59:30.000Z">
+<meta property="og:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2007/20070501.png">
+<meta property="og:updated_time" content="2020-07-05T03:26:19.735Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Pandas系列教程（七）">
-<meta name="twitter:description" content="这是教程系列之七，也是该系列的最后一次课程，对应 Data analysis in Python with pandas 视频29~30，欢迎大家关注。">
-<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180302/18030212.png">
+<meta name="twitter:title" content="手势识别——Sign Language MNIST">
+<meta name="twitter:description" content="本文主要介绍多分类问题，以Kaggle上的手势数据集（Sign Language MNIST）为例，采用卷积神经网络训练，进行手势识别。">
+<meta name="twitter:image" content="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2007/20070501.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://kibo.tech/2018/03/02/12-Pandas系列教程（七）/">
+  <link rel="canonical" href="http://kibo.tech/2020/07/05/75-手势识别——Sign-Language-MNIST/">
 
 
 
@@ -141,7 +138,7 @@
   };
 </script>
 
-  <title>Pandas系列教程（七） | Foresee</title>
+  <title>手势识别——Sign Language MNIST | Foresee</title>
   
 
 
@@ -355,7 +352,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2018/03/02/12-Pandas系列教程（七）/">
+    <link itemprop="mainEntityOfPage" href="http://kibo.tech/2020/07/05/75-手势识别——Sign-Language-MNIST/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="KIBO">
@@ -372,7 +369,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Pandas系列教程（七）
+          <h1 class="post-title" itemprop="name headline">手势识别——Sign Language MNIST
               
             
           </h1>
@@ -397,7 +394,7 @@
                 
               
 
-              <time title="创建时间：2018-03-02 20:33:19" itemprop="dateCreated datePublished" datetime="2018-03-02T20:33:19+08:00">2018-03-02</time>
+              <time title="创建时间：2020-07-05 10:13:43" itemprop="dateCreated datePublished" datetime="2020-07-05T10:13:43+08:00">2020-07-05</time>
             
 
             
@@ -415,7 +412,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Study/" itemprop="url" rel="index"><span itemprop="name">Study</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Course/" itemprop="url" rel="index"><span itemprop="name">Course</span></a></span>
 
                 
                 
@@ -450,7 +447,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">2.6k</span>
+                <span title="本文字数">5.7k</span>
               
 
               
@@ -464,7 +461,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">2 分钟</span>
+                <span title="阅读时长">5 分钟</span>
               
             </div>
           
@@ -484,44 +481,32 @@
       
 
       
-        <p>这是教程系列之七，也是该系列的最后一次课程，对应 <a href="https://www.bilibili.com/video/av6785636/index_2.html#page=1" target="_blank" rel="noopener">Data analysis in Python with pandas</a> 视频29~30，欢迎大家关注。</p>
+        <p>本文主要介绍多分类问题，以Kaggle上的手势数据集（<a href="https://www.kaggle.com/datamunge/sign-language-mnist/home" target="_blank" rel="noopener">Sign Language MNIST</a>）为例，采用卷积神经网络训练，进行手势识别。</p>
 <a id="more"></a>
-<h1 id="新建-DataFrame-的多种方式"><a href="#新建-DataFrame-的多种方式" class="headerlink" title="新建 DataFrame 的多种方式"></a>新建 DataFrame 的多种方式</h1><ul>
-<li>方式一：直接使用<code>pd.DataFrame()</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 分别定义生成键和值</span><br><span class="line"># 这种方式新建的DataFrame，其键按字母排序，即color列在前，id列在后</span><br><span class="line">df = pd.DataFrame(&#123;&apos;id&apos;:[100,101,102], &apos;color&apos;:[&apos;red&apos;,&apos;blue&apos;,&apos;red&apos;]&#125;)   </span><br><span class="line"></span><br><span class="line"># 通过设定参数columns可固定每列的位置，同时参数index可设置行标签</span><br><span class="line">df = pd.DataFrame(&#123;&apos;id&apos;:[100,101,102],&apos;color&apos;:[&apos;red&apos;,&apos;blue&apos;,&apos;red&apos;]&#125;,columns=[&apos;id&apos;,&apos;color&apos;],index=[&apos;a&apos;,&apos;b&apos;,&apos;c&apos;])</span><br><span class="line"></span><br><span class="line"># 也可不使用字典的方式新建DateFrame</span><br><span class="line">pd.DataFrame([[100,&apos;red&apos;],[101,&apos;blue&apos;],[102,&apos;red&apos;]],columns=[&apos;id&apos;,&apos;color&apos;])</span><br></pre></td></tr></table></figure>
-<ul>
-<li>方式二：通过<code>np.array()</code>进行转化</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">arr = np.random.rand(4,2)</span><br><span class="line">pd.DataFrame(arr,columns=[&apos;one&apos;,&apos;two&apos;])</span><br><span class="line"></span><br><span class="line"># 或者 pandas 和 numpy 结合</span><br><span class="line">pd.DataFrame(&#123;&apos;student&apos;:np.arange(100,110,1),&apos;test&apos;:np.random.randint(60,101,10)&#125;).set_index(&apos;student&apos;)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>方式三：通过<code>pd.Series()</code> 进行转化</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 任意生成一序列</span><br><span class="line">s = pd.Series([&apos;round&apos;,&apos;square&apos;],index=[&apos;c&apos;,&apos;b&apos;],name=&apos;shape&apos;)</span><br><span class="line"></span><br><span class="line"># Dataframe 与 Series 的合并</span><br><span class="line">pd.concat([df,s],axis=1)</span><br></pre></td></tr></table></figure>
-<h1 id="DataFrame或Series中函数的使用"><a href="#DataFrame或Series中函数的使用" class="headerlink" title="DataFrame或Series中函数的使用"></a>DataFrame或Series中函数的使用</h1><ul>
-<li><code>Series.apply()</code> 的使用，效果可见代码下图片</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">train = pd.read_csv(&apos;data/titanic_train.csv&apos;)</span><br><span class="line"></span><br><span class="line"># 查看字符串的长度</span><br><span class="line">train[&apos;Name_length&apos;] = train.Name.apply(len)</span><br><span class="line">train.loc[0:4,[&apos;Name&apos;,&apos;Name_length&apos;]]</span><br><span class="line"></span><br><span class="line"># 将小数向上舍入</span><br><span class="line">train[&apos;Fare_ceil&apos;] = train.Fare.apply(np.ceil)</span><br><span class="line">train.loc[0:4,[&apos;Fare&apos;,&apos;Fare_ceil&apos;]]</span><br><span class="line"></span><br><span class="line"># 将字符串分离，并提取前一部分，以 Name 列为例</span><br><span class="line">train.Name.str.split(&apos;,&apos;)     # 按逗号隔开</span><br><span class="line">train.Name.str.split(&apos;,&apos;).apply(lambda x:x[0]).head() </span><br><span class="line"> </span><br><span class="line"># 也可使用函数进行分离并提取：</span><br><span class="line">def get_element(my_list,position):</span><br><span class="line">    return my_list[position]</span><br><span class="line">train.Name.str.split(&apos;,&apos;).apply(get_element,position=0).head()</span><br></pre></td></tr></table></figure>
-<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180302/18030212.png" alt=""></p>
-<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180302/18030210.png" alt=""></p>
-<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180302/18030211.png" alt=""></p>
-<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/180302/18030213.png" alt=""></p>
-<ul>
-<li><code>DataFrame.apply()</code> 的使用：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">drinks = pd.read_csv(&apos;data/drinks.csv&apos;)</span><br><span class="line"></span><br><span class="line"># 查询选定列中各行的最大值</span><br><span class="line"># 参数 axis=0，即为查询选定列中各列的最大值</span><br><span class="line">drinks.loc[:,&apos;beer_servings&apos;:&apos;wine_servings&apos;].apply(max,axis=1)</span><br><span class="line"></span><br><span class="line"># 返回选定列中各行最大值的列名（标签）</span><br><span class="line">drinks.loc[:,&apos;beer_servings&apos;:&apos;wine_servings&apos;].apply(np.argmax,axis=1)</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>DataFrame.applymap()</code> 的使用：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 将各列数据的类型修改为 float</span><br><span class="line">drinks.loc[:,&apos;beer_servings&apos;:&apos;wine_servings&apos;].applymap(float)</span><br></pre></td></tr></table></figure>
-<p>更多函数用法请参见：<a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.apply.html" target="_blank" rel="noopener">pandas.Series.apply</a> 、<a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.apply.html" target="_blank" rel="noopener">pandas.DataFrame.apply</a> 、<a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.applymap.html#pandas.DataFrame.applymap" target="_blank" rel="noopener">pandas.DataFrame.applymap</a></p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ol>
-<li><a href="https://www.bilibili.com/video/av6785636/index_2.html#page=1" target="_blank" rel="noopener">Data analysis in Python with pandas</a></li>
-<li><a href="http://pandas.pydata.org/pandas-docs/stable/" target="_blank" rel="noopener">pandas documentation</a></li>
-<li><a href="http://www.dataschool.io/" target="_blank" rel="noopener">Data School</a></li>
-<li><a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.apply.html" target="_blank" rel="noopener">pandas.Series.apply</a> </li>
-<li><a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.apply.html" target="_blank" rel="noopener">pandas.DataFrame.apply</a></li>
-<li><a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.applymap.html#pandas.DataFrame.applymap" target="_blank" rel="noopener">pandas.DataFrame.applymap</a></li>
+<h1 id="Multiclass-Classification"><a href="#Multiclass-Classification" class="headerlink" title="Multiclass Classification"></a>Multiclass Classification</h1><h2 id="Coding"><a href="#Coding" class="headerlink" title="Coding"></a>Coding</h2><p>直接以代码为例讲解吧，首先加载需要的模块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import csv</span><br><span class="line">import numpy as np</span><br><span class="line">import tensorflow as tf</span><br><span class="line">from tensorflow.keras.preprocessing.image import ImageDataGenerator</span><br><span class="line">from os import getcwd</span><br></pre></td></tr></table></figure>
+<p>其次，加载数据，每个数据样本是一个长度为785的向量。其中，样本向量的第1个元素为数据标签，其余784个元素可构成像素为<code>(28, 28)</code>的手势图片。我们首先对数据进行整理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">def get_data(filename):</span><br><span class="line">  # You will need to write code that will read the file passed</span><br><span class="line">  # into this function. The first line contains the column headers</span><br><span class="line">  # so you should ignore it</span><br><span class="line">  # Each successive line contians 785 comma separated values between 0 and 255</span><br><span class="line">  # The first value is the label</span><br><span class="line">  # The rest are the pixel values for that picture</span><br><span class="line">  # The function will return 2 np.array types. One with all the labels</span><br><span class="line">  # One with all the images</span><br><span class="line">  #</span><br><span class="line">  # Tips: </span><br><span class="line">  # If you read a full line (as &apos;row&apos;) then row[0] has the label</span><br><span class="line">  # and row[1:785] has the 784 pixel values</span><br><span class="line">  # Take a look at np.array_split to turn the 784 pixels into 28x28</span><br><span class="line">  # You are reading in strings, but need the values to be floats</span><br><span class="line">  # Check out np.array().astype for a conversion</span><br><span class="line">    with open(filename) as training_file:</span><br><span class="line">        next(training_file)</span><br><span class="line">        lines = training_file.readlines()</span><br><span class="line">        images = []</span><br><span class="line">        labels = []</span><br><span class="line">        for line in lines:</span><br><span class="line">            row = line.split(&apos;,&apos;)</span><br><span class="line">            label = np.array(row[0]).astype(np.float64)</span><br><span class="line">            image_row = np.array(row[1:785]).astype(np.float64)</span><br><span class="line">            image = np.array_split(image_row, 28)</span><br><span class="line">            labels.append(label)</span><br><span class="line">            images.append(image)</span><br><span class="line">      # Your code starts here</span><br><span class="line">      # Your code ends here</span><br><span class="line">        images = np.array(images)</span><br><span class="line">        labels = np.array(labels)</span><br><span class="line">    return images, labels</span><br><span class="line"></span><br><span class="line">path_sign_mnist_train = f&quot;&#123;getcwd()&#125;/../tmp2/sign_mnist_train.csv&quot;</span><br><span class="line">path_sign_mnist_test = f&quot;&#123;getcwd()&#125;/../tmp2/sign_mnist_test.csv&quot;</span><br><span class="line">training_images, training_labels = get_data(path_sign_mnist_train)</span><br><span class="line">testing_images, testing_labels = get_data(path_sign_mnist_test)</span><br><span class="line"></span><br><span class="line"># Keep these</span><br><span class="line">print(training_images.shape)</span><br><span class="line">print(training_labels.shape)</span><br><span class="line">print(testing_images.shape)</span><br><span class="line">print(testing_labels.shape)</span><br><span class="line"></span><br><span class="line"># Their output should be:</span><br><span class="line"># (27455, 28, 28)</span><br><span class="line"># (27455,)</span><br><span class="line"># (7172, 28, 28)</span><br><span class="line"># (7172,)</span><br></pre></td></tr></table></figure>
+<p>接下来，我们采用ImageDataGenerator进行数据增广。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"># 注：由于标签只是一个数字，我们需要将其转化为类别向量</span><br><span class="line">from tensorflow.keras.utils import to_categorical</span><br><span class="line">train_labels = to_categorical(training_labels)</span><br><span class="line">test_labels = to_categorical(testing_labels)</span><br><span class="line"></span><br><span class="line"># 图片需要增加一个维度</span><br><span class="line">training_images = np.expand_dims(training_images, axis=3)</span><br><span class="line">testing_images = np.expand_dims(testing_images, axis=3)</span><br><span class="line"></span><br><span class="line"># Create an ImageDataGenerator and do Image Augmentation</span><br><span class="line">train_datagen = ImageDataGenerator(</span><br><span class="line">    rescale = 1./255,</span><br><span class="line">    rotation_range=40,</span><br><span class="line">    width_shift_range=0.2,</span><br><span class="line">    height_shift_range=0.2,</span><br><span class="line">    shear_range=0.2,</span><br><span class="line">    zoom_range=0.2,</span><br><span class="line">    horizontal_flip=True,</span><br><span class="line">    fill_mode=&apos;nearest&apos;</span><br><span class="line">    # Your Code Here</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">validation_datagen = ImageDataGenerator(</span><br><span class="line">    rescale=1./255</span><br><span class="line">    # Your Code Here</span><br><span class="line">)</span><br><span class="line">    </span><br><span class="line">train_generator = train_datagen.flow(</span><br><span class="line">    training_images, train_labels, batch_size=32</span><br><span class="line">)    </span><br><span class="line"></span><br><span class="line">validation_generator = validation_datagen.flow(</span><br><span class="line">    testing_images, test_labels, batch_size=32</span><br><span class="line">)</span><br><span class="line"># Keep These</span><br><span class="line">print(training_images.shape)</span><br><span class="line">print(testing_images.shape)</span><br><span class="line">    </span><br><span class="line"># Their output should be:</span><br><span class="line"># (27455, 28, 28, 1)</span><br><span class="line"># (7172, 28, 28, 1)</span><br></pre></td></tr></table></figure>
+<p>构建模型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">model = tf.keras.models.Sequential([</span><br><span class="line">    tf.keras.layers.Conv2D(32, (3,3), activation=&apos;relu&apos;, input_shape=(28, 28, 1)),</span><br><span class="line">    tf.keras.layers.MaxPooling2D(2,2),</span><br><span class="line">    tf.keras.layers.Conv2D(64, (3,3), activation=&apos;relu&apos;),</span><br><span class="line">    tf.keras.layers.MaxPooling2D(2,2),</span><br><span class="line">    tf.keras.layers.Flatten(),</span><br><span class="line">    tf.keras.layers.Dense(128, activation=&apos;relu&apos;),</span><br><span class="line">    tf.keras.layers.Dense(25, activation=&apos;softmax&apos;)</span><br><span class="line">    # Your Code Here</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"># Compile Model. </span><br><span class="line">model.compile(loss=&apos;categorical_crossentropy&apos;, optimizer=&apos;adam&apos;, metrics=[&apos;accuracy&apos;]</span><br><span class="line">    # Your Code Here</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># Train the Model</span><br><span class="line">history = model.fit_generator(train_generator, epochs=2, steps_per_epoch=857, validation_data = validation_generator, verbose = 1, validation_steps=224)</span><br><span class="line">    # Your Code Here (set &apos;epochs&apos; = 2)</span><br><span class="line"></span><br><span class="line">model.evaluate(testing_images, test_labels, verbose=0)</span><br></pre></td></tr></table></figure>
+<p>在此，我们要注意一下，模型损失函数应设置为<code>categorical_crossentropy</code>。此外，<code>model.fit_generator()</code>中需要注意部分参数的调整，尤其是<code>steps_per_epoch</code>，在文章最后我会附上部分调参经验。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># Plot the chart for accuracy and loss on both training and validation</span><br><span class="line">%matplotlib inline</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">acc = history.history[&apos;accuracy&apos;] # Your Code Here</span><br><span class="line">val_acc = history.history[&apos;val_accuracy&apos;] # Your Code Here</span><br><span class="line">loss = history.history[&apos;loss&apos;] # Your Code Here</span><br><span class="line">val_loss = history.history[&apos;val_loss&apos;] # Your Code Here</span><br><span class="line"></span><br><span class="line">epochs = range(len(acc))</span><br><span class="line"></span><br><span class="line">plt.plot(epochs, acc, &apos;r&apos;, label=&apos;Training accuracy&apos;)</span><br><span class="line">plt.plot(epochs, val_acc, &apos;b&apos;, label=&apos;Validation accuracy&apos;)</span><br><span class="line">plt.title(&apos;Training and validation accuracy&apos;)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.figure()</span><br><span class="line"></span><br><span class="line">plt.plot(epochs, loss, &apos;r&apos;, label=&apos;Training Loss&apos;)</span><br><span class="line">plt.plot(epochs, val_loss, &apos;b&apos;, label=&apos;Validation Loss&apos;)</span><br><span class="line">plt.title(&apos;Training and validation loss&apos;)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>最后是画出训练集和验证集的损失值和精确度。</p>
+<p><img src="https://kibo-1256104095.cos.ap-guangzhou.myqcloud.com/image/20/2007/20070501.png" alt=""></p>
+<h2 id="Hyper-parameter-Tuning"><a href="#Hyper-parameter-Tuning" class="headerlink" title="Hyper-parameter Tuning"></a>Hyper-parameter Tuning</h2><blockquote>
+<ol>
+<li>Use Adam optimizer</li>
+<li>Batch sizes of 32 and take care of steps_per_epoch too as: steps_per_epoch = len(training_images) / 32</li>
+<li>128 and 26 neurons in Dense layers</li>
+<li>sparse_categorical_crossentropy</li>
+<li>Remove dropout </li>
+</ol>
+</blockquote>
+<p>由于之前我是将标签转化为类别向量，如果不转也是可以的，那么在<code>model.fit()</code>中应该将loss函数设置为<code>sparse_categorical_crossentropy</code>。此外，我在训练中最为有效的一个参数应该是<code>steps_per_epoch</code>了，这个参数一般设置为训练集长度与<code>Batch_size</code>之间的比值。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://www.kaggle.com/datamunge/sign-language-mnist/home" target="_blank" rel="noopener">Sign Language MNIST</a></li>
 </ol>
 
       
@@ -549,17 +534,17 @@
 
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-  <p><span>本文标题:</span><a href="/2018/03/02/12-Pandas系列教程（七）/">Pandas系列教程（七）</a></p>
+  <p><span>本文标题:</span><a href="/2020/07/05/75-手势识别——Sign-Language-MNIST/">手势识别——Sign Language MNIST</a></p>
 
   <p><span>文章作者:</span><a href="/" title="访问 KIBO 的个人博客">KIBO</a></p>
 
-  <p><span>发布时间:</span>2018年03月02日 - 20:03</p>
+  <p><span>发布时间:</span>2020年07月05日 - 10:07</p>
 
-  <p><span>最后更新:</span>2018年03月02日 - 20:03</p>
+  <p><span>最后更新:</span>2020年07月05日 - 11:07</p>
 
-  <p><span>原始链接:</span><a href="/2018/03/02/12-Pandas系列教程（七）/" title="Pandas系列教程（七）">http://kibo.tech/2018/03/02/12-Pandas系列教程（七）/</a>
+  <p><span>原始链接:</span><a href="/2020/07/05/75-手势识别——Sign-Language-MNIST/" title="手势识别——Sign Language MNIST">http://kibo.tech/2020/07/05/75-手势识别——Sign-Language-MNIST/</a>
 
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2018/03/02/12-Pandas系列教程（七）/" aria-label="复制成功！"></i></span>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://kibo.tech/2020/07/05/75-手势识别——Sign-Language-MNIST/" aria-label="复制成功！"></i></span>
 
   </p>
 
@@ -641,9 +626,11 @@
           
             <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
           
-            <a href="/tags/pandas/" rel="tag"><i class="fa fa-tag"></i> pandas</a>
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
           
-            <a href="/tags/经验/" rel="tag"><i class="fa fa-tag"></i> 经验</a>
+            <a href="/tags/TensorFlow/" rel="tag"><i class="fa fa-tag"></i> TensorFlow</a>
+          
+            <a href="/tags/Keras/" rel="tag"><i class="fa fa-tag"></i> Keras</a>
           
         </div>
       
@@ -656,8 +643,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/02/11-Pandas系列教程（六）/" rel="next" title="Pandas系列教程（六）">
-                <i class="fa fa-chevron-left"></i> Pandas系列教程（六）
+              <a href="/2020/07/03/74-迁移学习——Keras/" rel="next" title="迁移学习——Keras">
+                <i class="fa fa-chevron-left"></i> 迁移学习——Keras
               </a>
             
           </div>
@@ -665,10 +652,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/04/13-Neural-Networks-and-Deep-Learning-Week-1/" rel="prev" title="Neural Networks and Deep Learning - Week 1">
-                Neural Networks and Deep Learning - Week 1 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -944,7 +927,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#新建-DataFrame-的多种方式"><span class="nav-number">1.</span> <span class="nav-text">新建 DataFrame 的多种方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DataFrame或Series中函数的使用"><span class="nav-number">2.</span> <span class="nav-text">DataFrame或Series中函数的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Multiclass-Classification"><span class="nav-number">1.</span> <span class="nav-text">Multiclass Classification</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Coding"><span class="nav-number">1.1.</span> <span class="nav-text">Coding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hyper-parameter-Tuning"><span class="nav-number">1.2.</span> <span class="nav-text">Hyper-parameter Tuning</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
 
           </div>
